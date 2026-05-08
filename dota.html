@@ -51,6 +51,75 @@
   .hero-row { display: flex; align-items: center; gap: 6px; }
   .hero-img { width: 48px; height: 27px; border: 1px solid #808080; object-fit: cover; background: #333; }
   .best-viewed { text-align: center; font-family: 'Courier New', monospace; font-size: 9px; color: #808080; margin-top: 8px; padding: 4px; border-top: 1px dashed #808080; }
+
+  .peak-box {
+    border: 3px inset #808080;
+    background: #000033;
+    margin-bottom: 10px;
+    text-align: center;
+    padding: 20px 12px 16px;
+  }
+  .peak-label {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #aaaaff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .peak-number {
+    font-family: 'Abril Fatface', serif;
+    font-size: 72px;
+    color: #ffd700;
+    line-height: 1;
+    text-shadow: 3px 3px #ff6600, -1px -1px #ff0000;
+  }
+  .peak-sub {
+    font-family: 'Special Elite', serif;
+    font-size: 13px;
+    color: #ffaa00;
+    margin-top: 6px;
+    letter-spacing: 2px;
+  }
+
+  .api-warning {
+    background: #ffffcc;
+    border: 2px dashed #ff6600;
+    padding: 8px 12px;
+    margin-bottom: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #884400;
+    text-align: center;
+  }
+  .api-warning strong { color: #cc0000; }
+
+  .profile-links {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .profile-link-btn {
+    flex: 1;
+    min-width: 140px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    padding: 8px 12px;
+    font-family: 'Boogaloo', cursive;
+    font-size: 14px;
+    cursor: pointer;
+    color: #000080;
+    font-weight: bold;
+    text-decoration: none;
+    text-align: center;
+    display: block;
+  }
+  .profile-link-btn:hover { background: #000080; color: #ffff00; }
+  .profile-link-btn:active { border: 2px inset #808080; }
+  .profile-link-btn .btn-icon { font-size: 18px; display: block; margin-bottom: 3px; }
+  .profile-link-btn .btn-sub { font-size: 10px; font-family: 'Courier New', monospace; display: block; color: #555; }
+  .profile-link-btn:hover .btn-sub { color: #aaaaff; }
 </style>
 </head>
 <body>
@@ -61,13 +130,38 @@
     <div class="title-bar-buttons"><span>_</span><span>□</span><span>✕</span></div>
   </div>
   <div class="page-content">
+
     <div class="hero">
       <h1>⚔️ DOTA 2</h1>
       <div class="hero-subtitle">★ LIVE STATS ★ UPDATED IN REAL TIME ★</div>
     </div>
+
     <div class="nav-bar">
       <a class="nav-btn" href="index.html">🏠 HOME</a>
       <a class="nav-btn active" href="dota.html">⚔️ DOTA</a>
+    </div>
+
+    <div class="peak-box">
+      <div class="peak-label">★ All-Time Peak MMR ★</div>
+      <div class="peak-number">4680</div>
+      <div class="peak-sub">— personal record —</div>
+    </div>
+
+    <div class="api-warning">
+      ⚠️ <strong>HEADS UP:</strong> The live stats below are powered by OpenDota's free API and can be slow to load. Give it a minute or two — it'll get there.
+    </div>
+
+    <div class="profile-links">
+      <a class="profile-link-btn" href="https://www.opendota.com/players/471555915" target="_blank">
+        <span class="btn-icon">📊</span>
+        VIEW ON OPENDOTA
+        <span class="btn-sub">opendota.com</span>
+      </a>
+      <a class="profile-link-btn" href="https://steamcommunity.com/id/edleftonread/" target="_blank">
+        <span class="btn-icon">🎮</span>
+        VIEW ON STEAM
+        <span class="btn-sub">steamcommunity.com</span>
+      </a>
     </div>
 
     <div class="section-box">
@@ -103,7 +197,6 @@
 <script>
 const PLAYER_ID = '471555915';
 const API = 'https://api.opendota.com/api';
-
 const RANK_NAMES = { 1:'Herald', 2:'Guardian', 3:'Crusader', 4:'Archon', 5:'Legend', 6:'Ancient', 7:'Divine', 8:'Immortal' };
 const RANK_COLORS = { 1:'#808080', 2:'#4CAF50', 3:'#2196F3', 4:'#9C27B0', 5:'#FF9800', 6:'#F44336', 7:'#FFD700', 8:'#FF6B00' };
 
@@ -147,7 +240,7 @@ async function loadAll() {
 
     document.getElementById('stats-grid').innerHTML = `
       <div class="stat-card">
-        <div class="stat-label">RANK</div>
+        <div class="stat-label">CURRENT RANK</div>
         <div class="stat-value" style="font-size:16px;padding-top:6px">
           <span class="rank-badge" style="color:${rankColor};border-color:${rankColor}">${rankName}</span>
         </div>
