@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Edvin Voronecki - Official Homepage</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Abril+Fatface&family=Special+Elite&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background-color: #000080;
+    background-image: 
+      repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,255,0.05) 2px, rgba(0,0,255,0.05) 4px),
+      repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,255,0.05) 2px, rgba(0,0,255,0.05) 4px);
+    font-family: 'Boogaloo', 'Comic Sans MS', cursive;
+    color: #ffffff;
+    padding: 10px;
+    min-height: 100vh;
+  }
+
+  .under-construction {
+    background: #ffff00;
+    color: #000000;
+    text-align: center;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 3px;
+    border: 2px dashed #ff0000;
+    animation: blink 1s infinite;
+    font-family: 'Courier New', monospace;
+  }
+
+  @keyframes blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  .main-container {
+    max-width: 780px;
+    margin: 0 auto;
+    background: #c0c0c0;
+    border: 3px outset #ffffff;
+    padding: 0;
+  }
+
+  .title-bar {
+    background: linear-gradient(to right, #000080, #1084d0);
+    padding: 4px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Tahoma', sans-serif;
+    font-size: 12px;
+    color: white;
+  }
+
+  .title-bar-buttons span {
+    display: inline-block;
+    width: 16px;
+    height: 14px;
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    text-align: center;
+    font-size: 10px;
+    color: black;
+    cursor: pointer;
+    line-height: 12px;
+    margin-left: 2px;
+  }
+
+  .page-content { padding: 12px; background: #c0c0c0; }
+
+  .hero {
+    text-align: center;
+    padding: 20px;
+    background: #000080;
+    border: 3px inset #808080;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-stars { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
+
+  .star { position: absolute; color: #ffff00; font-size: 10px; animation: twinkle 2s infinite; }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.1; }
+  }
+
+  .hero h1 {
+    font-family: 'Abril Fatface', serif;
+    font-size: 42px;
+    color: #ffff00;
+    text-shadow: 3px 3px #ff0000, -1px -1px #ff6600;
+    animation: colorshift 3s infinite;
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes colorshift {
+    0% { color: #ffff00; }
+    33% { color: #ff00ff; }
+    66% { color: #00ffff; }
+    100% { color: #ffff00; }
+  }
+
+  .hero-subtitle {
+    font-family: 'Special Elite', serif;
+    font-size: 15px;
+    color: #00ff00;
+    margin-top: 6px;
+    letter-spacing: 2px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .visitor-counter {
+    margin-top: 10px;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #00ff00;
+    position: relative;
+    z-index: 1;
+  }
+
+  .visitor-counter span { background: #000; padding: 2px 6px; border: 1px solid #00ff00; letter-spacing: 3px; }
+
+  .nav-bar {
+    display: flex;
+    gap: 4px;
+    background: #808080;
+    padding: 4px;
+    border: 2px inset #c0c0c0;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    background: #c0c0c0;
+    border: 2px outset #ffffff;
+    padding: 4px 10px;
+    font-family: 'Boogaloo', cursive;
+    font-size: 13px;
+    cursor: pointer;
+    color: #000080;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .nav-btn:hover { background: #000080; color: #ffff00; }
+  .nav-btn:active { border: 2px inset #808080; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+
+  .section-box { border: 3px inset #808080; background: white; }
+  .section-box.full { grid-column: 1 / -1; }
+
+  .section-header {
+    background: #000080;
+    color: #ffffff;
+    padding: 4px 8px;
+    font-size: 13px;
+    font-weight: bold;
+    font-family: 'Tahoma', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .section-body { padding: 10px; font-size: 13px; color: #000000; font-family: 'Boogaloo', cursive; }
+
+  .about-text { font-size: 14px; line-height: 1.6; color: #000033; }
+  .about-text p { margin-bottom: 8px; }
+
+  .achievement {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+    margin-bottom: 6px;
+    border: 2px outset #c0c0c0;
+    background: #ffffcc;
+    font-size: 13px;
+    color: #000000;
+  }
+
+  .achievement-badge { font-size: 22px; flex-shrink: 0; }
+  .achievement-text strong { display: block; color: #000080; font-size: 13px; }
+  .achievement-text span { font-size: 11px; color: #333; }
+
+  .guestbook { background: #fffff0; border: 1px solid #999; padding: 8px; font-family: 'Courier New', monospace; font-size: 11px; color: #333; }
+  .guestbook-entry { border-bottom: 1px dashed #ccc; padding: 5px 0; }
+  .guestbook-entry .author { color: #0000cc; font-weight: bold; }
+  .guestbook-entry .date { color: #999; font-size: 10px; }
+
+  .music-player { background: #000; border: 2px inset #333; padding: 8px; display: flex; align-items: center; gap: 8px; }
+  .music-info { flex: 1; overflow: hidden; }
+  .music-scroll {
+    white-space: nowrap;
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    animation: marquee 8s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  .music-controls span { background: #333; color: #00ff00; border: 1px solid #00ff00; padding: 2px 5px; font-size: 11px; cursor: pointer; font-family: 'Courier New', monospace; }
+
+  .hit-label { font-family: 'Courier New', monospace; font-size: 10px; color: #00ff00; margin-bottom: 4px; }
+  .hit-digits { display: flex; justify-content: center; gap: 2px; }
+  .digit { background: #111; color: #ff4400; font-family: 'Courier New', monospace; font-size: 18px; font-weight: bold; padding: 2px 5px; border: 1px solid #ff4400; min-width: 22px; text-align: center; }
+
+  .divider { text-align: center; color: #ff0000; font-size: 16px; letter-spacing: 4px; margin: 6px 0; }
+
+  .cool-flag { display: inline-block; background: #ffff00; color: #000; font-size: 10px; font-weight: bold; padding: 1px 4px; border: 1px solid #ff0000; margin-left: 4px; animation: blink 0.8s infinite; font-family: 'Courier New', monospace; }
+
+  .marquee-bar { background: #000080; padding: 4px; overflow: hidden; border: 1px solid #ffff00; margin-bottom: 10px; }
+  .marquee-text { white-space: nowrap; color: #ffff00; font-size: 12px; font-family: 'Special Elite', serif; letter-spacing: 2px; animation: marquee 15s linear infinite; display: inline-block; }
+
+  .profile-pic-placeholder { width: 80px; height: 80px; border: 3px ridge #ffff00; background: #000080; display: flex; align-items: center; justify-content: center; font-size: 36px; float: right; margin: 0 0 8px 10px; }
+
+  .under-construction-gif { display: inline-block; background: repeating-linear-gradient(45deg, #ff0000, #ff0000 5px, #ffff00 5px, #ffff00 10px); width: 100%; height: 8px; margin: 6px 0; }
+
+  .dota-badge { display: inline-block; background: #8b0000; color: #ffd700; font-size: 11px; padding: 2px 8px; border: 1px solid #ffd700; font-family: 'Courier New', monospace; margin-top: 3px; }
+
+  .best-viewed { text-align: center; font-family: 'Courier New', monospace; font-size: 9px; color: #808080; margin-top: 8px; padding: 4px; border-top: 1px dashed #808080; }
+</style>
+</head>
+<body>
+
+<div class="under-construction">
+  *** THIS SITE IS UNDER CONSTRUCTION *** BEST VIEWED IN INTERNET EXPLORER 6 *** RESOLUTION 800x600 ***
+</div>
+
+<div class="main-container">
+  <div class="title-bar">
+    <span>🌐 Edvin Voronecki's OFFICIAL Homepage - Microsoft Internet Explorer</span>
+    <div class="title-bar-buttons">
+      <span>_</span><span>□</span><span>✕</span>
+    </div>
+  </div>
+
+  <div class="page-content">
+
+    <div class="hero">
+      <div class="hero-stars" id="stars"></div>
+      <h1>EDVIN VORONECKI</h1>
+      <div class="hero-subtitle">★ THE OFFICIAL WEBSITE ★ EST. 2025 ★</div>
+      <div class="visitor-counter">
+        You are visitor number: <span id="visitorNum">001337</span>
+      </div>
+    </div>
+
+    <div class="marquee-bar">
+      <div class="marquee-text">★ WELCOME TO MY WEBSITE ★ THE MOST HANDSOME BOY OF 2014 ★ DOTA 2 LEGEND ★ HIT MUSIC PRODUCER ★ LITHUANIAN-POLISH MYSTERY ★ THIS SITE WILL BLOW YOUR MIND ★</div>
+    </div>
+
+    <div class="nav-bar">
+      <a class="nav-btn" href="#">🏠 HOME</a>
+      <a class="nav-btn" href="#">👤 ABOUT ME</a>
+      <a class="nav-btn" href="#">🏆 ACHIEVEMENTS</a>
+      <a class="nav-btn" href="#">📸 GALLERY</a>
+      <a class="nav-btn" href="#">📧 CONTACT</a>
+      <a class="nav-btn" href="#">📖 GUESTBOOK</a>
+    </div>
+
+    <div class="two-col">
+
+      <div class="section-box" style="grid-column: 1 / -1;">
+        <div class="section-header"><span class="icon">👤</span> ABOUT ME <span class="cool-flag">NEW!</span></div>
+        <div class="section-body about-text">
+          <div class="profile-pic-placeholder">🕶️</div>
+          <p>Hi!!! My name is <strong>EDVIN VORONECKI</strong> and welcome to my TOTALLY AWESOME website!!!</p>
+          <p>I am a Lithuanian with a Polish passport living in Lithuania. Don't ask. Even I don't know. What I DO know is that I am <strong>objectively handsome</strong> (certified by a church in 2014, see achievements below).</p>
+          <p>I made this website because I <em>simply have too much to offer the world</em> and a single social media profile cannot contain it. You're welcome.</p>
+          <div class="under-construction-gif"></div>
+          <p style="font-size:11px; color:#666;">PS: If you are reading this, close this tab immediately and call your mother. Unless you ARE my mother. Hi mom!!! 👋</p>
+        </div>
+      </div>
+
+      <div class="section-box" style="grid-column: 1 / -1;">
+        <div class="section-header"><span class="icon">🏆</span> MY ACHIEVEMENTS (OFFICIAL LIST)</div>
+        <div class="section-body">
+          <div class="achievement">
+            <div class="achievement-badge">🎮</div>
+            <div class="achievement-text">
+              <strong>DOTA 2 — 4600 MMR</strong>
+              <span>67.5% winrate on Treant Protector. Yes that hero. Yes on purpose. I am not normal.</span>
+              <div class="dota-badge">⚔ LEGEND TIER ⚔</div>
+            </div>
+          </div>
+          <div class="achievement">
+            <div class="achievement-badge">🎵</div>
+            <div class="achievement-text">
+              <strong>MUSIC PRODUCER — HIT SONG RELEASED</strong>
+              <span>Producer of "Huj w rot" by ETA. Chart positions unknown but spiritually #1. Critics say it is "a song that exists". 10/10.</span>
+            </div>
+          </div>
+          <div class="achievement">
+            <div class="achievement-badge">👑</div>
+            <div class="achievement-text">
+              <strong>MOST HANDSOME BOY — CHURCH SUMMER CAMP 2014</strong>
+              <span>Democratically elected. By children. At a church. This is on my CV. I refuse to elaborate further.</span>
+            </div>
+          </div>
+          <div class="divider">-=★ MORE ACHIEVEMENTS LOADING... PLEASE WAIT ★=-</div>
+        </div>
+      </div>
+
+      <div class="section-box">
+        <div class="section-header"><span class="icon">🎵</span> NOW PLAYING</div>
+        <div class="section-body" style="padding:0">
+          <div class="music-player">
+            <div class="music-controls">
+              <span>⏮</span> <span>▶</span> <span>⏭</span>
+            </div>
+            <div class="music-info">
+              <div class="music-scroll">♪ ETA - Huj w rot (Producer: Edvin Voronecki) ♪ ♪ ETA - Huj w rot ♪ ♪ Grammy pending ♪</div>
+            </div>
+          </div>
+          <div style="padding:8px; font-size:11px; color:#333; font-family:'Courier New',monospace;">
+            🎵 Supporting local music<br>
+            📀 Available on... somewhere<br>
+            🏆 Won 0 Grammys (so far)
+          </div>
+        </div>
+      </div>
+
+      <div class="section-box">
+        <div class="section-header"><span class="icon">📖</span> GUESTBOOK</div>
+        <div class="section-body" style="padding:0">
+          <div class="guestbook">
+            <div class="guestbook-entry">
+              <span class="author">xX_DotaMaster_Xx:</span><br>
+              <span class="date">02/14/2025</span><br>
+              bro treant protector?? TREANT?? report
+            </div>
+            <div class="guestbook-entry">
+              <span class="author">Mama_Voronecka:</span><br>
+              <span class="date">02/15/2025</span><br>
+              Edvin kiedy do domu na obiad?? Zupa stygnie. Zadzwoń.
+            </div>
+            <div class="guestbook-entry">
+              <span class="author">CampCrusher2014:</span><br>
+              <span class="date">02/16/2025</span><br>
+              I voted for you at church camp. I regret nothing.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-box full">
+        <div class="section-header"><span class="icon">📊</span> SITE STATISTICS (VERY IMPORTANT)</div>
+        <div class="section-body" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;text-align:center">
+          <div>
+            <div class="hit-label">TOTAL VISITORS</div>
+            <div class="hit-digits" id="hitCounter">
+              <div class="digit">0</div><div class="digit">0</div><div class="digit">1</div><div class="digit">3</div><div class="digit">3</div><div class="digit">7</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:#333;font-family:'Courier New',monospace;text-align:left;padding:4px">
+            📍 Most visitors from: Lithuania<br>
+            🌍 Reached: 1 country<br>
+            ⏱ Avg time on site: too long<br>
+            📱 Mobile users: please upgrade to Nokia 3310
+          </div>
+          <div style="font-size:12px;color:#333;font-family:'Courier New',monospace;text-align:left;padding:4px">
+            🌟 Site rating: ★★★★★ (self-rated)<br>
+            🔗 Backlinks: 0 (quality over quantity)<br>
+            🤝 Friends online: <span id="friendsOnline" style="color:#ff0000;font-weight:bold">0</span><br>
+            ⚡ Powered by: pure ego
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="best-viewed">
+      ★ Best viewed in Internet Explorer 6.0 at 800×600 resolution ★ Netscape Navigator also OK ★<br>
+      © 2025 Edvin Voronecki. All rights reserved. Especially the handsome award. That's MINE.
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const starsContainer = document.getElementById('stars');
+  for (let i = 0; i < 20; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    s.textContent = '★';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.animationDelay = Math.random() * 2 + 's';
+    s.style.animationDuration = (1 + Math.random() * 2) + 's';
+    s.style.opacity = Math.random();
+    starsContainer.appendChild(s);
+  }
+
+  let count = 1337;
+  setInterval(() => {
+    count += Math.floor(Math.random() * 3);
+    const digits = String(count).padStart(6, '0').split('');
+    const boxes = document.querySelectorAll('#hitCounter .digit');
+    boxes.forEach((b, i) => b.textContent = digits[i]);
+    document.getElementById('visitorNum').textContent = String(count).padStart(6, '0');
+  }, 4000);
+
+  setInterval(() => {
+    document.getElementById('friendsOnline').textContent = Math.floor(Math.random() * 3);
+  }, 5000);
+</script>
+
+</body>
+</html>
