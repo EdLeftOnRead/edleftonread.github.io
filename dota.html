@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Dota - Edwin Woronecki</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Abril+Fatface&family=Special+Elite&display=swap');
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background-color: #000080;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,255,0.05) 2px, rgba(0,0,255,0.05) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,255,0.05) 2px, rgba(0,0,255,0.05) 4px);
+    font-family: 'Boogaloo', 'Comic Sans MS', cursive;
+    color: #ffffff;
+    padding: 10px;
+    min-height: 100vh;
+  }
+  .under-construction { background: #ffff00; color: #000000; text-align: center; font-size: 11px; font-weight: bold; padding: 3px; border: 2px dashed #ff0000; animation: blink 1s infinite; font-family: 'Courier New', monospace; }
+  @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+  .main-container { max-width: 780px; margin: 0 auto; background: #c0c0c0; border: 3px outset #ffffff; padding: 0; }
+  .title-bar { background: linear-gradient(to right, #000080, #1084d0); padding: 4px 8px; display: flex; justify-content: space-between; align-items: center; font-family: 'Tahoma', sans-serif; font-size: 12px; color: white; }
+  .title-bar-buttons span { display: inline-block; width: 16px; height: 14px; background: #c0c0c0; border: 2px outset #ffffff; text-align: center; font-size: 10px; color: black; cursor: pointer; line-height: 12px; margin-left: 2px; }
+  .page-content { padding: 12px; background: #c0c0c0; }
+  .hero { text-align: center; padding: 20px; background: #000080; border: 3px inset #808080; margin-bottom: 12px; }
+  .hero h1 { font-family: 'Abril Fatface', serif; font-size: 42px; color: #ffff00; text-shadow: 3px 3px #ff0000, -1px -1px #ff6600; }
+  .hero-subtitle { font-family: 'Special Elite', serif; font-size: 15px; color: #00ff00; margin-top: 6px; letter-spacing: 2px; }
+  .nav-bar { display: flex; gap: 4px; background: #808080; padding: 4px; border: 2px inset #c0c0c0; margin-bottom: 12px; flex-wrap: wrap; }
+  .nav-btn { background: #c0c0c0; border: 2px outset #ffffff; padding: 4px 10px; font-family: 'Boogaloo', cursive; font-size: 13px; cursor: pointer; color: #000080; font-weight: bold; text-decoration: none; }
+  .nav-btn:hover { background: #000080; color: #ffff00; }
+  .nav-btn.active { border: 2px inset #808080; background: #000080; color: #ffff00; }
+  .section-box { border: 3px inset #808080; background: white; margin-bottom: 10px; }
+  .section-header { background: #000080; color: #ffffff; padding: 4px 8px; font-size: 13px; font-weight: bold; font-family: 'Tahoma', sans-serif; display: flex; align-items: center; gap: 6px; }
+  .section-body { padding: 10px; font-size: 13px; color: #000000; font-family: 'Boogaloo', cursive; }
+  .loading { color: #808080; font-family: 'Courier New', monospace; font-size: 11px; padding: 10px; text-align: center; animation: blink 1s infinite; }
+  .error { color: #cc0000; font-family: 'Courier New', monospace; font-size: 11px; padding: 10px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 8px; }
+  .stat-card { border: 2px outset #c0c0c0; background: #ffffcc; padding: 8px; text-align: center; }
+  .stat-label { font-family: 'Courier New', monospace; font-size: 10px; color: #555; margin-bottom: 4px; }
+  .stat-value { font-family: 'Abril Fatface', serif; font-size: 26px; color: #000080; line-height: 1; }
+  .stat-sub { font-size: 11px; color: #555; margin-top: 3px; font-family: 'Courier New', monospace; }
+
+  .match-table { width: 100%; border-collapse: collapse; font-size: 12px; font-family: 'Courier New', monospace; }
+  .match-table th { background: #000080; color: #ffffff; padding: 4px 6px; text-align: left; font-size: 11px; }
+  .match-table td { padding: 4px 6px; border-bottom: 1px solid #ddd; vertical-align: middle; }
+  .match-table tr:nth-child(even) td { background: #f5f5f5; }
+  .win { color: #006600; font-weight: bold; }
+  .loss { color: #cc0000; font-weight: bold; }
+  .kda { color: #000080; }
+
+  .hero-row { display: flex; align-items: center; gap: 8px; }
+  .hero-img { width: 48px; height: 27px; border: 1px solid #808080; object-fit: cover; background: #333; }
+  .hero-img-placeholder { width: 48px; height: 27px; border: 1px solid #808080; background: #333; display: inline-block; }
+
+  .best-hero-box { display: flex; align-items: center; gap: 12px; padding: 8px; border: 2px outset #c0c0c0; background: #ffffcc; }
+  .best-hero-info { flex: 1; }
+  .best-hero-name { font-family: 'Abril Fatface', serif; font-size: 20px; color: #000080; }
+  .best-hero-stats { font-family: 'Courier New', monospace; font-size: 11px; color: #333; margin-top: 4px; }
+
+  .dota-badge { display: inline-block; background: #8b0000; color: #ffd700; font-size: 11px; padding: 2px 8px; border: 1px solid #ffd700; font-family: 'Courier New', monospace; }
+  .best-viewed { text-align: center; font-family: 'Courier New', monospace; font-size: 9px; color: #808080; margin-top: 8px; padding: 4px; border-top: 1px dashed #808080; }
+
+  .rank-badge { display: inline-block; padding: 3px 10px; font-family: 'Courier New', monospace; font-size: 12px; font-weight: bold; border: 2px solid; margin-top: 4px; }
+</style>
+</head>
+<body>
+<div class="under-construction">*** THIS SITE IS UNDER CONSTRUCTION *** BEST VIEWED IN INTERNET EXPLORER 6 *** RESOLUTION 800x600 ***</div>
+<div class="main-container">
+  <div class="title-bar">
+    <span>🌐 Edwin Woronecki's OFFICIAL Homepage - Microsoft Internet Explorer</span>
+    <div class="title-bar-buttons"><span>_</span><span>□</span><span>✕</span></div>
+  </div>
+  <div class="page-content">
+    <div class="hero">
+      <h1>⚔️ DOTA 2</h1>
+      <div class="hero-subtitle">★ LIVE STATS ★ UPDATED IN REAL TIME ★</div>
+    </div>
+    <div class="nav-bar">
+      <a class="nav-btn" href="index.html">🏠 HOME</a>
+      <a class="nav-btn active" href="dota.html">⚔️ DOTA</a>
+    </div>
+
+    <div class="section-box">
+      <div class="section-header">📊 OVERVIEW</div>
+      <div class="section-body">
+        <div id="overview-loading" class="loading">LOADING STATS... PLEASE WAIT...</div>
+        <div id="overview-content" style="display:none">
+          <div class="stats-grid" id="stats-grid"></div>
+        </div>
+        <div id="overview-error" class="error" style="display:none">Failed to load stats.</div>
+      </div>
+    </div>
+
+    <div class="section-box">
+      <div class="section-header">🏆 BEST HERO</div>
+      <div class="section-body">
+        <div id="hero-loading" class="loading">LOADING HERO DATA...</div>
+        <div id="hero-content" style="display:none"></div>
+        <div id="hero-error" class="error" style="display:none">Failed to load hero data.</div>
+      </div>
+    </div>
+
+    <div class="section-box">
+      <div class="section-header">🎮 RECENT MATCHES</div>
+      <div class="section-body" style="padding:0">
+        <div id="matches-loading" class="loading" style="padding:10px">LOADING MATCH HISTORY...</div>
+        <div id="matches-content" style="display:none"></div>
+        <div id="matches-error" class="error" style="display:none">Failed to load matches.</div>
+      </div>
+    </div>
+
+    <div class="best-viewed">© 2025 Edwin Woronecki. All rights reserved. Especially the handsome award. That's MINE.</div>
+  </div>
+</div>
+
+<script>
+const PLAYER_ID = '471555915';
+const API = 'https://api.opendota.com/api';
+
+const RANK_NAMES = {
+  1: 'Herald', 2: 'Guardian', 3: 'Crusader',
+  4: 'Archon', 5: 'Legend', 6: 'Ancient',
+  7: 'Divine', 8: 'Immortal'
+};
+
+const RANK_COLORS = {
+  1: '#808080', 2: '#4CAF50', 3: '#2196F3',
+  4: '#9C27B0', 5: '#FF9800', 6: '#F44336',
+  7: '#FFD700', 8: '#FF6B00'
+};
+
+function getRankName(rankTier) {
+  if (!rankTier) return 'Unranked';
+  const tier = Math.floor(rankTier / 10);
+  const stars = rankTier % 10;
+  const name = RANK_NAMES[tier] || 'Unknown';
+  return name + ' ' + stars;
+}
+
+function show(id) { document.getElementById(id).style.display = 'block'; }
+function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+async function fetchJSON(url) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  return res.json();
+}
+
+async function loadOverview() {
+  try {
+    const data = await fetchJSON(API + '/players/' + PLAYER_ID);
+    const wl = await fetchJSON(API + '/players/' + PLAYER_ID + '/wl');
+
+    const mmr = data.mmr_estimate && data.mmr_estimate.estimate
+      ? Math.round(data.mmr_estimate.estimate)
+      : (data.solo_competitive_rank || '—');
+
+    const rankTier = data.rank_tier;
+    const rankName = getRankName(rankTier);
+    const rankColor = rankTier ? RANK_COLORS[Math.floor(rankTier / 10)] : '#808080';
+
+    const totalGames = (wl.win || 0) + (wl.lose || 0);
+    const winrate = totalGames > 0 ? ((wl.win / totalGames) * 100).toFixed(1) : '—';
+
+    const grid = document.getElementById('stats-grid');
+    grid.innerHTML = `
+      <div class="stat-card">
+        <div class="stat-label">ESTIMATED MMR</div>
+        <div class="stat-value">${mmr}</div>
+        <div class="stat-sub">solo ranked</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">RANK</div>
+        <div class="stat-value" style="font-size:16px;padding-top:4px">
+          <span class="rank-badge" style="color:${rankColor};border-color:${rankColor}">${rankName}</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">RANKED WINRATE</div>
+        <div class="stat-value" style="color:${parseFloat(winrate) >= 50 ? '#006600' : '#cc0000'}">${winrate}%</div>
+        <div class="stat-sub">${wl.win || 0}W / ${wl.lose || 0}L</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">TOTAL GAMES</div>
+        <div class="stat-value">${totalGames}</div>
+        <div class="stat-sub">all time</div>
+      </div>
+    `;
+
+    hide('overview-loading');
+    show('overview-content');
+  } catch(e) {
+    hide('overview-loading');
+    show('overview-error');
+  }
+}
+
+async function loadBestHero() {
+  try {
+    const heroes = await fetchJSON(API + '/players/' + PLAYER_ID + '/heroes?limit=1&order_by=games');
+    const allHeroes = await fetchJSON(API + '/heroes');
+
+    if (!heroes.length) throw new Error('no data');
+
+    const best = heroes[0];
+    const heroData = allHeroes.find(h => h.id === best.hero_id);
+    const heroName = heroData ? heroData.localized_name : 'Unknown Hero';
+    const heroImg = heroData
+      ? 'https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/' + heroData.name.replace('npc_dota_hero_', '') + '.png'
+      : null;
+
+    const wr = best.games > 0 ? ((best.win / best.games) * 100).toFixed(1) : '—';
+
+    const content = document.getElementById('hero-content');
+    content.innerHTML = `
+      <div class="best-hero-box">
+        ${heroImg ? `<img class="hero-img" src="${heroImg}" alt="${heroName}" style="width:80px;height:45px">` : '<div class="hero-img-placeholder" style="width:80px;height:45px"></div>'}
+        <div class="best-hero-info">
+          <div class="best-hero-name">${heroName}</div>
+          <div class="best-hero-stats">
+            GAMES: ${best.games} &nbsp;|&nbsp;
+            WINS: ${best.win} &nbsp;|&nbsp;
+            WINRATE: ${wr}% &nbsp;|&nbsp;
+            LAST PLAYED: ${best.last_played ? new Date(best.last_played * 1000).toLocaleDateString() : '—'}
+          </div>
+          <div style="margin-top:6px"><span class="dota-badge">⚔ MAIN HERO ⚔</span></div>
+        </div>
+      </div>
+    `;
+
+    hide('hero-loading');
+    show('hero-content');
+  } catch(e) {
+    hide('hero-loading');
+    show('hero-error');
+  }
+}
+
+async function loadMatches() {
+  try {
+    const matches = await fetchJSON(API + '/players/' + PLAYER_ID + '/recentMatches');
+    const allHeroes = await fetchJSON(API + '/heroes');
+
+    const heroMap = {};
+    allHeroes.forEach(h => heroMap[h.id] = h);
+
+    let rows = '';
+    matches.slice(0, 10).forEach(m => {
+      const hero = heroMap[m.hero_id];
+      const heroName = hero ? hero.localized_name : '???';
+      const heroImg = hero
+        ? 'https://cdn.cloudflare.steamstatic.com/apps/dota2/images/dota_react/heroes/' + hero.name.replace('npc_dota_hero_', '') + '.png'
+        : null;
+      const won = (m.radiant_win && m.player_slot < 128) || (!m.radiant_win && m.player_slot >= 128);
+      const result = won ? '<span class="win">WIN</span>' : '<span class="loss">LOSS</span>';
+      const kda = `<span class="kda">${m.kills}/${m.deaths}/${m.assists}</span>`;
+      const duration = Math.floor(m.duration / 60) + 'm ' + (m.duration % 60) + 's';
+      const date = new Date(m.start_time * 1000).toLocaleDateString();
+      const imgTag = heroImg
+        ? `<img class="hero-img" src="${heroImg}" alt="${heroName}">`
+        : `<div class="hero-img-placeholder"></div>`;
+
+      rows += `<tr>
+        <td>${result}</td>
+        <td><div class="hero-row">${imgTag}<span>${heroName}</span></div></td>
+        <td>${kda}</td>
+        <td>${duration}</td>
+        <td>${date}</td>
+      </tr>`;
+    });
+
+    document.getElementById('matches-content').innerHTML = `
+      <table class="match-table">
+        <thead><tr><th>RESULT</th><th>HERO</th><th>K/D/A</th><th>DURATION</th><th>DATE</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+
+    hide('matches-loading');
+    show('matches-content');
+  } catch(e) {
+    hide('matches-loading');
+    show('matches-error');
+  }
+}
+
+loadOverview();
+loadBestHero();
+loadMatches();
+</script>
+</body>
+</html>
