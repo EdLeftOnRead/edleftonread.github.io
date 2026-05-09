@@ -59,65 +59,132 @@
   .schedule-table tr.today td { background: #fffacd !important; font-weight: bold; }
   .schedule-table tr.today td:first-child { border-left: 3px solid #ffcc00; }
   .today-label { display: inline-block; background: #ffcc00; color: #000000; font-size: 13px; font-weight: bold; padding: 1px 7px; font-family: 'Courier New', monospace; margin-left: 7px; border: 2px solid #cc9900; vertical-align: middle; }
+  .tab-bar { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; padding: 8px 8px 0 8px; }
+  .tab-btn { background: #a0a0a0; border: 2px outset #ffffff; border-bottom: 2px solid #808080; padding: 5px 18px; font-family: 'Tahoma', sans-serif; font-size: 12px; font-weight: bold; cursor: pointer; color: #000033; }
+  .tab-btn.active { background: #c0c0c0; color: #000080; border-bottom: 2px solid #c0c0c0; }
+  .tab-btn:not(.active):hover { background: #c0c0c0; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .schedule-unavailable { text-align: center; padding: 20px; font-family: 'Tahoma', sans-serif; font-size: 12px; color: #555; }
 </style>
 </head>
 <body>
 <div class="main-container">
   <div class="title-bar">
-    <span>🌐 Edwin's internet corner</span>
+    <span></span>
     <div class="title-bar-buttons"><span>_</span><span>□</span><span>✕</span></div>
   </div>
   <div class="page-content">
     <div class="hero">
       <div class="hero-stars" id="stars"></div>
-      <h1>EDWIN WORONECKI</h1>
-      <div class="hero-subtitle">★ Grafik ★</div>
+      <h1>GRAFIK EDWINA</h1>
     </div>
       <div class="section-box">
         <div class="section-header"><span class="icon">📅</span> Grafik</div>
-        <div class="section-body">
-          <table class="schedule-table">
-            <thead>
-              <tr>
-                <th>Data</th>
-                <th>Dzień</th>
-                <th>Status</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr data-date="2026-05-01"><td>1 maja</td><td>Piątek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-02"><td>2 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-              <tr data-date="2026-05-03"><td>3 maja</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-              <tr data-date="2026-05-04"><td>4 maja</td><td>Poniedziałek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-05"><td>5 maja</td><td>Wtorek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-06"><td>6 maja</td><td>Środa</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-07"><td>7 maja</td><td>Czwartek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-08"><td>8 maja</td><td>Piątek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-09"><td>9 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-              <tr data-date="2026-05-10"><td>10 maja</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-              <tr data-date="2026-05-11"><td>11 maja</td><td>Poniedziałek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-12"><td>12 maja</td><td>Wtorek</td><td><span class="tag-away">ZAJĘTY</span></td><td>Poza miastem</td></tr>
-              <tr data-date="2026-05-13"><td>13 maja</td><td>Środa</td><td><span class="tag-away">ZAJĘTY</span></td><td>Poza miastem</td></tr>
-              <tr data-date="2026-05-14"><td>14 maja</td><td>Czwartek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-15"><td>15 maja</td><td>Piątek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-16"><td>16 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-              <tr data-date="2026-05-17"><td>17 maja</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-              <tr data-date="2026-05-18"><td>18 maja</td><td>Poniedziałek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-19"><td>19 maja</td><td>Wtorek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-20"><td>20 maja</td><td>Środa</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-21"><td>21 maja</td><td>Czwartek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-22"><td>22 maja</td><td>Piątek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-23"><td>23 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-              <tr data-date="2026-05-24"><td>24 maja</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-              <tr data-date="2026-05-25"><td>25 maja</td><td>Poniedziałek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-26"><td>26 maja</td><td>Wtorek</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-27"><td>27 maja</td><td>Środa</td><td><span class="tag-work">PRACA</span></td><td></td></tr>
-              <tr data-date="2026-05-28"><td>28 maja</td><td>Czwartek</td><td><span class="tag-away">ZAJĘTY</span></td><td></td></tr>
-              <tr data-date="2026-05-29"><td>29 maja</td><td>Piątek</td><td><span class="tag-away">ZAJĘTY</span></td><td></td></tr>
-              <tr data-date="2026-05-30"><td>30 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-            </tbody>
-          </table>
+        <div class="section-body" style="padding: 0;">
+          <div class="tab-bar">
+            <button class="tab-btn active" onclick="switchTab('maj')">📅 Maj 2026</button>
+            <button class="tab-btn" onclick="switchTab('czerwiec')">📅 Czerwiec 2026</button>
+          </div>
+        </div>
+        <div style="border-top: 1px solid #808080;">
+
+          <!-- MAJ -->
+          <div id="tab-maj" class="tab-panel active">
+            <table class="schedule-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Data</th>
+                  <th>Dzień</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-date="2026-05-01"><td>1 maja</td><td>Piątek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-02"><td>2 maja</td><td>Sobota</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-05-03"><td>3 maja</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-04"><td>4 maja</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-05"><td>5 maja</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-06"><td>6 maja</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-07"><td>7 maja</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-08"><td>8 maja</td><td>Piątek</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-05-09"><td>9 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-10"><td>10 maja</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-11"><td>11 maja</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-12"><td>12 maja</td><td>Wtorek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-13"><td>13 maja</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-14"><td>14 maja</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-15"><td>15 maja</td><td>Piątek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-16"><td>16 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-17"><td>17 maja</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-18"><td>18 maja</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-19"><td>19 maja</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-20"><td>20 maja</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-21"><td>21 maja</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-22"><td>22 maja</td><td>Piątek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-23"><td>23 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-24"><td>24 maja</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-25"><td>25 maja</td><td>Poniedziałek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-26"><td>26 maja</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-27"><td>27 maja</td><td>Środa</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-28"><td>28 maja</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-29"><td>29 maja</td><td>Piątek</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-05-30"><td>30 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-31"><td>31 maja</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- CZERWIEC -->
+          <div id="tab-czerwiec" class="tab-panel">
+            <div id="june-unavailable" class="schedule-unavailable" style="display:none;">
+              ⏳ Grafik na czerwiec nie jest jeszcze dostępny.
+            </div>
+            <table class="schedule-table" id="june-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Data</th>
+                  <th>Dzień</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-date="2026-06-01"><td>1 czerwca</td><td>Poniedziałek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-02"><td>2 czerwca</td><td>Wtorek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-03"><td>3 czerwca</td><td>Środa</td><td></td><td></td></tr>
+                <tr data-date="2026-06-04"><td>4 czerwca</td><td>Czwartek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-05"><td>5 czerwca</td><td>Piątek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-06"><td>6 czerwca</td><td>Sobota</td><td></td><td></td></tr>
+                <tr data-date="2026-06-07"><td>7 czerwca</td><td>Niedziela</td><td></td><td></td></tr>
+                <tr data-date="2026-06-08"><td>8 czerwca</td><td>Poniedziałek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-09"><td>9 czerwca</td><td>Wtorek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-10"><td>10 czerwca</td><td>Środa</td><td></td><td></td></tr>
+                <tr data-date="2026-06-11"><td>11 czerwca</td><td>Czwartek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-12"><td>12 czerwca</td><td>Piątek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-13"><td>13 czerwca</td><td>Sobota</td><td></td><td></td></tr>
+                <tr data-date="2026-06-14"><td>14 czerwca</td><td>Niedziela</td><td></td><td></td></tr>
+                <tr data-date="2026-06-15"><td>15 czerwca</td><td>Poniedziałek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-16"><td>16 czerwca</td><td>Wtorek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-17"><td>17 czerwca</td><td>Środa</td><td></td><td></td></tr>
+                <tr data-date="2026-06-18"><td>18 czerwca</td><td>Czwartek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-19"><td>19 czerwca</td><td>Piątek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-20"><td>20 czerwca</td><td>Sobota</td><td></td><td></td></tr>
+                <tr data-date="2026-06-21"><td>21 czerwca</td><td>Niedziela</td><td></td><td></td></tr>
+                <tr data-date="2026-06-22"><td>22 czerwca</td><td>Poniedziałek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-23"><td>23 czerwca</td><td>Wtorek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-24"><td>24 czerwca</td><td>Środa</td><td></td><td></td></tr>
+                <tr data-date="2026-06-25"><td>25 czerwca</td><td>Czwartek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-26"><td>26 czerwca</td><td>Piątek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-27"><td>27 czerwca</td><td>Sobota</td><td></td><td></td></tr>
+                <tr data-date="2026-06-28"><td>28 czerwca</td><td>Niedziela</td><td></td><td></td></tr>
+                <tr data-date="2026-06-29"><td>29 czerwca</td><td>Poniedziałek</td><td></td><td></td></tr>
+                <tr data-date="2026-06-30"><td>30 czerwca</td><td>Wtorek</td><td></td><td></td></tr>
+              </tbody>
+            </table>
+          </div>
+
         </div>
       </div>
 
@@ -134,6 +201,19 @@
     todayRow.classList.add('today');
     const firstCell = todayRow.querySelector('td');
     firstCell.innerHTML += '<span class="today-label">DZIŚ</span>';
+  }
+
+  // Show June tab notice if before May 25th
+  const scheduleReady = today >= new Date('2026-05-25');
+  if (!scheduleReady) {
+    document.getElementById('june-unavailable').style.display = 'block';
+  }
+
+  function switchTab(name) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    event.target.classList.add('active');
   }
 
   const starsContainer = document.getElementById('stars');
