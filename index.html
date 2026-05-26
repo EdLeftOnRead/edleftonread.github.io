@@ -70,6 +70,13 @@
   .book-btn:hover { background: #000080; color: #ffff00; }
   .book-btn:active { border: 2px inset #808080; }
   .schedule-table td:last-child { text-align: center; }
+  .lang-switcher { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 10; }
+  .lang-flag { width: 48px; height: 32px; border: 2px outset #ffffff; cursor: pointer; padding: 0; background: none; display: block; overflow: hidden; }
+  .lang-flag:hover { border-color: #ffff00; }
+  .lang-flag:active { border: 2px inset #808080; }
+  .lang-flag.active { border: 2px inset #ffff00; box-shadow: 0 0 6px #ffff00; }
+  .lang-flag svg { width: 100%; height: 100%; display: block; }
+  .hero { position: relative; }
 </style>
 </head>
 <body>
@@ -81,14 +88,34 @@
   <div class="page-content">
     <div class="hero">
       <div class="hero-stars" id="stars"></div>
+      <div class="lang-switcher">
+        <button class="lang-flag" data-lang="pl" title="Polski" aria-label="Polski">
+          <svg viewBox="0 0 8 5" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="8" height="2.5" fill="#ffffff"/>
+            <rect y="2.5" width="8" height="2.5" fill="#dc143c"/>
+          </svg>
+        </button>
+        <button class="lang-flag" data-lang="en" title="English" aria-label="English">
+          <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+            <clipPath id="uk-clip"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+            <rect width="60" height="30" fill="#012169"/>
+            <g clip-path="url(#uk-clip)">
+              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/>
+              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#c8102e" stroke-width="4" clip-path="polygon(0 0, 50% 50%, 100% 0)"/>
+              <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
+              <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
+            </g>
+          </svg>
+        </button>
+      </div>
       <h1>GRAFIK EDWINA</h1>
     </div>
       <div class="section-box">
-        <div class="section-header"><span class="icon">📅</span> Grafik</div>
+        <div class="section-header"><span class="icon">📅</span> <span data-i18n="schedule">Grafik</span></div>
         <div class="section-body" style="padding: 0;">
           <div class="tab-bar">
-            <button class="tab-btn active" onclick="switchTab('maj')">📅 Maj 2026</button>
-            <button class="tab-btn" onclick="switchTab('czerwiec')">📅 Czerwiec 2026</button>
+            <button class="tab-btn active" onclick="switchTab('maj')">📅 <span data-i18n="month_may">Maj 2026</span></button>
+            <button class="tab-btn" onclick="switchTab('czerwiec')">📅 <span data-i18n="month_june">Czerwiec 2026</span></button>
           </div>
         </div>
         <div style="border-top: 1px solid #808080;">
@@ -98,44 +125,44 @@
             <table class="schedule-table">
               <thead>
                 <tr>
-                  <th style="width: 120px;">Data</th>
-                  <th>Dzień</th>
-                  <th>Status</th>
+                  <th style="width: 120px;" data-i18n="th_date">Data</th>
+                  <th data-i18n="th_day">Dzień</th>
+                  <th data-i18n="th_status">Status</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr data-date="2026-05-01"><td>1 maja</td><td>Piątek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-02"><td>2 maja</td><td>Sobota</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-05-03"><td>3 maja</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-04"><td>4 maja</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-05"><td>5 maja</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-06"><td>6 maja</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-07"><td>7 maja</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-08"><td>8 maja</td><td>Piątek</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-05-09"><td>9 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-10"><td>10 maja</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-11"><td>11 maja</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-12"><td>12 maja</td><td>Wtorek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-13"><td>13 maja</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-14"><td>14 maja</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-15"><td>15 maja</td><td>Piątek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-16"><td>16 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-17"><td>17 maja</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-18"><td>18 maja</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-19"><td>19 maja</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-20"><td>20 maja</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-21"><td>21 maja</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-22"><td>22 maja</td><td>Piątek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-23"><td>23 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-24"><td>24 maja</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-25"><td>25 maja</td><td>Poniedziałek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-26"><td>26 maja</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-27"><td>27 maja</td><td>Środa</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-28"><td>28 maja</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-05-29"><td>29 maja</td><td>Piątek</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-05-30"><td>30 maja</td><td>Sobota</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-05-31"><td>31 maja</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-05-01"><td class="date-cell">1 maja</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-02"><td class="date-cell">2 maja</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-05-03"><td class="date-cell">3 maja</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-04"><td class="date-cell">4 maja</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-05"><td class="date-cell">5 maja</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-06"><td class="date-cell">6 maja</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-07"><td class="date-cell">7 maja</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-08"><td class="date-cell">8 maja</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-05-09"><td class="date-cell">9 maja</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-10"><td class="date-cell">10 maja</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-11"><td class="date-cell">11 maja</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-12"><td class="date-cell">12 maja</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-13"><td class="date-cell">13 maja</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-14"><td class="date-cell">14 maja</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-15"><td class="date-cell">15 maja</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-16"><td class="date-cell">16 maja</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-17"><td class="date-cell">17 maja</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-18"><td class="date-cell">18 maja</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-19"><td class="date-cell">19 maja</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-20"><td class="date-cell">20 maja</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-21"><td class="date-cell">21 maja</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-22"><td class="date-cell">22 maja</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-23"><td class="date-cell">23 maja</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-24"><td class="date-cell">24 maja</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-25"><td class="date-cell">25 maja</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-26"><td class="date-cell">26 maja</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-27"><td class="date-cell">27 maja</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-28"><td class="date-cell">28 maja</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-05-29"><td class="date-cell">29 maja</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-05-30"><td class="date-cell">30 maja</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-05-31"><td class="date-cell">31 maja</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
               </tbody>
             </table>
           </div>
@@ -143,48 +170,48 @@
           <!-- CZERWIEC -->
           <div id="tab-czerwiec" class="tab-panel">
             <div id="june-unavailable" class="schedule-unavailable" style="display:none;">
-              ⏳ Grafik na czerwiec nie jest jeszcze dostępny.
+              ⏳ <span data-i18n="june_unavailable">Grafik na czerwiec nie jest jeszcze dostępny.</span>
             </div>
             <table class="schedule-table" id="june-table">
               <thead>
                 <tr>
-                  <th style="width: 120px;">Data</th>
-                  <th>Dzień</th>
-                  <th>Status</th>
+                  <th style="width: 120px;" data-i18n="th_date">Data</th>
+                  <th data-i18n="th_day">Dzień</th>
+                  <th data-i18n="th_status">Status</th>
                   <th></th>
                 </tr>
               </thead>
               <tbody>
-                <tr data-date="2026-06-01"><td>1 czerwca</td><td>Poniedziałek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-02"><td>2 czerwca</td><td>Wtorek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-03"><td>3 czerwca</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-04"><td>4 czerwca</td><td>Czwartek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-05"><td>5 czerwca</td><td>Piątek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-06"><td>6 czerwca</td><td>Sobota</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-06-07"><td>7 czerwca</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-08"><td>8 czerwca</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-09"><td>9 czerwca</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-10"><td>10 czerwca</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-11"><td>11 czerwca</td><td>Czwartek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-12"><td>12 czerwca</td><td>Piątek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-13"><td>13 czerwca</td><td>Sobota</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-06-14"><td>14 czerwca</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-15"><td>15 czerwca</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-16"><td>16 czerwca</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-17"><td>17 czerwca</td><td>Środa</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-18"><td>18 czerwca</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-19"><td>19 czerwca</td><td>Piątek</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-06-20"><td>20 czerwca</td><td>Sobota</td><td><span class="tag-work">Nocna (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-06-21"><td>21 czerwca</td><td>Niedziela</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-22"><td>22 czerwca</td><td>Poniedziałek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-23"><td>23 czerwca</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
-                <tr data-date="2026-06-24"><td>24 czerwca</td><td>Środa</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-25"><td>25 czerwca</td><td>Czwartek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-26"><td>26 czerwca</td><td>Piątek</td><td><span class="tag-busy">ZAJĘTY</span></td><td></td></tr>
-                <tr data-date="2026-06-27"><td>27 czerwca</td><td>Sobota</td><td><span class="tag-busy">ZAJĘTY</span></td><td></td></tr>
-                <tr data-date="2026-06-28"><td>28 czerwca</td><td>Niedziela</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-29"><td>29 czerwca</td><td>Poniedziałek</td><td><span class="tag-work">Nocna (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-30"><td>30 czerwca</td><td>Wtorek</td><td><span class="tag-off">WOLNY</span></td><td></td></tr>
+                <tr data-date="2026-06-01"><td class="date-cell">1 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-02"><td class="date-cell">2 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-03"><td class="date-cell">3 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-04"><td class="date-cell">4 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-05"><td class="date-cell">5 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-06"><td class="date-cell">6 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-06-07"><td class="date-cell">7 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-08"><td class="date-cell">8 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-09"><td class="date-cell">9 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-10"><td class="date-cell">10 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-11"><td class="date-cell">11 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-12"><td class="date-cell">12 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-13"><td class="date-cell">13 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-06-14"><td class="date-cell">14 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-15"><td class="date-cell">15 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-16"><td class="date-cell">16 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-17"><td class="date-cell">17 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-18"><td class="date-cell">18 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-19"><td class="date-cell">19 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-06-20"><td class="date-cell">20 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
+                <tr data-date="2026-06-21"><td class="date-cell">21 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-22"><td class="date-cell">22 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-23"><td class="date-cell">23 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-24"><td class="date-cell">24 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-25"><td class="date-cell">25 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-26"><td class="date-cell">26 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-27"><td class="date-cell">27 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
+                <tr data-date="2026-06-28"><td class="date-cell">28 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-29"><td class="date-cell">29 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
+                <tr data-date="2026-06-30"><td class="date-cell">30 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
               </tbody>
             </table>
           </div>
@@ -196,6 +223,137 @@
   </div>
 </div>
 <script>
+  // ============ TRANSLATIONS ============
+  const translations = {
+    pl: {
+      schedule: 'Grafik',
+      month_may: 'Maj 2026',
+      month_june: 'Czerwiec 2026',
+      th_date: 'Data',
+      th_day: 'Dzień',
+      th_status: 'Status',
+      june_unavailable: 'Grafik na czerwiec nie jest jeszcze dostępny.',
+      day_mon: 'Poniedziałek',
+      day_tue: 'Wtorek',
+      day_wed: 'Środa',
+      day_thu: 'Czwartek',
+      day_fri: 'Piątek',
+      day_sat: 'Sobota',
+      day_sun: 'Niedziela',
+      status_off: 'WOLNY',
+      status_busy: 'ZAJĘTY',
+      status_night: 'Nocna',
+      book_btn: 'Rezerwować',
+    },
+    en: {
+      schedule: 'Schedule',
+      month_may: 'May 2026',
+      month_june: 'June 2026',
+      th_date: 'Date',
+      th_day: 'Day',
+      th_status: 'Status',
+      june_unavailable: 'The June schedule is not yet available.',
+      day_mon: 'Monday',
+      day_tue: 'Tuesday',
+      day_wed: 'Wednesday',
+      day_thu: 'Thursday',
+      day_fri: 'Friday',
+      day_sat: 'Saturday',
+      day_sun: 'Sunday',
+      status_off: 'Day off',
+      status_busy: 'BUSY',
+      status_night: 'Night shift',
+      book_btn: 'Book',
+    }
+  };
+
+  // English month names for date formatting
+  const monthsEn = {
+    '05': 'May',
+    '06': 'June',
+  };
+
+  // ============ EMAIL TEMPLATES ============
+  const emailTemplates = {
+    pl: {
+      subjectPrefix: 'Rezerwacja: ',
+      body: (dateLabel) =>
+        'Cześć Edwin,\n\n' +
+        'Chciał(a)bym zarezerwować dzień: ' + dateLabel + ' \n\n' +
+        'Powód:'
+    },
+    en: {
+      subjectPrefix: 'Booking: ',
+      body: (dateLabel) =>
+        'Hi Edwin,\n\n' +
+        'I would like to book the following day: ' + dateLabel + ' \n\n' +
+        'Reason:'
+    }
+  };
+
+  // ============ STATE ============
+  let currentLang = localStorage.getItem('grafik_lang') || 'pl';
+  const bookingEmail = 'voroneckij.edvin@gmail.com';
+
+  // ============ LANGUAGE SWITCHING ============
+  function setLanguage(lang) {
+    currentLang = lang;
+    localStorage.setItem('grafik_lang', lang);
+    const dict = translations[lang];
+
+    // Set page html lang attribute
+    document.documentElement.lang = lang;
+
+    // Translate every element with data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) el.textContent = dict[key];
+    });
+
+    // Translate date cells based on the row's data-date
+    document.querySelectorAll('.date-cell').forEach(cell => {
+      const row = cell.closest('tr');
+      const dateAttr = row.getAttribute('data-date'); // e.g. "2026-06-01"
+      const [year, month, day] = dateAttr.split('-');
+      const dayNum = parseInt(day, 10);
+      if (lang === 'en') {
+        cell.textContent = dayNum + ' ' + monthsEn[month];
+      } else {
+        // Polish: rebuild "X maja" / "X czerwca"
+        const plMonth = (month === '05') ? 'maja' : 'czerwca';
+        cell.textContent = dayNum + ' ' + plMonth;
+      }
+    });
+
+    // Update the active flag highlight
+    document.querySelectorAll('.lang-flag').forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+
+    // Rebuild booking buttons with the right language
+    buildBookingButtons();
+  }
+
+  // ============ BOOKING BUTTONS ============
+  function buildBookingButtons() {
+    const tpl = emailTemplates[currentLang];
+    const btnLabel = translations[currentLang].book_btn;
+    document.querySelectorAll('.schedule-table tbody tr').forEach(row => {
+      const statusCell = row.children[2];
+      const actionCell = row.children[3];
+      if (statusCell && statusCell.querySelector('.tag-off')) {
+        const dateLabel = row.children[0].textContent.trim();
+        const subject = encodeURIComponent(tpl.subjectPrefix + dateLabel + ' 2026');
+        const body = encodeURIComponent(tpl.body(dateLabel));
+        const mailtoLink = 'mailto:' + bookingEmail + '?subject=' + subject + '&body=' + body;
+        actionCell.innerHTML = '<a class="book-btn" href="' + mailtoLink + '">' + btnLabel + '</a>';
+      } else {
+        actionCell.innerHTML = '';
+      }
+    });
+  }
+
+  // ============ INIT: highlight today ============
   const today = new Date();
   const mm = String(today.getMonth() + 1).padStart(2, '0');
   const dd = String(today.getDate()).padStart(2, '0');
@@ -205,29 +363,21 @@
     todayRow.classList.add('today');
   }
 
-  // Add a "Rezerwować" button to every WOLNY row
-  const bookingEmail = 'voroneckij.edvin@gmail.com';
-  document.querySelectorAll('.schedule-table tbody tr').forEach(row => {
-    const statusCell = row.children[2];
-    if (statusCell && statusCell.querySelector('.tag-off')) {
-      const dateLabel = row.children[0].textContent.trim();
-      const subject = encodeURIComponent('Rezerwacja: ' + dateLabel + ' 2026');
-      const body = encodeURIComponent(
-        'Cześć Edwin,\n\n' +
-        'Chciał(a)bym zarezerwować dzień: ' + dateLabel + ' \n\n' +
-        'Powód:'
-      );
-      const mailtoLink = 'mailto:' + bookingEmail + '?subject=' + subject + '&body=' + body;
-      row.children[3].innerHTML = '<a class="book-btn" href="' + mailtoLink + '">Rezerwować</a>';
-    }
-  });
-
-  // Show June tab notice if before May 25th
+  // ============ INIT: June availability ============
   const scheduleReady = today >= new Date('2026-05-25');
   if (!scheduleReady) {
     document.getElementById('june-unavailable').style.display = 'block';
   }
 
+  // ============ INIT: wire flag buttons ============
+  document.querySelectorAll('.lang-flag').forEach(btn => {
+    btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
+  });
+
+  // ============ INIT: apply saved language ============
+  setLanguage(currentLang);
+
+  // ============ TAB SWITCHING ============
   function switchTab(name) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -235,6 +385,7 @@
     event.target.classList.add('active');
   }
 
+  // ============ STARS DECORATION ============
   const starsContainer = document.getElementById('stars');
   for (let i = 0; i < 20; i++) {
     const s = document.createElement('div');
