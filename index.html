@@ -58,7 +58,7 @@
   .tag-away { display: inline-block; background: #000080; color: #ffffff; font-size: 13px; font-weight: bold; padding: 2px 8px; border: 1px outset #4444cc; font-family: 'Courier New', monospace; }
   .tag-busy { display: inline-block; background: #ff8800; color: #ffffff; font-size: 13px; font-weight: bold; padding: 2px 8px; border: 1px outset #ffaa44; font-family: 'Courier New', monospace; }
   .schedule-table tr.today td { background: #fffacd !important; font-weight: bold; }
-  .schedule-table tr.today td:first-child { border-left: 3px solid #ffcc00; }
+  .schedule-table tr.today td:first-child { box-shadow: inset 3px 0 0 #ffcc00; }
   .tab-bar { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; padding: 8px 8px 0 8px; }
   .tab-btn { background: #a0a0a0; border: 2px outset #ffffff; border-bottom: 2px solid #808080; padding: 5px 18px; font-family: 'Tahoma', sans-serif; font-size: 12px; font-weight: bold; cursor: pointer; color: #000033; }
   .tab-btn.active { background: #c0c0c0; color: #000080; border-bottom: 2px solid #c0c0c0; }
@@ -338,10 +338,23 @@
   function buildBookingButtons() {
     const tpl = emailTemplates[currentLang];
     const btnLabel = translations[currentLang].book_btn;
+
+    // Build "today at midnight" so the comparison ignores time of day
+    const now = new Date();
+    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
     document.querySelectorAll('.schedule-table tbody tr').forEach(row => {
       const statusCell = row.children[2];
       const actionCell = row.children[3];
-      if (statusCell && statusCell.querySelector('.tag-off')) {
+      const isOff = statusCell && statusCell.querySelector('.tag-off');
+
+      // Parse the row's date and check whether it's in the future
+      const rowDateStr = row.getAttribute('data-date'); // "2026-06-01"
+      const [y, m, d] = rowDateStr.split('-').map(Number);
+      const rowDate = new Date(y, m - 1, d);
+      const isFuture = rowDate > todayMidnight;
+
+      if (isOff && isFuture) {
         const dateLabel = row.children[0].textContent.trim();
         const subject = encodeURIComponent(tpl.subjectPrefix + dateLabel + ' 2026');
         const body = encodeURIComponent(tpl.body(dateLabel));
