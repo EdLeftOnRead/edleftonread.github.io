@@ -10,37 +10,30 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    /* Windows 98 system palette */
-    --sys-gray:       #d4d0c8;
-    --sys-gray-dark:  #c0c0c0;
-    --sys-shadow:     #808080;
-    --sys-darkest:    #404040;
-    --sys-highlight:  #ffffff;
-    --sys-text:       #000000;
-    --sys-blue:       #000080;
-    --sys-blue2:      #1084d0;
-    --sys-teal:       #008080;
-    --sys-white:      #ffffff;
-    --sys-row-alt:    #e8f0ff;
-    --sys-today:      #ffffc0;
-    --col-off:        #007000;
-    --col-night:      #000090;
-    --col-busy:       #900000;
+    --sys-gray:      #d4d0c8;
+    --sys-gray-dark: #c0c0c0;
+    --sys-shadow:    #808080;
+    --sys-darkest:   #404040;
+    --sys-highlight: #ffffff;
+    --sys-text:      #000000;
+    --sys-blue:      #000080;
+    --sys-blue2:     #1084d0;
+    --sys-teal:      #008080;
+    --sys-row-alt:   #e8f0ff;
+    --sys-today:     #ffffc0;
+    --col-off:       #007000;
+    --col-night:     #000090;
+    --col-busy:      #900000;
   }
-
-  html { scroll-behavior: auto; }
 
   /* ── DESKTOP ── */
   body {
     background-color: var(--sys-teal);
-    background-image:
-      repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 3px,
-        rgba(0,0,0,0.03) 3px,
-        rgba(0,0,0,0.03) 4px
-      );
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent, transparent 3px,
+      rgba(0,0,0,0.03) 3px, rgba(0,0,0,0.03) 4px
+    );
     min-height: 100vh;
     font-family: Tahoma, Verdana, Arial, sans-serif;
     font-size: 12px;
@@ -56,7 +49,6 @@
     width: 100%;
     max-width: 880px;
     background: var(--sys-gray);
-    /* classic 4-colour raised window border */
     border-top:    2px solid var(--sys-highlight);
     border-left:   2px solid var(--sys-highlight);
     border-right:  2px solid var(--sys-darkest);
@@ -109,10 +101,7 @@
     flex-shrink: 0;
   }
   .win-btn:active {
-    border-top:    1px solid var(--sys-darkest);
-    border-left:   1px solid var(--sys-darkest);
-    border-right:  1px solid var(--sys-highlight);
-    border-bottom: 1px solid var(--sys-highlight);
+    border-color: var(--sys-darkest) var(--sys-highlight) var(--sys-highlight) var(--sys-darkest);
   }
 
   /* ── MENU BAR ── */
@@ -122,7 +111,6 @@
     padding: 1px 4px;
     display: flex;
     align-items: center;
-    gap: 0;
     font-size: 11px;
   }
 
@@ -134,12 +122,34 @@
   .menu-item:hover {
     background: var(--sys-blue);
     color: white;
-    border: 1px solid var(--sys-shadow);
+    border-color: var(--sys-shadow);
   }
 
-  .win-menubar .spacer { flex: 1; }
+  /* ── HEADER ── */
+  .header {
+    padding: 16px 18px 14px;
+    background: var(--sys-gray);
+    border-bottom: 2px solid;
+    border-color: var(--sys-shadow) var(--sys-highlight) var(--sys-highlight) var(--sys-shadow);
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+  }
 
-  /* lang switcher — moved into header-right */
+  .header-left  { grid-column: 2; text-align: center; }
+  .header-right { grid-column: 3; display: flex; justify-content: flex-end; align-items: center; }
+
+  .site-title {
+    font-family: 'VT323', monospace;
+    font-size: clamp(52px, 8vw, 80px);
+    line-height: 1;
+    color: var(--sys-blue);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.15), -1px -1px 0 rgba(255,255,255,0.7);
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  /* ── LANGUAGE FLAGS ── */
   .menubar-flags { display: flex; gap: 4px; padding: 2px 4px; align-items: center; }
   .lang-flag {
     width: 58px; height: 38px;
@@ -152,95 +162,22 @@
     padding: 0;
     overflow: hidden;
     opacity: 0.55;
-    transition: opacity 0.1s, box-shadow 0.1s;
+    transition: opacity 0.1s;
   }
   .lang-flag:hover { opacity: 0.85; }
   .lang-flag.active {
     opacity: 1;
-    border-top:    2px solid var(--sys-highlight);
-    border-left:   2px solid var(--sys-highlight);
-    border-right:  2px solid var(--sys-shadow);
-    border-bottom: 2px solid var(--sys-shadow);
+    border-color: var(--sys-highlight) var(--sys-shadow) var(--sys-shadow) var(--sys-highlight);
     box-shadow: inset 1px 1px 0 rgba(0,0,0,0.15);
   }
   .lang-flag svg { width: 100%; height: 100%; display: block; }
 
-  /* ── HEADER TOOLBAR ── */
-  .header {
-    padding: 16px 18px 14px;
-    background: var(--sys-gray);
-    border-bottom: 2px solid;
-    border-color: var(--sys-shadow) var(--sys-highlight) var(--sys-highlight) var(--sys-shadow);
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    position: relative;
-  }
+  /* ── MAIN ── */
+  .main { padding: 10px 10px 14px; }
 
-  .header-left {
-    grid-column: 2;
-    text-align: center;
-  }
-
-  .header-right {
-    grid-column: 3;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-
-  .site-title {
-    font-family: 'VT323', monospace;
-    font-size: clamp(52px, 8vw, 80px);
-    line-height: 1;
-    color: var(--sys-blue);
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.15), -1px -1px 0 rgba(255,255,255,0.7);
-    letter-spacing: 0.02em;
-    text-align: center;
-  }
-
-  .site-title span {
-    font-family: 'VT323', monospace;
-    color: var(--sys-blue);
-    text-shadow: 1px 1px 0 rgba(0,0,0,0.15), -1px -1px 0 rgba(255,255,255,0.7);
-  }
-
-  /* ── LEGEND ── */
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 8px;
-  }
-
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 10px;
-    color: var(--sys-text);
-    font-weight: bold;
-  }
-
-  .legend-dot {
-    width: 11px; height: 11px;
-    border-top:    1px solid rgba(0,0,0,0.4);
-    border-left:   1px solid rgba(0,0,0,0.4);
-    border-right:  1px solid rgba(255,255,255,0.6);
-    border-bottom: 1px solid rgba(255,255,255,0.6);
-    flex-shrink: 0;
-  }
-
-  /* ── MAIN CONTENT ── */
-  .main {
-    padding: 10px 10px 14px;
-    background: var(--sys-gray);
-  }
-
-  /* ── TAB BAR ── */
+  /* ── TABS ── */
   .tab-bar {
     display: flex;
-    gap: 0;
     padding: 4px 2px 0;
     position: relative;
     z-index: 1;
@@ -253,32 +190,24 @@
     border-right:  2px solid var(--sys-shadow);
     border-bottom: none;
     padding: 3px 18px 4px;
-    font-family: Tahoma, Verdana, sans-serif;
     font-size: 11px;
-    font-weight: normal;
     cursor: default;
     color: var(--sys-text);
     margin-right: 2px;
     position: relative;
     top: 2px;
-    transition: none;
   }
-
   .tab-btn.active {
-    background: var(--sys-white);
+    background: #ffffff;
     font-weight: bold;
     padding-top: 4px;
-    top: 0px;
+    top: 0;
     z-index: 2;
-    /* active tab is taller and its bottom merges with content */
-    border-top:   2px solid var(--sys-highlight);
-    border-left:  2px solid var(--sys-highlight);
-    border-right: 2px solid var(--sys-shadow);
   }
 
-  /* ── TAB PANEL WRAPPER ── */
+  /* ── TAB CONTENT BOX ── */
   .tab-content-box {
-    background: var(--sys-white);
+    background: #ffffff;
     border-top:    2px solid var(--sys-shadow);
     border-left:   2px solid var(--sys-shadow);
     border-right:  2px solid var(--sys-highlight);
@@ -292,16 +221,12 @@
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
 
-  /* ── SCHEDULE TABLE ── */
-  .schedule-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
+  /* ── TABLE ── */
+  .schedule-table { width: 100%; border-collapse: collapse; }
 
   .schedule-table thead th {
     background: var(--sys-blue);
     color: #fff;
-    font-family: Tahoma, sans-serif;
     font-size: 13px;
     font-weight: bold;
     padding: 7px 10px;
@@ -313,7 +238,7 @@
   .schedule-table thead th:first-child { padding-left: 14px; }
   .schedule-table thead th:last-child  { text-align: right; padding-right: 14px; border-right: none; }
 
-  .schedule-table tbody tr:nth-child(odd)  { background: var(--sys-white); }
+  .schedule-table tbody tr:nth-child(odd)  { background: #ffffff; }
   .schedule-table tbody tr:nth-child(even) { background: var(--sys-row-alt); }
   .schedule-table tbody tr:hover { background: #cce0ff; }
 
@@ -328,15 +253,8 @@
   .schedule-table tbody td:first-child { padding-left: 14px; }
   .schedule-table tbody td:last-child  { text-align: right; padding-right: 14px; }
 
-  /* date column */
-  .schedule-table tbody td.date-cell {
-    font-weight: bold;
-    width: 120px;
-    font-size: 14px;
-    font-family: Tahoma, sans-serif;
-  }
+  .date-cell { font-weight: bold; width: 120px; }
 
-  /* day name column */
   .schedule-table tbody td:nth-child(2) {
     width: 140px;
     color: #404060;
@@ -363,7 +281,6 @@
   /* ── STATUS TAGS ── */
   .tag {
     display: inline-block;
-    font-family: Tahoma, Verdana, sans-serif;
     font-size: 12px;
     font-weight: bold;
     padding: 3px 10px;
@@ -376,16 +293,13 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
-
-  .tag-off   { background: var(--col-off); }
-  .tag-work  { background: var(--col-night); }
-  .tag-busy  { background: var(--col-busy); }
-  .tag-away  { background: #555555; }
+  .tag-off  { background: var(--col-off); }
+  .tag-work { background: var(--col-night); }
+  .tag-busy { background: var(--col-busy); }
 
   /* ── BOOK BUTTON ── */
   .book-btn {
     display: inline-block;
-    font-family: Tahoma, Verdana, sans-serif;
     font-size: 14px;
     font-weight: bold;
     padding: 7px 22px;
@@ -401,31 +315,18 @@
     letter-spacing: 0.04em;
     box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2);
   }
-  .book-btn:hover {
-    background: #226622;
-  }
+  .book-btn:hover { background: #226622; }
   .book-btn:active {
-    border-top:    2px solid #000040;
-    border-left:   2px solid #000040;
-    border-right:  2px solid #6060c8;
-    border-bottom: 2px solid #6060c8;
+    border-color: #0a3a0a #4aaa4a #4aaa4a #0a3a0a;
     box-shadow: none;
   }
 
   /* ── UNAVAILABLE ── */
-  .schedule-unavailable {
-    padding: 56px 20px;
-    text-align: center;
-  }
+  .schedule-unavailable { padding: 56px 20px; text-align: center; }
   .unavail-icon { font-size: 32px; display: block; margin-bottom: 12px; }
-  .unavail-text {
-    font-size: 13px;
-    color: var(--sys-shadow);
-    font-style: italic;
-    font-family: Tahoma, sans-serif;
-  }
+  .unavail-text { font-size: 13px; color: var(--sys-shadow); font-style: italic; }
 
-  /* ── STATUS BAR (footer) ── */
+  /* ── STATUS BAR ── */
   .footer {
     background: var(--sys-gray);
     border-top: 2px solid;
@@ -448,7 +349,6 @@
     border-right:  1px solid var(--sys-highlight);
     border-bottom: 1px solid var(--sys-highlight);
     padding: 1px 6px;
-    font-size: 10px;
   }
 
   .statusbar-led {
@@ -464,9 +364,9 @@
   @media (max-width: 640px) {
     body { padding: 0; }
     .window-shell { border: none; box-shadow: none; }
-    .header { flex-direction: column; align-items: flex-start; padding: 12px 10px; }
-    .header-right { align-items: flex-start; }
-    .legend { justify-content: flex-start; }
+    .header { grid-template-columns: 1fr; padding: 12px 10px; }
+    .header-left  { grid-column: 1; }
+    .header-right { grid-column: 1; justify-content: flex-start; margin-top: 10px; }
     .main { padding: 8px 6px; }
     .tab-content-box { padding: 8px 6px; }
     .schedule-table tbody td:nth-child(2) { display: none; }
@@ -498,10 +398,10 @@
     <span class="menu-item">Pomoc</span>
   </div>
 
-  <!-- HEADER AREA -->
+  <!-- HEADER -->
   <header class="header">
     <div class="header-left">
-      <h1 class="site-title">Grafik <span data-i18n="schedule">Edwina</span></h1>
+      <h1 class="site-title">Grafik Edwina</h1>
     </div>
     <div class="header-right">
       <div class="menubar-flags">
@@ -513,9 +413,9 @@
         </button>
         <button class="lang-flag" data-lang="en" title="English" aria-label="English">
           <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-            <clipPath id="uk-clip2"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+            <clipPath id="uk-clip"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
             <rect width="60" height="30" fill="#012169"/>
-            <g clip-path="url(#uk-clip2)">
+            <g clip-path="url(#uk-clip)">
               <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/>
               <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
               <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
@@ -526,7 +426,7 @@
     </div>
   </header>
 
-  <!-- MAIN CONTENT -->
+  <!-- CONTENT -->
   <div class="main">
     <div class="tab-bar">
       <button class="tab-btn active" onclick="switchTab('czerwiec', event)"><span data-i18n="month_june">Czerwiec 2026</span></button>
@@ -591,8 +491,8 @@
           <span class="unavail-text" data-i18n="july_unavailable">Grafik na lipiec nie jest jeszcze dostępny.</span>
         </div>
       </div>
-    </div><!-- /.tab-content-box -->
-  </div><!-- /.main -->
+    </div>
+  </div>
 
   <!-- STATUS BAR -->
   <div class="footer">
@@ -603,12 +503,11 @@
     <div class="statusbar-panel" id="statusbar-date"></div>
   </div>
 
-</div><!-- /.window-shell -->
+</div>
 
 <script>
   const translations = {
     pl: {
-      schedule: 'Edwina',
       month_june: 'Czerwiec 2026', month_july: 'Lipiec 2026',
       th_date: 'Data', th_day: 'Dzień', th_status: 'Status',
       june_unavailable: 'Grafik na czerwiec nie jest jeszcze dostępny.',
@@ -618,7 +517,6 @@
       status_off: 'WOLNY', status_busy: 'ZAJĘTY', status_night: 'Nocna', book_btn: 'Zarezerwuj',
     },
     en: {
-      schedule: 'Edwina',
       month_june: 'June 2026', month_july: 'July 2026',
       th_date: 'Date', th_day: 'Day', th_status: 'Status',
       june_unavailable: 'The June schedule is not yet available.',
@@ -628,11 +526,13 @@
       status_off: 'Day off', status_busy: 'Busy', status_night: 'Night shift', book_btn: 'Book',
     }
   };
+
   const monthsEn = { '06': 'June', '07': 'July' };
   const emailTemplates = {
-    pl: { subjectPrefix: 'Rezerwacja: ', body: d => 'Cześć Edwin,\n\nChciał(a)bym zarezerwować dzień: ' + d + ' \n\nPowód:' },
-    en: { subjectPrefix: 'Booking: ',   body: d => 'Hi Edwin,\n\nI would like to book the following day: ' + d + ' \n\nReason:' }
+    pl: { subjectPrefix: 'Rezerwacja: ', body: d => `Cześć Edwin,\n\nChciał(a)bym zarezerwować dzień: ${d}\n\nPowód:` },
+    en: { subjectPrefix: 'Booking: ',   body: d => `Hi Edwin,\n\nI would like to book the following day: ${d}\n\nReason:` }
   };
+
   let currentLang = localStorage.getItem('grafik_lang') || 'pl';
   const bookingEmail = 'voroneckij.edvin@gmail.com';
 
@@ -646,54 +546,54 @@
       if (dict[k]) el.textContent = dict[k];
     });
     document.querySelectorAll('.date-cell').forEach(cell => {
-      const row = cell.closest('tr');
-      const [, month, day] = row.getAttribute('data-date').split('-');
+      const [, month, day] = cell.closest('tr').getAttribute('data-date').split('-');
       const n = parseInt(day, 10);
       cell.textContent = lang === 'en'
-        ? n + ' ' + monthsEn[month]
-        : n + ' ' + ({ '06': 'czerwca', '07': 'lipca' }[month] || month);
+        ? `${n} ${monthsEn[month]}`
+        : `${n} ${{ '06': 'czerwca', '07': 'lipca' }[month]}`;
     });
-    document.querySelectorAll('.lang-flag').forEach(b => b.classList.toggle('active', b.getAttribute('data-lang') === lang));
+    document.querySelectorAll('.lang-flag').forEach(b =>
+      b.classList.toggle('active', b.getAttribute('data-lang') === lang)
+    );
     buildBookingButtons();
   }
 
   function buildBookingButtons() {
     const tpl = emailTemplates[currentLang];
     const lbl = translations[currentLang].book_btn;
-    const midnight = new Date(); midnight.setHours(0,0,0,0);
+    const midnight = new Date(); midnight.setHours(0, 0, 0, 0);
     document.querySelectorAll('.schedule-table tbody tr').forEach(row => {
-      const sc = row.children[2], ac = row.children[3];
-      const isOff = sc && sc.querySelector('.tag-off');
-      const [y,m,d] = row.getAttribute('data-date').split('-').map(Number);
-      if (isOff && new Date(y, m-1, d) > midnight) {
-        const lbl2 = row.children[0].textContent.trim();
-        ac.innerHTML = '<a class="book-btn" href="mailto:' + bookingEmail +
-          '?subject=' + encodeURIComponent(tpl.subjectPrefix + lbl2 + ' 2026') +
-          '&body=' + encodeURIComponent(tpl.body(lbl2)) + '">' + lbl + '</a>';
-      } else { ac.innerHTML = ''; }
+      const [sc, ac] = [row.children[2], row.children[3]];
+      const isOff = sc?.querySelector('.tag-off');
+      const [y, m, d] = row.getAttribute('data-date').split('-').map(Number);
+      if (isOff && new Date(y, m - 1, d) > midnight) {
+        const dateLabel = row.children[0].textContent.trim();
+        ac.innerHTML = `<a class="book-btn" href="mailto:${bookingEmail}?subject=${encodeURIComponent(tpl.subjectPrefix + dateLabel + ' 2026')}&body=${encodeURIComponent(tpl.body(dateLabel))}">${lbl}</a>`;
+      } else {
+        ac.innerHTML = '';
+      }
     });
   }
 
-  // today highlight
+  // Mark today's row
   const now = new Date();
-  const ts = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
-  const todayRow = document.querySelector('tr[data-date="' + ts + '"]');
-  if (todayRow) todayRow.classList.add('today');
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
+  document.querySelector(`tr[data-date="${todayStr}"]`)?.classList.add('today');
 
-  // status bar date
-  const sb = document.getElementById('statusbar-date');
-  if (sb) {
-    sb.textContent = now.toLocaleDateString('pl-PL', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' });
-  }
+  // Status bar date
+  document.getElementById('statusbar-date').textContent =
+    now.toLocaleDateString('pl-PL', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' });
 
-  document.querySelectorAll('.lang-flag').forEach(b => b.addEventListener('click', () => setLanguage(b.getAttribute('data-lang'))));
+  document.querySelectorAll('.lang-flag').forEach(b =>
+    b.addEventListener('click', () => setLanguage(b.getAttribute('data-lang')))
+  );
   setLanguage(currentLang);
 
   function switchTab(name, event) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
-    if (event && event.currentTarget) event.currentTarget.classList.add('active');
+    event?.currentTarget.classList.add('active');
   }
 </script>
 </body>
