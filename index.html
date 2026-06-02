@@ -139,85 +139,70 @@
 
   .win-menubar .spacer { flex: 1; }
 
-  /* lang switcher in menubar */
+  /* lang switcher — moved into header-right */
   .menubar-flags { display: flex; gap: 4px; padding: 2px 4px; align-items: center; }
   .lang-flag {
-    width: 32px; height: 20px;
-    border-top:    1px solid var(--sys-shadow);
-    border-left:   1px solid var(--sys-shadow);
-    border-right:  1px solid var(--sys-highlight);
-    border-bottom: 1px solid var(--sys-highlight);
+    width: 58px; height: 38px;
+    border-top:    2px solid var(--sys-shadow);
+    border-left:   2px solid var(--sys-shadow);
+    border-right:  2px solid var(--sys-highlight);
+    border-bottom: 2px solid var(--sys-highlight);
     cursor: pointer;
     background: none;
     padding: 0;
     overflow: hidden;
-    opacity: 0.6;
-    transition: opacity 0.1s;
+    opacity: 0.55;
+    transition: opacity 0.1s, box-shadow 0.1s;
   }
-  .lang-flag:hover { opacity: 0.9; }
+  .lang-flag:hover { opacity: 0.85; }
   .lang-flag.active {
     opacity: 1;
-    /* pressed / selected look */
-    border-top:    1px solid var(--sys-highlight);
-    border-left:   1px solid var(--sys-highlight);
-    border-right:  1px solid var(--sys-shadow);
-    border-bottom: 1px solid var(--sys-shadow);
-    box-shadow: inset 1px 1px 0 rgba(0,0,0,0.12);
+    border-top:    2px solid var(--sys-highlight);
+    border-left:   2px solid var(--sys-highlight);
+    border-right:  2px solid var(--sys-shadow);
+    border-bottom: 2px solid var(--sys-shadow);
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,0.15);
   }
   .lang-flag svg { width: 100%; height: 100%; display: block; }
 
   /* ── HEADER TOOLBAR ── */
   .header {
-    padding: 12px 14px 12px;
+    padding: 16px 18px 14px;
     background: var(--sys-gray);
     border-bottom: 2px solid;
     border-color: var(--sys-shadow) var(--sys-highlight) var(--sys-highlight) var(--sys-shadow);
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
-    gap: 16px;
     position: relative;
   }
 
-  .header-left { position: relative; z-index: 1; }
+  .header-left {
+    grid-column: 2;
+    text-align: center;
+  }
 
-  .site-kicker {
-    font-size: 9px;
-    color: var(--sys-shadow);
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: bold;
-    margin-bottom: 2px;
+  .header-right {
+    grid-column: 3;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 
   .site-title {
     font-family: 'VT323', monospace;
-    font-size: clamp(44px, 7vw, 68px);
+    font-size: clamp(52px, 8vw, 80px);
     line-height: 1;
     color: var(--sys-blue);
-    /* the classic raised text drop-shadow of the era */
     text-shadow: 1px 1px 0 rgba(0,0,0,0.15), -1px -1px 0 rgba(255,255,255,0.7);
     letter-spacing: 0.02em;
+    text-align: center;
   }
 
   .site-title span {
-    display: block;
-    font-family: Tahoma, Verdana, sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 0.22em;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--sys-shadow);
-    text-shadow: none;
-    margin-top: 4px;
-  }
-
-  .header-right {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
+    font-family: 'VT323', monospace;
+    color: var(--sys-blue);
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.15), -1px -1px 0 rgba(255,255,255,0.7);
   }
 
   /* ── LEGEND ── */
@@ -317,45 +302,45 @@
     background: var(--sys-blue);
     color: #fff;
     font-family: Tahoma, sans-serif;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: bold;
-    padding: 5px 8px;
+    padding: 7px 10px;
     text-align: left;
     border-right: 1px solid rgba(255,255,255,0.15);
     letter-spacing: 0.03em;
     text-transform: uppercase;
   }
-  .schedule-table thead th:first-child { padding-left: 12px; }
-  .schedule-table thead th:last-child  { text-align: right; padding-right: 12px; border-right: none; }
+  .schedule-table thead th:first-child { padding-left: 14px; }
+  .schedule-table thead th:last-child  { text-align: right; padding-right: 14px; border-right: none; }
 
   .schedule-table tbody tr:nth-child(odd)  { background: var(--sys-white); }
   .schedule-table tbody tr:nth-child(even) { background: var(--sys-row-alt); }
   .schedule-table tbody tr:hover { background: #cce0ff; }
 
   .schedule-table tbody td {
-    padding: 5px 8px;
-    font-size: 12px;
+    padding: 9px 10px;
+    font-size: 14px;
     color: var(--sys-text);
     vertical-align: middle;
     border-bottom: 1px solid #c8d0e0;
   }
   .schedule-table tbody tr:last-child td { border-bottom: none; }
-  .schedule-table tbody td:first-child { padding-left: 12px; }
-  .schedule-table tbody td:last-child  { text-align: right; padding-right: 12px; }
+  .schedule-table tbody td:first-child { padding-left: 14px; }
+  .schedule-table tbody td:last-child  { text-align: right; padding-right: 14px; }
 
   /* date column */
   .schedule-table tbody td.date-cell {
     font-weight: bold;
-    width: 110px;
-    font-size: 12px;
+    width: 120px;
+    font-size: 14px;
     font-family: Tahoma, sans-serif;
   }
 
   /* day name column */
   .schedule-table tbody td:nth-child(2) {
-    width: 130px;
+    width: 140px;
     color: #404060;
-    font-size: 11px;
+    font-size: 13px;
   }
 
   /* TODAY row */
@@ -379,9 +364,9 @@
   .tag {
     display: inline-block;
     font-family: Tahoma, Verdana, sans-serif;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: bold;
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-top:    1px solid rgba(255,255,255,0.55);
     border-left:   1px solid rgba(255,255,255,0.55);
     border-right:  1px solid rgba(0,0,0,0.35);
@@ -401,29 +386,29 @@
   .book-btn {
     display: inline-block;
     font-family: Tahoma, Verdana, sans-serif;
-    font-size: 11px;
-    font-weight: normal;
-    padding: 3px 14px;
-    background: var(--sys-gray);
-    border-top:    2px solid var(--sys-highlight);
-    border-left:   2px solid var(--sys-highlight);
-    border-right:  2px solid var(--sys-darkest);
-    border-bottom: 2px solid var(--sys-darkest);
-    color: var(--sys-text);
+    font-size: 14px;
+    font-weight: bold;
+    padding: 7px 22px;
+    background: #1a6e1a;
+    border-top:    2px solid #4aaa4a;
+    border-left:   2px solid #4aaa4a;
+    border-right:  2px solid #0a3a0a;
+    border-bottom: 2px solid #0a3a0a;
+    color: #ffffff;
     text-decoration: none;
     white-space: nowrap;
     cursor: default;
-    /* inner bevel */
-    box-shadow: inset 1px 1px 0 var(--sys-gray-dark);
+    letter-spacing: 0.04em;
+    box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2);
   }
   .book-btn:hover {
-    background: #e8e4dc;
+    background: #226622;
   }
   .book-btn:active {
-    border-top:    2px solid var(--sys-darkest);
-    border-left:   2px solid var(--sys-darkest);
-    border-right:  2px solid var(--sys-highlight);
-    border-bottom: 2px solid var(--sys-highlight);
+    border-top:    2px solid #000040;
+    border-left:   2px solid #000040;
+    border-right:  2px solid #6060c8;
+    border-bottom: 2px solid #6060c8;
     box-shadow: none;
   }
 
@@ -506,47 +491,37 @@
     </div>
   </div>
 
-  <!-- MENU BAR (with lang switcher on right) -->
+  <!-- MENU BAR -->
   <div class="win-menubar">
     <span class="menu-item">Plik</span>
     <span class="menu-item">Widok</span>
     <span class="menu-item">Pomoc</span>
-    <div class="spacer"></div>
-    <div class="menubar-flags">
-      <button class="lang-flag" data-lang="pl" title="Polski" aria-label="Polski">
-        <svg viewBox="0 0 8 5" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <rect width="8" height="2.5" fill="#ffffff"/>
-          <rect y="2.5" width="8" height="2.5" fill="#dc143c"/>
-        </svg>
-      </button>
-      <button class="lang-flag" data-lang="en" title="English" aria-label="English">
-        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-          <clipPath id="uk-clip"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
-          <rect width="60" height="30" fill="#012169"/>
-          <g clip-path="url(#uk-clip)">
-            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/>
-            <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
-            <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
-          </g>
-        </svg>
-      </button>
-    </div>
   </div>
 
   <!-- HEADER AREA -->
   <header class="header">
     <div class="header-left">
-      <div class="site-kicker">Harmonogram pracy</div>
-      <h1 class="site-title">
-        Grafik<br>
-        <span data-i18n="schedule">Edwina</span>
-      </h1>
+      <h1 class="site-title">Grafik <span data-i18n="schedule">Edwina</span></h1>
     </div>
     <div class="header-right">
-      <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--col-off)"></div> <span data-i18n="status_off">WOLNY</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--col-night)"></div> <span data-i18n="status_night">Nocna</span></div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--col-busy)"></div> <span data-i18n="status_busy">ZAJĘTY</span></div>
+      <div class="menubar-flags">
+        <button class="lang-flag" data-lang="pl" title="Polski" aria-label="Polski">
+          <svg viewBox="0 0 8 5" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="8" height="2.5" fill="#ffffff"/>
+            <rect y="2.5" width="8" height="2.5" fill="#dc143c"/>
+          </svg>
+        </button>
+        <button class="lang-flag" data-lang="en" title="English" aria-label="English">
+          <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+            <clipPath id="uk-clip2"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+            <rect width="60" height="30" fill="#012169"/>
+            <g clip-path="url(#uk-clip2)">
+              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/>
+              <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
+              <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
+            </g>
+          </svg>
+        </button>
       </div>
     </div>
   </header>
@@ -643,7 +618,7 @@
       status_off: 'WOLNY', status_busy: 'ZAJĘTY', status_night: 'Nocna', book_btn: 'Zarezerwuj',
     },
     en: {
-      schedule: 'Schedule',
+      schedule: 'Edwina',
       month_june: 'June 2026', month_july: 'July 2026',
       th_date: 'Date', th_day: 'Day', th_status: 'Status',
       june_unavailable: 'The June schedule is not yet available.',
