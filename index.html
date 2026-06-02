@@ -1,372 +1,724 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Grafik Edwina</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Boogaloo&family=Abril+Fatface&family=Special+Elite&display=swap');
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background-color: #3a3a3a;
-    font-family: 'Boogaloo', 'Comic Sans MS', cursive;
-    color: #000000;
-    padding: 10px;
-    min-height: 100vh;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    /* Windows 98 system palette */
+    --sys-gray:       #d4d0c8;
+    --sys-gray-dark:  #c0c0c0;
+    --sys-shadow:     #808080;
+    --sys-darkest:    #404040;
+    --sys-highlight:  #ffffff;
+    --sys-text:       #000000;
+    --sys-blue:       #000080;
+    --sys-blue2:      #1084d0;
+    --sys-teal:       #008080;
+    --sys-white:      #ffffff;
+    --sys-row-alt:    #e8f0ff;
+    --sys-today:      #ffffc0;
+    --col-off:        #007000;
+    --col-night:      #000090;
+    --col-busy:       #900000;
   }
-  .under-construction { background: #ffff00; color: #000000; text-align: center; font-size: 11px; font-weight: bold; padding: 3px; border: 2px dashed #ff0000; animation: blink 1s infinite; font-family: 'Courier New', monospace; }
-  @keyframes blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-  .main-container { max-width: 780px; margin: 0 auto; background: #c0c0c0; border: 3px outset #ffffff; padding: 0; }
-  .title-bar { background: linear-gradient(to right, #000080, #1084d0); padding: 4px 8px; display: flex; justify-content: space-between; align-items: center; font-family: 'Tahoma', sans-serif; font-size: 12px; color: white; }
-  .title-bar-buttons span { display: inline-block; width: 16px; height: 14px; background: #c0c0c0; border: 2px outset #ffffff; text-align: center; font-size: 10px; color: black; cursor: pointer; line-height: 12px; margin-left: 2px; }
-  .page-content { padding: 12px; background: #c0c0c0; }
-  .hero { text-align: center; padding: 20px; background: #000080; border: 3px inset #808080; margin-bottom: 12px; position: relative; overflow: hidden; }
-  .hero-stars { position: absolute; top: 0; left: 0; right: 0; bottom: 0; pointer-events: none; }
-  .star { position: absolute; color: #ffff00; font-size: 10px; animation: twinkle 2s infinite; }
-  @keyframes twinkle { 0%, 100% { opacity: 1; } 50% { opacity: 0.1; } }
-  .hero h1 { font-family: 'Abril Fatface', serif; font-size: 42px; color: #ffff00; text-shadow: 3px 3px #ff0000, -1px -1px #ff6600; animation: colorshift 3s infinite; position: relative; z-index: 1; }
-  @keyframes colorshift { 0% { color: #ffff00; } 33% { color: #ff00ff; } 66% { color: #00ffff; } 100% { color: #ffff00; } }
-  .hero-subtitle { font-family: 'Special Elite', serif; font-size: 15px; color: #00ff00; margin-top: 6px; letter-spacing: 2px; position: relative; z-index: 1; }
-  .nav-bar { display: flex; gap: 4px; background: #808080; padding: 4px; border: 2px inset #c0c0c0; margin-bottom: 12px; flex-wrap: wrap; }
-  .nav-btn { background: #c0c0c0; border: 2px outset #ffffff; padding: 4px 10px; font-family: 'Boogaloo', cursive; font-size: 13px; cursor: pointer; color: #000080; font-weight: bold; text-decoration: none; }
-  .nav-btn:hover { background: #000080; color: #ffff00; }
-  .nav-btn:active { border: 2px inset #808080; }
-  .sections { display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 12px; }
-  .section-box { border: 3px inset #808080; background: white; }
-  .section-header { background: #000080; color: #ffffff; padding: 4px 8px; font-size: 13px; font-weight: bold; font-family: 'Tahoma', sans-serif; display: flex; align-items: center; gap: 6px; }
-  .section-body { padding: 10px; font-size: 13px; color: #000000; font-family: 'Boogaloo', cursive; }
-  .about-text { font-size: 14px; line-height: 1.6; color: #000033; }
-  .about-text p { margin-bottom: 8px; }
-  .achievement { display: flex; align-items: flex-start; gap: 8px; padding: 8px; margin-bottom: 6px; border: 2px outset #c0c0c0; background: #ffffcc; font-size: 13px; color: #000000; }
-  .achievement-badge { font-size: 22px; flex-shrink: 0; }
-  .achievement-text strong { display: block; color: #000080; font-size: 13px; }
-  .achievement-text span { font-size: 11px; color: #333; }
-  .divider { text-align: center; color: #ff0000; font-size: 16px; letter-spacing: 4px; margin: 6px 0; }
-  .cool-flag { display: inline-block; background: #ffff00; color: #000; font-size: 10px; font-weight: bold; padding: 1px 4px; border: 1px solid #ff0000; margin-left: 4px; animation: blink 0.8s infinite; font-family: 'Courier New', monospace; }
-  .marquee-bar { background: #000080; padding: 4px; overflow: hidden; border: 1px solid #ffff00; margin-bottom: 10px; }
-  .marquee-text { white-space: nowrap; color: #ffff00; font-size: 12px; font-family: 'Special Elite', serif; letter-spacing: 2px; animation: marquee 15s linear infinite; display: inline-block; }
-  @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-  .profile-pic-placeholder { width: 80px; height: 80px; border: 3px ridge #ffff00; background: #000080; display: flex; align-items: center; justify-content: center; font-size: 36px; float: right; margin: 0 0 8px 10px; }
-  .under-construction-gif { display: inline-block; background: repeating-linear-gradient(45deg, #ff0000, #ff0000 5px, #ffff00 5px, #ffff00 10px); width: 100%; height: 8px; margin: 6px 0; }
-  .dota-badge { display: inline-block; background: #8b0000; color: #ffd700; font-size: 11px; padding: 2px 8px; border: 1px solid #ffd700; font-family: 'Courier New', monospace; margin-top: 3px; }
-  .schedule-table { width: 100%; border-collapse: collapse; font-family: 'Tahoma', sans-serif; font-size: 12px; }
-  .schedule-table th { background: #000080; color: #ffffff; padding: 5px 8px; text-align: left; font-weight: bold; }
-  .schedule-table td { padding: 5px 8px; border-bottom: 1px solid #c0c0c0; color: #000000; }
-  .schedule-table tr:nth-child(even) td { background: #f0f0f0; }
-  .schedule-table tr:hover td { background: #ddeeff; }
-  .tag-work { display: inline-block; background: #cc0000; color: #ffffff; font-size: 13px; font-weight: bold; padding: 2px 8px; border: 1px outset #ff6666; font-family: 'Courier New', monospace; }
-  .tag-off { display: inline-block; background: #006600; color: #ffffff; font-size: 13px; font-weight: bold; padding: 2px 8px; border: 1px outset #66cc66; font-family: 'Courier New', monospace; }
-  .tag-away { display: inline-block; background: #000080; color: #ffffff; font-size: 13px; font-weight: bold; padding: 2px 8px; border: 1px outset #4444cc; font-family: 'Courier New', monospace; }
-  .tag-busy { display: inline-block; background: #ff8800; color: #ffffff; font-size: 13px; font-weight: bold; padding: 2px 8px; border: 1px outset #ffaa44; font-family: 'Courier New', monospace; }
-  .schedule-table tr.today td { background: #fffacd !important; font-weight: bold; }
-  .schedule-table tr.today td:first-child { box-shadow: inset 3px 0 0 #ffcc00; }
-  .tab-bar { display: flex; gap: 4px; justify-content: center; margin-bottom: 8px; padding: 8px 8px 0 8px; }
-  .tab-btn { background: #a0a0a0; border: 2px outset #ffffff; border-bottom: 2px solid #808080; padding: 5px 18px; font-family: 'Tahoma', sans-serif; font-size: 12px; font-weight: bold; cursor: pointer; color: #000033; }
-  .tab-btn.active { background: #c0c0c0; color: #000080; border-bottom: 2px solid #c0c0c0; }
-  .tab-btn:not(.active):hover { background: #c0c0c0; }
+
+  html { scroll-behavior: auto; }
+
+  /* ── DESKTOP ── */
+  body {
+    background-color: var(--sys-teal);
+    background-image:
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0,0,0,0.03) 3px,
+        rgba(0,0,0,0.03) 4px
+      );
+    min-height: 100vh;
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size: 12px;
+    color: var(--sys-text);
+    padding: 24px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ── WINDOW SHELL ── */
+  .window-shell {
+    width: 100%;
+    max-width: 880px;
+    background: var(--sys-gray);
+    /* classic 4-colour raised window border */
+    border-top:    2px solid var(--sys-highlight);
+    border-left:   2px solid var(--sys-highlight);
+    border-right:  2px solid var(--sys-darkest);
+    border-bottom: 2px solid var(--sys-darkest);
+    box-shadow: 2px 2px 0 #000, inset 1px 1px 0 var(--sys-gray-dark);
+  }
+
+  /* ── TITLE BAR ── */
+  .win-titlebar {
+    background: linear-gradient(90deg, var(--sys-blue) 0%, var(--sys-blue2) 100%);
+    padding: 3px 4px 3px 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+
+  .win-titlebar-title {
+    color: #fff;
+    font-weight: bold;
+    font-size: 11px;
+    font-family: Tahoma, sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.01em;
+  }
+
+  .win-titlebar-title .win-icon { font-size: 13px; }
+
+  .win-btns { display: flex; gap: 2px; }
+
+  .win-btn {
+    width: 18px;
+    height: 15px;
+    background: var(--sys-gray);
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    color: var(--sys-text);
+    cursor: default;
+    border-top:    1px solid var(--sys-highlight);
+    border-left:   1px solid var(--sys-highlight);
+    border-right:  1px solid var(--sys-darkest);
+    border-bottom: 1px solid var(--sys-darkest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .win-btn:active {
+    border-top:    1px solid var(--sys-darkest);
+    border-left:   1px solid var(--sys-darkest);
+    border-right:  1px solid var(--sys-highlight);
+    border-bottom: 1px solid var(--sys-highlight);
+  }
+
+  /* ── MENU BAR ── */
+  .win-menubar {
+    background: var(--sys-gray);
+    border-bottom: 1px solid var(--sys-shadow);
+    padding: 1px 4px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-size: 11px;
+  }
+
+  .menu-item {
+    padding: 2px 8px;
+    cursor: default;
+    border: 1px solid transparent;
+  }
+  .menu-item:hover {
+    background: var(--sys-blue);
+    color: white;
+    border: 1px solid var(--sys-shadow);
+  }
+
+  .win-menubar .spacer { flex: 1; }
+
+  /* lang switcher in menubar */
+  .menubar-flags { display: flex; gap: 4px; padding: 2px 4px; align-items: center; }
+  .lang-flag {
+    width: 32px; height: 20px;
+    border-top:    1px solid var(--sys-shadow);
+    border-left:   1px solid var(--sys-shadow);
+    border-right:  1px solid var(--sys-highlight);
+    border-bottom: 1px solid var(--sys-highlight);
+    cursor: pointer;
+    background: none;
+    padding: 0;
+    overflow: hidden;
+    opacity: 0.6;
+    transition: opacity 0.1s;
+  }
+  .lang-flag:hover { opacity: 0.9; }
+  .lang-flag.active {
+    opacity: 1;
+    /* pressed / selected look */
+    border-top:    1px solid var(--sys-highlight);
+    border-left:   1px solid var(--sys-highlight);
+    border-right:  1px solid var(--sys-shadow);
+    border-bottom: 1px solid var(--sys-shadow);
+    box-shadow: inset 1px 1px 0 rgba(0,0,0,0.12);
+  }
+  .lang-flag svg { width: 100%; height: 100%; display: block; }
+
+  /* ── HEADER TOOLBAR ── */
+  .header {
+    padding: 12px 14px 12px;
+    background: var(--sys-gray);
+    border-bottom: 2px solid;
+    border-color: var(--sys-shadow) var(--sys-highlight) var(--sys-highlight) var(--sys-shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    position: relative;
+  }
+
+  .header-left { position: relative; z-index: 1; }
+
+  .site-kicker {
+    font-size: 9px;
+    color: var(--sys-shadow);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-weight: bold;
+    margin-bottom: 2px;
+  }
+
+  .site-title {
+    font-family: 'VT323', monospace;
+    font-size: clamp(44px, 7vw, 68px);
+    line-height: 1;
+    color: var(--sys-blue);
+    /* the classic raised text drop-shadow of the era */
+    text-shadow: 1px 1px 0 rgba(0,0,0,0.15), -1px -1px 0 rgba(255,255,255,0.7);
+    letter-spacing: 0.02em;
+  }
+
+  .site-title span {
+    display: block;
+    font-family: Tahoma, Verdana, sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 0.22em;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--sys-shadow);
+    text-shadow: none;
+    margin-top: 4px;
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: var(--sys-text);
+    font-weight: bold;
+  }
+
+  .legend-dot {
+    width: 11px; height: 11px;
+    border-top:    1px solid rgba(0,0,0,0.4);
+    border-left:   1px solid rgba(0,0,0,0.4);
+    border-right:  1px solid rgba(255,255,255,0.6);
+    border-bottom: 1px solid rgba(255,255,255,0.6);
+    flex-shrink: 0;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    padding: 10px 10px 14px;
+    background: var(--sys-gray);
+  }
+
+  /* ── TAB BAR ── */
+  .tab-bar {
+    display: flex;
+    gap: 0;
+    padding: 4px 2px 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .tab-btn {
+    background: var(--sys-gray-dark);
+    border-top:    2px solid var(--sys-highlight);
+    border-left:   2px solid var(--sys-highlight);
+    border-right:  2px solid var(--sys-shadow);
+    border-bottom: none;
+    padding: 3px 18px 4px;
+    font-family: Tahoma, Verdana, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    cursor: default;
+    color: var(--sys-text);
+    margin-right: 2px;
+    position: relative;
+    top: 2px;
+    transition: none;
+  }
+
+  .tab-btn.active {
+    background: var(--sys-white);
+    font-weight: bold;
+    padding-top: 4px;
+    top: 0px;
+    z-index: 2;
+    /* active tab is taller and its bottom merges with content */
+    border-top:   2px solid var(--sys-highlight);
+    border-left:  2px solid var(--sys-highlight);
+    border-right: 2px solid var(--sys-shadow);
+  }
+
+  /* ── TAB PANEL WRAPPER ── */
+  .tab-content-box {
+    background: var(--sys-white);
+    border-top:    2px solid var(--sys-shadow);
+    border-left:   2px solid var(--sys-shadow);
+    border-right:  2px solid var(--sys-highlight);
+    border-bottom: 2px solid var(--sys-highlight);
+    padding: 14px;
+    position: relative;
+    z-index: 0;
+  }
+
+  /* ── PANELS ── */
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
-  .schedule-unavailable { text-align: center; padding: 20px; font-family: 'Tahoma', sans-serif; font-size: 12px; color: #555; }
-  .book-btn { background: #c0c0c0; border: 2px outset #ffffff; padding: 3px 10px; font-family: 'Tahoma', sans-serif; font-size: 13px; cursor: pointer; color: #000000; font-weight: bold; text-decoration: none; display: inline-block; }
-  .book-btn:hover { background: #000080; color: #ffff00; }
-  .book-btn:active { border: 2px inset #808080; }
-  .schedule-table td:last-child { text-align: center; }
-  .lang-switcher { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; z-index: 10; }
-  .lang-flag { width: 48px; height: 32px; border: 2px outset #ffffff; cursor: pointer; padding: 0; background: none; display: block; overflow: hidden; }
-  .lang-flag:hover { border-color: #ffff00; }
-  .lang-flag:active { border: 2px inset #808080; }
-  .lang-flag.active { border: 2px inset #ffff00; box-shadow: 0 0 6px #ffff00; }
-  .lang-flag svg { width: 100%; height: 100%; display: block; }
-  .hero { position: relative; }
+
+  /* ── SCHEDULE TABLE ── */
+  .schedule-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .schedule-table thead th {
+    background: var(--sys-blue);
+    color: #fff;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    padding: 5px 8px;
+    text-align: left;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+  .schedule-table thead th:first-child { padding-left: 12px; }
+  .schedule-table thead th:last-child  { text-align: right; padding-right: 12px; border-right: none; }
+
+  .schedule-table tbody tr:nth-child(odd)  { background: var(--sys-white); }
+  .schedule-table tbody tr:nth-child(even) { background: var(--sys-row-alt); }
+  .schedule-table tbody tr:hover { background: #cce0ff; }
+
+  .schedule-table tbody td {
+    padding: 5px 8px;
+    font-size: 12px;
+    color: var(--sys-text);
+    vertical-align: middle;
+    border-bottom: 1px solid #c8d0e0;
+  }
+  .schedule-table tbody tr:last-child td { border-bottom: none; }
+  .schedule-table tbody td:first-child { padding-left: 12px; }
+  .schedule-table tbody td:last-child  { text-align: right; padding-right: 12px; }
+
+  /* date column */
+  .schedule-table tbody td.date-cell {
+    font-weight: bold;
+    width: 110px;
+    font-size: 12px;
+    font-family: Tahoma, sans-serif;
+  }
+
+  /* day name column */
+  .schedule-table tbody td:nth-child(2) {
+    width: 130px;
+    color: #404060;
+    font-size: 11px;
+  }
+
+  /* TODAY row */
+  .schedule-table tr.today td { background: var(--sys-today) !important; }
+  .schedule-table tr.today td.date-cell {
+    color: var(--col-busy);
+    font-weight: bold;
+    position: relative;
+  }
+  .schedule-table tr.today td.date-cell::before {
+    content: '▶';
+    position: absolute;
+    left: 3px;
+    font-size: 7px;
+    color: var(--col-busy);
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  /* ── STATUS TAGS ── */
+  .tag {
+    display: inline-block;
+    font-family: Tahoma, Verdana, sans-serif;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-top:    1px solid rgba(255,255,255,0.55);
+    border-left:   1px solid rgba(255,255,255,0.55);
+    border-right:  1px solid rgba(0,0,0,0.35);
+    border-bottom: 1px solid rgba(0,0,0,0.35);
+    white-space: nowrap;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .tag-off   { background: var(--col-off); }
+  .tag-work  { background: var(--col-night); }
+  .tag-busy  { background: var(--col-busy); }
+  .tag-away  { background: #555555; }
+
+  /* ── BOOK BUTTON ── */
+  .book-btn {
+    display: inline-block;
+    font-family: Tahoma, Verdana, sans-serif;
+    font-size: 11px;
+    font-weight: normal;
+    padding: 3px 14px;
+    background: var(--sys-gray);
+    border-top:    2px solid var(--sys-highlight);
+    border-left:   2px solid var(--sys-highlight);
+    border-right:  2px solid var(--sys-darkest);
+    border-bottom: 2px solid var(--sys-darkest);
+    color: var(--sys-text);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: default;
+    /* inner bevel */
+    box-shadow: inset 1px 1px 0 var(--sys-gray-dark);
+  }
+  .book-btn:hover {
+    background: #e8e4dc;
+  }
+  .book-btn:active {
+    border-top:    2px solid var(--sys-darkest);
+    border-left:   2px solid var(--sys-darkest);
+    border-right:  2px solid var(--sys-highlight);
+    border-bottom: 2px solid var(--sys-highlight);
+    box-shadow: none;
+  }
+
+  /* ── UNAVAILABLE ── */
+  .schedule-unavailable {
+    padding: 56px 20px;
+    text-align: center;
+  }
+  .unavail-icon { font-size: 32px; display: block; margin-bottom: 12px; }
+  .unavail-text {
+    font-size: 13px;
+    color: var(--sys-shadow);
+    font-style: italic;
+    font-family: Tahoma, sans-serif;
+  }
+
+  /* ── STATUS BAR (footer) ── */
+  .footer {
+    background: var(--sys-gray);
+    border-top: 2px solid;
+    border-color: var(--sys-shadow) var(--sys-highlight) var(--sys-highlight) var(--sys-shadow);
+    padding: 3px 10px;
+    font-size: 10px;
+    color: var(--sys-text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .statusbar-panel {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-top:    1px solid var(--sys-shadow);
+    border-left:   1px solid var(--sys-shadow);
+    border-right:  1px solid var(--sys-highlight);
+    border-bottom: 1px solid var(--sys-highlight);
+    padding: 1px 6px;
+    font-size: 10px;
+  }
+
+  .statusbar-led {
+    width: 8px; height: 8px;
+    background: #00cc00;
+    border: 1px solid #004400;
+    border-radius: 50%;
+    box-shadow: 0 0 3px #00ff00;
+    flex-shrink: 0;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    body { padding: 0; }
+    .window-shell { border: none; box-shadow: none; }
+    .header { flex-direction: column; align-items: flex-start; padding: 12px 10px; }
+    .header-right { align-items: flex-start; }
+    .legend { justify-content: flex-start; }
+    .main { padding: 8px 6px; }
+    .tab-content-box { padding: 8px 6px; }
+    .schedule-table tbody td:nth-child(2) { display: none; }
+    .schedule-table tr.today td.date-cell::before { display: none; }
+    .footer { padding: 4px 8px; }
+  }
 </style>
 </head>
 <body>
-<div class="main-container">
-  <div class="title-bar">
-    <span></span>
-    <div class="title-bar-buttons"><span>_</span><span>□</span><span>✕</span></div>
-  </div>
-  <div class="page-content">
-    <div class="hero">
-      <div class="hero-stars" id="stars"></div>
-      <div class="lang-switcher">
-        <button class="lang-flag" data-lang="pl" title="Polski" aria-label="Polski">
-          <svg viewBox="0 0 8 5" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="8" height="2.5" fill="#ffffff"/>
-            <rect y="2.5" width="8" height="2.5" fill="#dc143c"/>
-          </svg>
-        </button>
-        <button class="lang-flag" data-lang="en" title="English" aria-label="English">
-          <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
-            <clipPath id="uk-clip"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
-            <rect width="60" height="30" fill="#012169"/>
-            <g clip-path="url(#uk-clip)">
-              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/>
-              <path d="M0,0 L60,30 M60,0 L0,30" stroke="#c8102e" stroke-width="4" clip-path="polygon(0 0, 50% 50%, 100% 0)"/>
-              <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
-              <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
-            </g>
-          </svg>
-        </button>
-      </div>
-      <h1>GRAFIK EDWINA</h1>
-    </div>
-      <div class="section-box">
-        <div class="section-header"><span class="icon">📅</span> <span data-i18n="schedule">Grafik</span></div>
-        <div class="section-body" style="padding: 0;">
-          <div class="tab-bar">
-            <button class="tab-btn active" onclick="switchTab('czerwiec')">📅 <span data-i18n="month_june">Czerwiec 2026</span></button>
-            <button class="tab-btn" onclick="switchTab('lipiec')">📅 <span data-i18n="month_july">Lipiec 2026</span></button>
-          </div>
-        </div>
-        <div style="border-top: 1px solid #808080;">
 
+<div class="window-shell">
 
-          <!-- CZERWIEC -->
-          <div id="tab-czerwiec" class="tab-panel active">
-            <div id="june-unavailable" class="schedule-unavailable" style="display:none;">
-              ⏳ <span data-i18n="june_unavailable">Grafik na czerwiec nie jest jeszcze dostępny.</span>
-            </div>
-            <table class="schedule-table" id="june-table">
-              <thead>
-                <tr>
-                  <th style="width: 120px;" data-i18n="th_date">Data</th>
-                  <th data-i18n="th_day">Dzień</th>
-                  <th data-i18n="th_status">Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr data-date="2026-06-01"><td class="date-cell">1 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-02"><td class="date-cell">2 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-03"><td class="date-cell">3 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-04"><td class="date-cell">4 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-05"><td class="date-cell">5 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-06"><td class="date-cell">6 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-06-07"><td class="date-cell">7 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-08"><td class="date-cell">8 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-09"><td class="date-cell">9 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-10"><td class="date-cell">10 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-11"><td class="date-cell">11 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-12"><td class="date-cell">12 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-13"><td class="date-cell">13 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-06-14"><td class="date-cell">14 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-15"><td class="date-cell">15 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-16"><td class="date-cell">16 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-17"><td class="date-cell">17 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-18"><td class="date-cell">18 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-19"><td class="date-cell">19 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-06-20"><td class="date-cell">20 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-09:00)</span></td><td></td></tr>
-                <tr data-date="2026-06-21"><td class="date-cell">21 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-22"><td class="date-cell">22 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-23"><td class="date-cell">23 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-24"><td class="date-cell">24 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-25"><td class="date-cell">25 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-26"><td class="date-cell">26 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-27"><td class="date-cell">27 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
-                <tr data-date="2026-06-28"><td class="date-cell">28 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-29"><td class="date-cell">29 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag-work"><span data-i18n="status_night">Nocna</span> (22:00-07:30)</span></td><td></td></tr>
-                <tr data-date="2026-06-30"><td class="date-cell">30 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
-              </tbody>
-            </table>
-          </div>
-
-          <!-- LIPIEC -->
-          <div id="tab-lipiec" class="tab-panel">
-            <div class="schedule-unavailable">
-              ⏳ <span data-i18n="july_unavailable">Grafik na lipiec nie jest jeszcze dostępny.</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
+  <!-- TITLE BAR -->
+  <div class="win-titlebar">
+    <span class="win-titlebar-title">
+      <span class="win-icon">📅</span> Grafik Edwina
+    </span>
+    <div class="win-btns">
+      <button class="win-btn" tabindex="-1" aria-hidden="true">_</button>
+      <button class="win-btn" tabindex="-1" aria-hidden="true">□</button>
+      <button class="win-btn" tabindex="-1" aria-hidden="true">✕</button>
     </div>
   </div>
-</div>
+
+  <!-- MENU BAR (with lang switcher on right) -->
+  <div class="win-menubar">
+    <span class="menu-item">Plik</span>
+    <span class="menu-item">Widok</span>
+    <span class="menu-item">Pomoc</span>
+    <div class="spacer"></div>
+    <div class="menubar-flags">
+      <button class="lang-flag" data-lang="pl" title="Polski" aria-label="Polski">
+        <svg viewBox="0 0 8 5" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <rect width="8" height="2.5" fill="#ffffff"/>
+          <rect y="2.5" width="8" height="2.5" fill="#dc143c"/>
+        </svg>
+      </button>
+      <button class="lang-flag" data-lang="en" title="English" aria-label="English">
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+          <clipPath id="uk-clip"><path d="M0,0 v30 h60 v-30 z"/></clipPath>
+          <rect width="60" height="30" fill="#012169"/>
+          <g clip-path="url(#uk-clip)">
+            <path d="M0,0 L60,30 M60,0 L0,30" stroke="#ffffff" stroke-width="6"/>
+            <path d="M30,0 v30 M0,15 h60" stroke="#ffffff" stroke-width="10"/>
+            <path d="M30,0 v30 M0,15 h60" stroke="#c8102e" stroke-width="6"/>
+          </g>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- HEADER AREA -->
+  <header class="header">
+    <div class="header-left">
+      <div class="site-kicker">Harmonogram pracy</div>
+      <h1 class="site-title">
+        Grafik<br>
+        <span data-i18n="schedule">Edwina</span>
+      </h1>
+    </div>
+    <div class="header-right">
+      <div class="legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--col-off)"></div> <span data-i18n="status_off">WOLNY</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--col-night)"></div> <span data-i18n="status_night">Nocna</span></div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--col-busy)"></div> <span data-i18n="status_busy">ZAJĘTY</span></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('czerwiec', event)"><span data-i18n="month_june">Czerwiec 2026</span></button>
+      <button class="tab-btn" onclick="switchTab('lipiec', event)"><span data-i18n="month_july">Lipiec 2026</span></button>
+    </div>
+
+    <div class="tab-content-box">
+      <!-- CZERWIEC -->
+      <div id="tab-czerwiec" class="tab-panel active">
+        <div id="june-unavailable" class="schedule-unavailable" style="display:none;">
+          <span class="unavail-icon">⏳</span>
+          <span class="unavail-text" data-i18n="june_unavailable">Grafik na czerwiec nie jest jeszcze dostępny.</span>
+        </div>
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th data-i18n="th_date">Data</th>
+              <th data-i18n="th_day">Dzień</th>
+              <th data-i18n="th_status">Status</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-date="2026-06-01"><td class="date-cell">1 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-02"><td class="date-cell">2 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-03"><td class="date-cell">3 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-04"><td class="date-cell">4 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-05"><td class="date-cell">5 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-06"><td class="date-cell">6 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–09:00</span></td><td></td></tr>
+            <tr data-date="2026-06-07"><td class="date-cell">7 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-08"><td class="date-cell">8 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-09"><td class="date-cell">9 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-10"><td class="date-cell">10 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-11"><td class="date-cell">11 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-12"><td class="date-cell">12 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-13"><td class="date-cell">13 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–09:00</span></td><td></td></tr>
+            <tr data-date="2026-06-14"><td class="date-cell">14 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-15"><td class="date-cell">15 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-16"><td class="date-cell">16 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-17"><td class="date-cell">17 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-18"><td class="date-cell">18 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-19"><td class="date-cell">19 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–09:00</span></td><td></td></tr>
+            <tr data-date="2026-06-20"><td class="date-cell">20 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–09:00</span></td><td></td></tr>
+            <tr data-date="2026-06-21"><td class="date-cell">21 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-22"><td class="date-cell">22 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-23"><td class="date-cell">23 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-24"><td class="date-cell">24 czerwca</td><td><span data-i18n="day_wed">Środa</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-25"><td class="date-cell">25 czerwca</td><td><span data-i18n="day_thu">Czwartek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-26"><td class="date-cell">26 czerwca</td><td><span data-i18n="day_fri">Piątek</span></td><td><span class="tag tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-27"><td class="date-cell">27 czerwca</td><td><span data-i18n="day_sat">Sobota</span></td><td><span class="tag tag-busy"><span data-i18n="status_busy">ZAJĘTY</span></span></td><td></td></tr>
+            <tr data-date="2026-06-28"><td class="date-cell">28 czerwca</td><td><span data-i18n="day_sun">Niedziela</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-29"><td class="date-cell">29 czerwca</td><td><span data-i18n="day_mon">Poniedziałek</span></td><td><span class="tag tag-work"><span data-i18n="status_night">Nocna</span> 22:00–07:30</span></td><td></td></tr>
+            <tr data-date="2026-06-30"><td class="date-cell">30 czerwca</td><td><span data-i18n="day_tue">Wtorek</span></td><td><span class="tag tag-off"><span data-i18n="status_off">WOLNY</span></span></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- LIPIEC -->
+      <div id="tab-lipiec" class="tab-panel">
+        <div class="schedule-unavailable">
+          <span class="unavail-icon">📋</span>
+          <span class="unavail-text" data-i18n="july_unavailable">Grafik na lipiec nie jest jeszcze dostępny.</span>
+        </div>
+      </div>
+    </div><!-- /.tab-content-box -->
+  </div><!-- /.main -->
+
+  <!-- STATUS BAR -->
+  <div class="footer">
+    <div class="statusbar-panel">
+      <div class="statusbar-led"></div>
+      Grafik Edwina &mdash; 2026
+    </div>
+    <div class="statusbar-panel" id="statusbar-date"></div>
+  </div>
+
+</div><!-- /.window-shell -->
+
 <script>
-  // ============ TRANSLATIONS ============
   const translations = {
     pl: {
-      schedule: 'Grafik',
-      month_june: 'Czerwiec 2026',
-      month_july: 'Lipiec 2026',
-      th_date: 'Data',
-      th_day: 'Dzień',
-      th_status: 'Status',
+      schedule: 'Edwina',
+      month_june: 'Czerwiec 2026', month_july: 'Lipiec 2026',
+      th_date: 'Data', th_day: 'Dzień', th_status: 'Status',
       june_unavailable: 'Grafik na czerwiec nie jest jeszcze dostępny.',
       july_unavailable: 'Grafik na lipiec nie jest jeszcze dostępny.',
-      day_mon: 'Poniedziałek',
-      day_tue: 'Wtorek',
-      day_wed: 'Środa',
-      day_thu: 'Czwartek',
-      day_fri: 'Piątek',
-      day_sat: 'Sobota',
-      day_sun: 'Niedziela',
-      status_off: 'WOLNY',
-      status_busy: 'ZAJĘTY',
-      status_night: 'Nocna',
-      book_btn: 'Rezerwować',
+      day_mon: 'Poniedziałek', day_tue: 'Wtorek', day_wed: 'Środa',
+      day_thu: 'Czwartek', day_fri: 'Piątek', day_sat: 'Sobota', day_sun: 'Niedziela',
+      status_off: 'WOLNY', status_busy: 'ZAJĘTY', status_night: 'Nocna', book_btn: 'Zarezerwuj',
     },
     en: {
       schedule: 'Schedule',
-      month_june: 'June 2026',
-      month_july: 'July 2026',
-      th_date: 'Date',
-      th_day: 'Day',
-      th_status: 'Status',
+      month_june: 'June 2026', month_july: 'July 2026',
+      th_date: 'Date', th_day: 'Day', th_status: 'Status',
       june_unavailable: 'The June schedule is not yet available.',
       july_unavailable: 'The July schedule is not yet available.',
-      day_mon: 'Monday',
-      day_tue: 'Tuesday',
-      day_wed: 'Wednesday',
-      day_thu: 'Thursday',
-      day_fri: 'Friday',
-      day_sat: 'Saturday',
-      day_sun: 'Sunday',
-      status_off: 'Day off',
-      status_busy: 'BUSY',
-      status_night: 'Night shift',
-      book_btn: 'Book',
+      day_mon: 'Monday', day_tue: 'Tuesday', day_wed: 'Wednesday',
+      day_thu: 'Thursday', day_fri: 'Friday', day_sat: 'Saturday', day_sun: 'Sunday',
+      status_off: 'Day off', status_busy: 'Busy', status_night: 'Night shift', book_btn: 'Book',
     }
   };
-
-  // English month names for date formatting
-  const monthsEn = {
-    '06': 'June',
-    '07': 'July',
-  };
-
-  // ============ EMAIL TEMPLATES ============
+  const monthsEn = { '06': 'June', '07': 'July' };
   const emailTemplates = {
-    pl: {
-      subjectPrefix: 'Rezerwacja: ',
-      body: (dateLabel) =>
-        'Cześć Edwin,\n\n' +
-        'Chciał(a)bym zarezerwować dzień: ' + dateLabel + ' \n\n' +
-        'Powód:'
-    },
-    en: {
-      subjectPrefix: 'Booking: ',
-      body: (dateLabel) =>
-        'Hi Edwin,\n\n' +
-        'I would like to book the following day: ' + dateLabel + ' \n\n' +
-        'Reason:'
-    }
+    pl: { subjectPrefix: 'Rezerwacja: ', body: d => 'Cześć Edwin,\n\nChciał(a)bym zarezerwować dzień: ' + d + ' \n\nPowód:' },
+    en: { subjectPrefix: 'Booking: ',   body: d => 'Hi Edwin,\n\nI would like to book the following day: ' + d + ' \n\nReason:' }
   };
-
-  // ============ STATE ============
   let currentLang = localStorage.getItem('grafik_lang') || 'pl';
   const bookingEmail = 'voroneckij.edvin@gmail.com';
 
-  // ============ LANGUAGE SWITCHING ============
   function setLanguage(lang) {
     currentLang = lang;
     localStorage.setItem('grafik_lang', lang);
     const dict = translations[lang];
-
-    // Set page html lang attribute
     document.documentElement.lang = lang;
-
-    // Translate every element with data-i18n
     document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (dict[key]) el.textContent = dict[key];
+      const k = el.getAttribute('data-i18n');
+      if (dict[k]) el.textContent = dict[k];
     });
-
-    // Translate date cells based on the row's data-date
     document.querySelectorAll('.date-cell').forEach(cell => {
       const row = cell.closest('tr');
-      const dateAttr = row.getAttribute('data-date'); // e.g. "2026-06-01"
-      const [year, month, day] = dateAttr.split('-');
-      const dayNum = parseInt(day, 10);
-      if (lang === 'en') {
-        cell.textContent = dayNum + ' ' + monthsEn[month];
-      } else {
-        // Polish genitive month names
-        const plMonths = { '06': 'czerwca', '07': 'lipca' };
-        cell.textContent = dayNum + ' ' + (plMonths[month] || month);
-      }
+      const [, month, day] = row.getAttribute('data-date').split('-');
+      const n = parseInt(day, 10);
+      cell.textContent = lang === 'en'
+        ? n + ' ' + monthsEn[month]
+        : n + ' ' + ({ '06': 'czerwca', '07': 'lipca' }[month] || month);
     });
-
-    // Update the active flag highlight
-    document.querySelectorAll('.lang-flag').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
-    });
-
-    // Rebuild booking buttons with the right language
+    document.querySelectorAll('.lang-flag').forEach(b => b.classList.toggle('active', b.getAttribute('data-lang') === lang));
     buildBookingButtons();
   }
 
-  // ============ BOOKING BUTTONS ============
   function buildBookingButtons() {
     const tpl = emailTemplates[currentLang];
-    const btnLabel = translations[currentLang].book_btn;
-
-    // Build "today at midnight" so the comparison ignores time of day
-    const now = new Date();
-    const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
+    const lbl = translations[currentLang].book_btn;
+    const midnight = new Date(); midnight.setHours(0,0,0,0);
     document.querySelectorAll('.schedule-table tbody tr').forEach(row => {
-      const statusCell = row.children[2];
-      const actionCell = row.children[3];
-      const isOff = statusCell && statusCell.querySelector('.tag-off');
-
-      // Parse the row's date and check whether it's in the future
-      const rowDateStr = row.getAttribute('data-date'); // "2026-06-01"
-      const [y, m, d] = rowDateStr.split('-').map(Number);
-      const rowDate = new Date(y, m - 1, d);
-      const isFuture = rowDate > todayMidnight;
-
-      if (isOff && isFuture) {
-        const dateLabel = row.children[0].textContent.trim();
-        const subject = encodeURIComponent(tpl.subjectPrefix + dateLabel + ' 2026');
-        const body = encodeURIComponent(tpl.body(dateLabel));
-        const mailtoLink = 'mailto:' + bookingEmail + '?subject=' + subject + '&body=' + body;
-        actionCell.innerHTML = '<a class="book-btn" href="' + mailtoLink + '">' + btnLabel + '</a>';
-      } else {
-        actionCell.innerHTML = '';
-      }
+      const sc = row.children[2], ac = row.children[3];
+      const isOff = sc && sc.querySelector('.tag-off');
+      const [y,m,d] = row.getAttribute('data-date').split('-').map(Number);
+      if (isOff && new Date(y, m-1, d) > midnight) {
+        const lbl2 = row.children[0].textContent.trim();
+        ac.innerHTML = '<a class="book-btn" href="mailto:' + bookingEmail +
+          '?subject=' + encodeURIComponent(tpl.subjectPrefix + lbl2 + ' 2026') +
+          '&body=' + encodeURIComponent(tpl.body(lbl2)) + '">' + lbl + '</a>';
+      } else { ac.innerHTML = ''; }
     });
   }
 
-  // ============ INIT: highlight today ============
-  const today = new Date();
-  const mm = String(today.getMonth() + 1).padStart(2, '0');
-  const dd = String(today.getDate()).padStart(2, '0');
-  const todayStr = today.getFullYear() + '-' + mm + '-' + dd;
-  const todayRow = document.querySelector('tr[data-date="' + todayStr + '"]');
-  if (todayRow) {
-    todayRow.classList.add('today');
+  // today highlight
+  const now = new Date();
+  const ts = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  const todayRow = document.querySelector('tr[data-date="' + ts + '"]');
+  if (todayRow) todayRow.classList.add('today');
+
+  // status bar date
+  const sb = document.getElementById('statusbar-date');
+  if (sb) {
+    sb.textContent = now.toLocaleDateString('pl-PL', { weekday: 'short', year: 'numeric', month: '2-digit', day: '2-digit' });
   }
 
-  // ============ INIT: wire flag buttons ============
-  document.querySelectorAll('.lang-flag').forEach(btn => {
-    btn.addEventListener('click', () => setLanguage(btn.getAttribute('data-lang')));
-  });
-
-  // ============ INIT: apply saved language ============
+  document.querySelectorAll('.lang-flag').forEach(b => b.addEventListener('click', () => setLanguage(b.getAttribute('data-lang'))));
   setLanguage(currentLang);
 
-  // ============ TAB SWITCHING ============
-  function switchTab(name) {
+  function switchTab(name, event) {
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.getElementById('tab-' + name).classList.add('active');
-    event.target.classList.add('active');
-  }
-
-  // ============ STARS DECORATION ============
-  const starsContainer = document.getElementById('stars');
-  for (let i = 0; i < 20; i++) {
-    const s = document.createElement('div');
-    s.className = 'star';
-    s.textContent = '★';
-    s.style.left = Math.random() * 100 + '%';
-    s.style.top = Math.random() * 100 + '%';
-    s.style.animationDelay = Math.random() * 2 + 's';
-    s.style.animationDuration = (1 + Math.random() * 2) + 's';
-    s.style.opacity = Math.random();
-    starsContainer.appendChild(s);
+    if (event && event.currentTarget) event.currentTarget.classList.add('active');
   }
 </script>
 </body>
