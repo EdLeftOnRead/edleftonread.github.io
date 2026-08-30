@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title data-i18n="window_title">Grafik Edwina</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +33,7 @@
     font-family: Tahoma, Verdana, Arial, sans-serif;
     font-size: 12px;
     color: var(--sys-text);
-    padding-bottom: 36px;
+    padding-bottom: calc(36px + env(safe-area-inset-bottom, 0px));
     width: 100%;
   }
 
@@ -254,6 +254,29 @@
   }
   .win-titlebar:active { cursor: grabbing; }
 
+  .win-titlebar-left {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .win-back-btn {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 26px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: default;
+    flex-shrink: 0;
+  }
+  .win-back-btn:active { opacity: 0.7; }
+
   .win-titlebar-title {
     color: #fff;
     font-weight: bold;
@@ -263,11 +286,15 @@
     align-items: center;
     gap: 6px;
     letter-spacing: 0.01em;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .win-titlebar-title .win-icon { font-size: 13px; }
+  .win-titlebar-title .win-icon { font-size: 13px; flex-shrink: 0; }
 
-  .win-btns { display: flex; gap: 2px; }
+  .win-btns { display: flex; gap: 2px; flex-shrink: 0; }
 
   .win-btn {
     width: 18px;
@@ -538,11 +565,12 @@
   }
   /* ── TASKBAR ── */
   .taskbar {
-    position: fixed; left: 0; right: 0; bottom: 0; height: 36px;
+    position: fixed; left: 0; right: 0; bottom: 0;
+    height: calc(36px + env(safe-area-inset-bottom, 0px));
     background: var(--sys-gray);
     border-top: 2px solid var(--sys-highlight);
     display: flex; align-items: center;
-    padding: 3px 4px;
+    padding: 3px 4px calc(3px + env(safe-area-inset-bottom, 0px));
     gap: 5px;
     z-index: 100;
   }
@@ -675,15 +703,32 @@
     border-color: var(--sys-darkest) var(--sys-highlight) var(--sys-highlight) var(--sys-darkest);
   }
 
-  /* ── RESPONSIVE ── */
+  /* ── RESPONSIVE (PHONE HOME SCREEN) ── */
   @media (max-width: 640px) {
-    .desktop { position: static; inset: auto; overflow: visible; padding: 10px 0 4px; }
-    .desktop-icons { display: none; }
+    .desktop {
+      position: static; inset: auto; overflow: visible; padding: 16px 0 4px;
+      min-height: calc(100vh - 36px - env(safe-area-inset-bottom, 0px));
+    }
+
+    /* Home screen: icon grid instead of the desktop's top-left column */
+    .desktop-icons {
+      position: static;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(84px, 1fr));
+      gap: 22px 6px;
+      padding: 6px 12px 16px;
+    }
+    body.mobile-app-open .desktop-icons { display: none; }
+
+    /* Only one window (the active "app") shows at a time; home screen shows none */
+    body:not(.mobile-app-open) .window-shell { display: none !important; }
     .window-shell {
       position: static !important; transform: none !important;
       width: 100% !important; margin: 0; border: none; box-shadow: none;
     }
     .win-titlebar { cursor: default; }
+    .win-btns { display: none; }
+    .win-back-btn { display: flex; }
     .header { padding: 12px 10px; }
     .desktop-lang { top: auto; bottom: 44px; right: 10px; }
     .main { padding: 8px 6px; }
@@ -696,6 +741,8 @@
     .book-btn { font-size: 11px; padding: 5px 8px; }
     .footer { padding: 4px 8px; }
     .tray span.tray-label { display: none; }
+    .taskbar-app-btn { display: none !important; }
+    .comments-wall { max-height: calc(100vh - 380px); min-height: 140px; }
   }
 </style>
 </head>
@@ -755,9 +802,12 @@
 
     <!-- TITLE BAR -->
     <div class="win-titlebar" id="titlebar">
-      <span class="win-titlebar-title">
-        <span class="win-icon">📅</span> <span data-i18n="window_title">Grafik Edwina</span>
-      </span>
+      <div class="win-titlebar-left">
+        <button class="win-back-btn" id="scheduleBackBtn" type="button" aria-label="Back">←</button>
+        <span class="win-titlebar-title">
+          <span class="win-icon">📅</span> <span data-i18n="window_title">Grafik Edwina</span>
+        </span>
+      </div>
       <div class="win-btns">
         <button class="win-btn" id="btnMinimize">_</button>
         <button class="win-btn" id="btnMaximize">□</button>
@@ -820,9 +870,12 @@
   <!-- WATERMELON PLAYER -->
   <div class="window-shell watermelon-window" id="watermelonWindow" style="display:none;">
     <div class="win-titlebar" id="watermelonTitlebar">
-      <span class="win-titlebar-title">
-        <span class="win-icon">🍉</span> <span data-i18n="watermelon_window_title">Watermelon</span>
-      </span>
+      <div class="win-titlebar-left">
+        <button class="win-back-btn" id="wmBackBtn" type="button" aria-label="Back">←</button>
+        <span class="win-titlebar-title">
+          <span class="win-icon">🍉</span> <span data-i18n="watermelon_window_title">Watermelon</span>
+        </span>
+      </div>
       <div class="win-btns">
         <button class="win-btn" id="wmBtnMinimize">_</button>
         <button class="win-btn" id="wmBtnMaximize">□</button>
@@ -837,9 +890,12 @@
   <!-- CONTACT NOTEPAD -->
   <div class="window-shell contact-window" id="contactWindow" style="display:none;">
     <div class="win-titlebar" id="contactTitlebar">
-      <span class="win-titlebar-title">
-        <span class="win-icon">📝</span> <span data-i18n="contact_window_title">Kontakt.txt - Notatnik</span>
-      </span>
+      <div class="win-titlebar-left">
+        <button class="win-back-btn" id="contactBackBtn" type="button" aria-label="Back">←</button>
+        <span class="win-titlebar-title">
+          <span class="win-icon">📝</span> <span data-i18n="contact_window_title">Kontakt.txt - Notatnik</span>
+        </span>
+      </div>
       <div class="win-btns">
         <button class="win-btn" id="contactBtnMinimize">_</button>
         <button class="win-btn" id="contactBtnMaximize">□</button>
@@ -868,9 +924,12 @@
   <!-- COMMENTS WALL -->
   <div class="window-shell comments-window" id="commentsWindow" style="display:none;">
     <div class="win-titlebar" id="commentsTitlebar">
-      <span class="win-titlebar-title">
-        <span class="win-icon">💬</span> <span data-i18n="comments_window_title">Księga gości</span>
-      </span>
+      <div class="win-titlebar-left">
+        <button class="win-back-btn" id="commentsBackBtn" type="button" aria-label="Back">←</button>
+        <span class="win-titlebar-title">
+          <span class="win-icon">💬</span> <span data-i18n="comments_window_title">Księga gości</span>
+        </span>
+      </div>
       <div class="win-btns">
         <button class="win-btn" id="commentsBtnMinimize">_</button>
         <button class="win-btn" id="commentsBtnMaximize">□</button>
@@ -1222,11 +1281,13 @@
     function minimize() {
       winEl.style.display = 'none';
       taskbarBtn?.classList.add('minimized');
+      updateMobileHome();
     }
     function restore() {
       winEl.style.display = '';
       taskbarBtn?.classList.remove('minimized');
       bringToFront(winEl);
+      updateMobileHome();
     }
     function toggleMinimize() {
       if (winEl.style.display === 'none') restore();
@@ -1242,11 +1303,13 @@
       if (taskbarBtn) taskbarBtn.style.display = '';
       taskbarBtn?.classList.remove('minimized');
       bringToFront(winEl);
+      updateMobileHome();
     }
     function close() {
       winEl.style.display = 'none';
       if (taskbarBtn) taskbarBtn.style.display = 'none';
       onClose?.();
+      updateMobileHome();
     }
 
     btnMinimize.addEventListener('click', minimize);
@@ -1305,6 +1368,7 @@
   document.getElementById('wmBtnClose').addEventListener('click', () => watermelonCtrl.close());
 
   function openWatermelon() {
+    if (!isDesktopMode()) { showExclusive(watermelonCtrl, [scheduleWin, contactCtrl, commentsCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarWatermelon).display === 'none';
     if (neverOpenedOrClosed) watermelonCtrl.open();
     else if (watermelonWin.style.display === 'none') watermelonCtrl.restore();
@@ -1324,6 +1388,7 @@
   document.getElementById('contactMenuClose').addEventListener('click', () => { closeAllMenus(); contactCtrl.close(); });
 
   function openContact() {
+    if (!isDesktopMode()) { showExclusive(contactCtrl, [scheduleWin, watermelonCtrl, commentsCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarContact).display === 'none';
     if (neverOpenedOrClosed) contactCtrl.open();
     else if (contactWin.style.display === 'none') contactCtrl.restore();
@@ -1343,11 +1408,70 @@
   document.getElementById('commentsMenuClose').addEventListener('click', () => { closeAllMenus(); commentsCtrl.close(); });
 
   function openComments() {
+    if (!isDesktopMode()) { showExclusive(commentsCtrl, [scheduleWin, watermelonCtrl, contactCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarComments).display === 'none';
     if (neverOpenedOrClosed) commentsCtrl.open();
     else if (commentsWin.style.display === 'none') commentsCtrl.restore();
     else commentsCtrl.wiggle();
   }
+
+  function openSchedule() {
+    if (!isDesktopMode()) { showExclusive(scheduleWin, [watermelonCtrl, contactCtrl, commentsCtrl]); return; }
+    if (win.style.display === 'none') scheduleWin.restore();
+    else scheduleWin.wiggle();
+  }
+
+  // ── MOBILE HOME SCREEN (single window at a time + back navigation) ──
+  function updateMobileHome() {
+    if (isDesktopMode()) { document.body.classList.remove('mobile-app-open'); return; }
+    const windows = [win, watermelonWin, contactWin, commentsWin];
+    const anyOpen = windows.some(w => w.style.display !== 'none');
+    document.body.classList.toggle('mobile-app-open', anyOpen);
+  }
+  function showExclusive(ctrl, others) {
+    if (!isDesktopMode()) {
+      others.forEach(c => c.close());
+      ctrl.open();
+      updateMobileHome();
+      window.scrollTo(0, 0);
+    } else {
+      ctrl.open();
+    }
+  }
+  function goHome() {
+    scheduleWin.minimize();
+    watermelonCtrl.minimize();
+    contactCtrl.minimize();
+    commentsCtrl.minimize();
+    watermelonVideo.pause();
+    window.scrollTo(0, 0);
+  }
+  document.getElementById('scheduleBackBtn').addEventListener('click', goHome);
+  document.getElementById('wmBackBtn').addEventListener('click', goHome);
+  document.getElementById('contactBackBtn').addEventListener('click', goHome);
+  document.getElementById('commentsBackBtn').addEventListener('click', goHome);
+
+  // Keeps mobile down to one visible window even if the browser is resized
+  // across the phone breakpoint mid-session (desktop allows several at once).
+  function enforceMobileState(forceHomeIfDefault) {
+    if (isDesktopMode()) { updateMobileHome(); return; }
+    const entries = [
+      { el: win, ctrl: scheduleWin },
+      { el: watermelonWin, ctrl: watermelonCtrl },
+      { el: contactWin, ctrl: contactCtrl },
+      { el: commentsWin, ctrl: commentsCtrl },
+    ];
+    const openOnes = entries.filter(e => e.el.style.display !== 'none');
+    if (openOnes.length > 1) {
+      openOnes.sort((a, b) => (parseInt(getComputedStyle(b.el).zIndex) || 0) - (parseInt(getComputedStyle(a.el).zIndex) || 0));
+      openOnes.slice(1).forEach(e => e.ctrl.close());
+    } else if (forceHomeIfDefault && openOnes.length === 1 && openOnes[0].el === win) {
+      scheduleWin.minimize();
+    }
+    updateMobileHome();
+  }
+  enforceMobileState(true);
+  window.addEventListener('resize', () => enforceMobileState(false));
 
   // ── DESKTOP ICONS ──
   function handleIconClick(id, onDouble) {
@@ -1356,15 +1480,13 @@
     el.addEventListener('click', () => {
       document.querySelectorAll('.desktop-icon').forEach(i => i.classList.remove('selected'));
       el.classList.add('selected');
+      if (!isDesktopMode()) { onDouble(); return; }
       const now2 = Date.now();
       if (now2 - lastClick < 400) onDouble();
       lastClick = now2;
     });
   }
-  handleIconClick('iconGrafik', () => {
-    if (win.style.display === 'none') scheduleWin.restore();
-    else scheduleWin.wiggle();
-  });
+  handleIconClick('iconGrafik', openSchedule);
   handleIconClick('iconKosz', () => openDialog('koszDialog'));
   handleIconClick('iconWatermelon', openWatermelon);
   handleIconClick('iconContact', openContact);
@@ -1404,7 +1526,7 @@
     if (isOpen) closeStartMenu();
     else { startMenu.classList.add('open'); startBtn.classList.add('open'); }
   });
-  document.getElementById('smRestore').addEventListener('click', () => { closeStartMenu(); scheduleWin.restore(); });
+  document.getElementById('smRestore').addEventListener('click', () => { closeStartMenu(); openSchedule(); });
   document.getElementById('smWatermelon').addEventListener('click', () => { closeStartMenu(); openWatermelon(); });
   document.getElementById('smContact').addEventListener('click', () => { closeStartMenu(); openContact(); });
   document.getElementById('smComments').addEventListener('click', () => { closeStartMenu(); openComments(); });
