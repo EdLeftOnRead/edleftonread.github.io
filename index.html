@@ -1438,39 +1438,6 @@
   })();
 </script>
 
-<!--
-  ── COMMENTS WALL / GUESTBOOK BACKEND ──
-  This uses Firebase Firestore to store comments so every visitor sees the
-  same wall. To connect it:
-    1. Go to https://console.firebase.google.com and create a free project.
-    2. In the project, go to Build → Firestore Database → Create database
-       (any region, start in "production mode").
-    3. In Firestore's "Rules" tab, paste the rules below and click Publish:
-
-         rules_version = '2';
-         service cloud.firestore {
-           match /databases/{database}/documents {
-             match /comments/{commentId} {
-               allow read: if true;
-               allow create: if request.resource.data.name is string
-                             && request.resource.data.name.size() > 0
-                             && request.resource.data.name.size() <= 40
-                             && request.resource.data.comment is string
-                             && request.resource.data.comment.size() > 0
-                             && request.resource.data.comment.size() <= 500
-                             && request.resource.data.createdAt == request.time;
-               allow update, delete: if false;
-             }
-           }
-         }
-
-    4. Go to Project settings (gear icon) → General → "Your apps" → add a
-       Web app (</> icon) → copy the firebaseConfig object it shows you.
-    5. Paste those values into the firebaseConfig object right below,
-       replacing the "PASTE_..." placeholders.
-  Until step 5 is done, the guestbook shows a "not connected yet" message
-  instead of crashing.
--->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
   import {
