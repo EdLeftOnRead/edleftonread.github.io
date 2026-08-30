@@ -265,17 +265,20 @@
     display: none;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 26px;
-    background: none;
-    border: none;
+    min-width: 46px;
+    height: 36px;
+    margin: 2px 6px 2px 2px;
+    background: rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 5px;
     color: #fff;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
+    line-height: 1;
     cursor: default;
     flex-shrink: 0;
   }
-  .win-back-btn:active { opacity: 0.7; }
+  .win-back-btn:active { background: rgba(255, 255, 255, 0.4); }
 
   .win-titlebar-title {
     color: #fff;
@@ -730,7 +733,7 @@
     .win-btns { display: none; }
     .win-back-btn { display: flex; }
     .header { padding: 12px 10px; }
-    .desktop-lang { top: auto; bottom: 44px; right: 10px; }
+    .desktop-lang { top: auto; bottom: calc(48px + env(safe-area-inset-bottom, 0px)); right: 10px; }
     .main { padding: 8px 6px; }
     .tab-content-box { padding: 8px 6px; }
     .schedule-table tbody td:nth-child(2) { display: none; }
