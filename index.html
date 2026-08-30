@@ -102,8 +102,9 @@
     filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.5));
   }
   .desktop-icon .label {
-    font-size: 11px; color: #fff;
-    text-shadow: 1px 1px 1px #000;
+    font-size: 13px; color: #fff;
+    font-weight: 600;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     padding: 1px 4px;
     text-align: center;
   }
@@ -113,7 +114,7 @@
   /* ── WINDOW SHELL ── */
   .window-shell {
     position: absolute;
-    top: 40px; left: 50%;
+    top: 8px; left: 50%;
     transform: translateX(-50%);
     width: min(880px, calc(100% - 24px));
     background: var(--sys-gray);
@@ -139,6 +140,105 @@
     0%, 100% { transform: rotate(0); }
     25% { transform: rotate(-1deg); }
     75% { transform: rotate(1deg); }
+  }
+
+  .window-shell.watermelon-window {
+    top: 8px; left: 50%;
+    transform: translate(calc(-50% + 60px), 0);
+    width: min(560px, calc(100% - 24px));
+  }
+  .video-player-body {
+    background: #000;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+  .video-player-body video {
+    width: 100%;
+    max-width: 520px;
+    display: block;
+    background: #000;
+  }
+
+  .window-shell.contact-window {
+    top: 70px; left: 50%;
+    transform: translate(calc(-50% - 60px), 0);
+    width: min(480px, calc(100% - 24px));
+  }
+  .notepad-body {
+    background: #ffffff;
+    padding: 14px 16px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 13px;
+    line-height: 1.9;
+    color: #000;
+    min-height: 220px;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+  .notepad-body a { color: #000080; }
+  .notepad-body a:visited { color: #000080; }
+
+  .window-shell.comments-window {
+    top: 8px; left: 50%;
+    transform: translate(calc(-50% + 150px), 0);
+    width: min(460px, calc(100% - 24px));
+  }
+  .comments-body {
+    background: #ffffff;
+    padding: 12px 14px 10px;
+  }
+  .comment-form {
+    display: flex; flex-direction: column; gap: 8px;
+    padding-bottom: 12px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid;
+    border-color: var(--sys-shadow) var(--sys-highlight) var(--sys-highlight) var(--sys-shadow);
+  }
+  .comment-form label {
+    font-size: 11px; font-weight: bold; display: block; margin-bottom: 2px;
+  }
+  .comment-form input[type="text"],
+  .comment-form textarea {
+    width: 100%;
+    font-family: Tahoma, Verdana, Arial, sans-serif;
+    font-size: 12px;
+    padding: 5px 6px;
+    background: #ffffff;
+    color: #000;
+    border-top:    1px solid var(--sys-shadow);
+    border-left:   1px solid var(--sys-shadow);
+    border-right:  1px solid var(--sys-highlight);
+    border-bottom: 1px solid var(--sys-highlight);
+  }
+  .comment-form textarea { min-height: 60px; resize: vertical; }
+  .comment-form .char-count { font-size: 10px; color: #555; text-align: right; }
+  .comment-form-actions { display: flex; align-items: center; justify-content: flex-end; gap: 10px; }
+  .comment-form-status { font-size: 11px; color: #900000; flex: 1; }
+  .comment-post-btn { border: none; font-family: inherit; }
+  .comment-post-btn:disabled { opacity: 0.6; cursor: default; }
+  .comments-wall {
+    max-height: 260px;
+    overflow-y: auto;
+    display: flex; flex-direction: column; gap: 8px;
+    padding-right: 2px;
+  }
+  .comment-card {
+    background: var(--sys-row-alt);
+    padding: 6px 8px;
+    border-top:    1px solid var(--sys-highlight);
+    border-left:   1px solid var(--sys-highlight);
+    border-right:  1px solid var(--sys-shadow);
+    border-bottom: 1px solid var(--sys-shadow);
+  }
+  .comment-meta {
+    display: flex; justify-content: space-between; gap: 8px;
+    font-size: 10px; color: #404060; margin-bottom: 3px;
+  }
+  .comment-name { font-weight: bold; color: var(--sys-blue); }
+  .comment-text { font-size: 12px; white-space: pre-wrap; word-break: break-word; }
+  .comments-status {
+    font-size: 11px; color: #555; text-align: center; padding: 10px 4px;
   }
 
   /* ── TITLE BAR ── */
@@ -436,15 +536,6 @@
     border-bottom: 1px solid var(--sys-highlight);
     padding: 1px 6px;
   }
-  .statusbar-led {
-    width: 8px; height: 8px;
-    background: #00cc00;
-    border: 1px solid #004400;
-    border-radius: 50%;
-    box-shadow: 0 0 3px #00ff00;
-    flex-shrink: 0;
-  }
-
   /* ── TASKBAR ── */
   .taskbar {
     position: fixed; left: 0; right: 0; bottom: 0; height: 36px;
@@ -624,10 +715,19 @@
 <div class="desktop" id="desktop">
   <div class="desktop-icons">
     <button class="desktop-icon" id="iconGrafik" type="button">
-      <span class="emoji">📅</span><span class="label" data-i18n="icon_grafik_label">Grafik.exe</span>
+      <span class="emoji">📅</span><span class="label" data-i18n="icon_grafik_label">Grafik</span>
+    </button>
+    <button class="desktop-icon" id="iconContact" type="button">
+      <span class="emoji">📝</span><span class="label" data-i18n="icon_contact_label">Contact</span>
     </button>
     <button class="desktop-icon" id="iconKosz" type="button">
       <span class="emoji">🗑️</span><span class="label" data-i18n="icon_kosz_label">Kosz</span>
+    </button>
+    <button class="desktop-icon" id="iconWatermelon" type="button">
+      <span class="emoji">🍉</span><span class="label" data-i18n="icon_watermelon_label">Watermelon</span>
+    </button>
+    <button class="desktop-icon" id="iconComments" type="button">
+      <span class="emoji">💬</span><span class="label" data-i18n="icon_comments_label">Comments</span>
     </button>
   </div>
 
@@ -712,13 +812,105 @@
 
     <!-- STATUS BAR -->
     <div class="footer">
-      <div class="statusbar-panel">
-        <div class="statusbar-led"></div>
-        <span data-i18n="footer_title">Grafik Edwina &mdash; 2026</span>
-      </div>
       <div class="statusbar-panel" id="statusbar-date"></div>
     </div>
 
+  </div>
+
+  <!-- WATERMELON PLAYER -->
+  <div class="window-shell watermelon-window" id="watermelonWindow" style="display:none;">
+    <div class="win-titlebar" id="watermelonTitlebar">
+      <span class="win-titlebar-title">
+        <span class="win-icon">🍉</span> <span data-i18n="watermelon_window_title">Watermelon</span>
+      </span>
+      <div class="win-btns">
+        <button class="win-btn" id="wmBtnMinimize">_</button>
+        <button class="win-btn" id="wmBtnMaximize">□</button>
+        <button class="win-btn" id="wmBtnClose">✕</button>
+      </div>
+    </div>
+    <div class="video-player-body">
+      <video id="watermelonVideo" src="videos/watermelon.mp4" controls preload="metadata"></video>
+    </div>
+  </div>
+
+  <!-- CONTACT NOTEPAD -->
+  <div class="window-shell contact-window" id="contactWindow" style="display:none;">
+    <div class="win-titlebar" id="contactTitlebar">
+      <span class="win-titlebar-title">
+        <span class="win-icon">📝</span> <span data-i18n="contact_window_title">Kontakt.txt - Notatnik</span>
+      </span>
+      <div class="win-btns">
+        <button class="win-btn" id="contactBtnMinimize">_</button>
+        <button class="win-btn" id="contactBtnMaximize">□</button>
+        <button class="win-btn" id="contactBtnClose">✕</button>
+      </div>
+    </div>
+    <div class="win-menubar" id="contactMenubar">
+      <div class="menu-item-wrap">
+        <button class="menu-item" data-menu="contactPlik" data-i18n="menu_plik">Plik</button>
+        <div class="menu-dropdown" data-menu-panel="contactPlik">
+          <button id="contactMenuClose">✕ <span data-i18n="menu_close_label">Zamknij</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="notepad-body">
+<span data-i18n="contact_label_phone">Telefon</span>: <a href="tel:+37060877950">+370 60877950</a>
+<span data-i18n="contact_label_email">Email</span>: <a href="mailto:voroneckij.edvin@gmail.com">voroneckij.edvin@gmail.com</a>
+<span data-i18n="contact_label_instagram">Instagram</span>: <a href="https://www.instagram.com/ed_nobread/" target="_blank" rel="noopener">instagram.com/ed_nobread</a>
+<span data-i18n="contact_label_facebook">Facebook</span>: <a href="https://www.facebook.com/edvin.voronecki/" target="_blank" rel="noopener">facebook.com/edvin.voronecki</a>
+<span data-i18n="contact_label_steam">Steam</span>: <a href="https://steamcommunity.com/id/edleftonread/" target="_blank" rel="noopener">steamcommunity.com/id/edleftonread</a>
+<span data-i18n="contact_label_discord">Discord</span>: edleftonread
+<span data-i18n="contact_label_spotify">Spotify</span>: <a href="https://open.spotify.com/user/21gyia4ui25ildcu7r3rirvjq" target="_blank" rel="noopener">open.spotify.com/user/21gyia4ui25ildcu7r3rirvjq</a>
+    </div>
+  </div>
+
+  <!-- COMMENTS WALL -->
+  <div class="window-shell comments-window" id="commentsWindow" style="display:none;">
+    <div class="win-titlebar" id="commentsTitlebar">
+      <span class="win-titlebar-title">
+        <span class="win-icon">💬</span> <span data-i18n="comments_window_title">Księga gości</span>
+      </span>
+      <div class="win-btns">
+        <button class="win-btn" id="commentsBtnMinimize">_</button>
+        <button class="win-btn" id="commentsBtnMaximize">□</button>
+        <button class="win-btn" id="commentsBtnClose">✕</button>
+      </div>
+    </div>
+    <div class="win-menubar" id="commentsMenubar">
+      <div class="menu-item-wrap">
+        <button class="menu-item" data-menu="commentsPlik" data-i18n="menu_plik">Plik</button>
+        <div class="menu-dropdown" data-menu-panel="commentsPlik">
+          <button id="commentsMenuClose">✕ <span data-i18n="menu_close_label">Zamknij</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="comments-body">
+      <form class="comment-form" id="commentForm" autocomplete="off">
+        <div>
+          <label for="commentName" data-i18n="comments_label_name">Imię</label>
+          <input type="text" id="commentName" maxlength="40" required>
+        </div>
+        <div>
+          <label for="commentText" data-i18n="comments_label_comment">Komentarz</label>
+          <textarea id="commentText" maxlength="500" required></textarea>
+          <div class="char-count" id="commentCharCount">0 / 500</div>
+        </div>
+        <div class="comment-form-actions">
+          <span class="comment-form-status" id="commentFormStatus"></span>
+          <button type="submit" class="book-btn comment-post-btn" id="commentPostBtn" data-i18n="comments_post_btn">Wyślij</button>
+        </div>
+      </form>
+      <div class="comments-wall" id="commentsWall">
+        <div class="comments-status" id="commentsLoading" data-i18n="comments_loading">Ładowanie komentarzy...</div>
+        <div class="comments-status" id="commentsEmpty" data-i18n="comments_empty" style="display:none;">Brak komentarzy. Bądź pierwszy!</div>
+        <div class="comments-status" id="commentsErrorLoad" data-i18n="comments_error_load" style="display:none;">Nie udało się wczytać komentarzy.</div>
+        <div class="comments-status" id="commentsNotConfigured" data-i18n="comments_not_configured" style="display:none;">Księga gości nie jest jeszcze skonfigurowana.</div>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="statusbar-panel" id="commentsCountPanel"></div>
+    </div>
   </div>
 </div>
 
@@ -727,6 +919,9 @@
   <button class="start-btn" id="startBtn" type="button">🏁 <span data-i18n="start_label">Start</span></button>
   <div class="taskbar-sep"></div>
   <button class="taskbar-app-btn" id="taskbarApp" type="button">📅 <span data-i18n="window_title">Grafik Edwina</span></button>
+  <button class="taskbar-app-btn" id="taskbarWatermelon" type="button" style="display:none;">🍉 <span data-i18n="watermelon_window_title">Watermelon</span></button>
+  <button class="taskbar-app-btn" id="taskbarContact" type="button" style="display:none;">📝 <span data-i18n="sm_contact">Kontakt</span></button>
+  <button class="taskbar-app-btn" id="taskbarComments" type="button" style="display:none;">💬 <span data-i18n="icon_comments_label">Comments</span></button>
   <div class="tray">
     <span class="tray-label" data-i18n="tray_label">Dziś:</span>
     <span id="trayClock"></span>
@@ -737,6 +932,9 @@
 <div class="start-menu" id="startMenu">
   <div class="start-menu-header">EDWIN-FIT 2026</div>
   <button id="smRestore">📅 <span data-i18n="sm_restore">Grafik Edwina</span></button>
+  <button id="smWatermelon">🍉 <span data-i18n="watermelon_window_title">Watermelon</span></button>
+  <button id="smContact">📝 <span data-i18n="sm_contact">Kontakt</span></button>
+  <button id="smComments">💬 <span data-i18n="icon_comments_label">Comments</span></button>
   <button id="smClose">⏻ <span data-i18n="sm_close">Zamknij</span></button>
 </div>
 
@@ -817,7 +1015,21 @@
       sm_restore: 'Grafik Edwina', sm_close: 'Zamknij',
       menu_plik: 'Plik', menu_widok: 'Widok',
       menu_close_label: 'Zamknij', menu_refresh_label: 'Odśwież', menu_lang_label: 'Przełącz język',
-      icon_grafik_label: 'Grafik.exe', icon_kosz_label: 'Kosz',
+      icon_grafik_label: 'Grafik', icon_kosz_label: 'Kosz', icon_watermelon_label: 'Watermelon',
+      icon_contact_label: 'Kontakt',
+      watermelon_window_title: 'Watermelon',
+      contact_window_title: 'Kontakt.txt - Notatnik',
+      sm_contact: 'Kontakt',
+      contact_label_phone: 'Telefon', contact_label_email: 'Email',
+      contact_label_instagram: 'Instagram', contact_label_facebook: 'Facebook',
+      contact_label_steam: 'Steam', contact_label_discord: 'Discord', contact_label_spotify: 'Spotify',
+      icon_comments_label: 'Komentarze',
+      comments_window_title: 'Księga gości',
+      comments_label_name: 'Imię', comments_label_comment: 'Komentarz', comments_post_btn: 'Wyślij',
+      comments_loading: 'Ładowanie komentarzy...',
+      comments_empty: 'Brak komentarzy. Bądź pierwszy!',
+      comments_error_load: 'Nie udało się wczytać komentarzy.',
+      comments_not_configured: 'Księga gości nie jest jeszcze skonfigurowana.',
       dlg_close_title: 'Zamknij program',
       dlg_close_text: 'Czy na pewno chcesz zamknąć Grafik Edwina?',
       dlg_kosz_title: 'Kosz',
@@ -844,7 +1056,21 @@
       sm_restore: 'Edwin’s Schedule', sm_close: 'Close',
       menu_plik: 'File', menu_widok: 'View',
       menu_close_label: 'Close', menu_refresh_label: 'Refresh', menu_lang_label: 'Switch language',
-      icon_grafik_label: 'Schedule.exe', icon_kosz_label: 'Recycle Bin',
+      icon_grafik_label: 'Schedule', icon_kosz_label: 'Recycle Bin', icon_watermelon_label: 'Watermelon',
+      icon_contact_label: 'Contact',
+      watermelon_window_title: 'Watermelon',
+      contact_window_title: 'Contact.txt - Notepad',
+      sm_contact: 'Contact',
+      contact_label_phone: 'Phone', contact_label_email: 'Email',
+      contact_label_instagram: 'Instagram', contact_label_facebook: 'Facebook',
+      contact_label_steam: 'Steam', contact_label_discord: 'Discord', contact_label_spotify: 'Spotify',
+      icon_comments_label: 'Comments',
+      comments_window_title: 'Guestbook',
+      comments_label_name: 'Name', comments_label_comment: 'Comment', comments_post_btn: 'Post',
+      comments_loading: 'Loading comments...',
+      comments_empty: 'No comments yet. Be the first!',
+      comments_error_load: 'Could not load comments.',
+      comments_not_configured: "The guestbook isn't connected yet.",
       dlg_close_title: 'Close program',
       dlg_close_text: 'Are you sure you want to close Edwin’s Schedule?',
       dlg_kosz_title: 'Recycle Bin',
@@ -953,77 +1179,101 @@
 
   // ── WINDOW MANAGEMENT ──
   const desktop = document.getElementById('desktop');
-  const win = document.getElementById('windowShell');
-  const titlebar = document.getElementById('titlebar');
-  const taskbarApp = document.getElementById('taskbarApp');
-  let maximized = false;
-  let savedRect = null;
-  let dragging = false, dragOffsetX = 0, dragOffsetY = 0;
 
+  let topZ = 2;
+  function bringToFront(el) { el.style.zIndex = ++topZ; }
   function isDesktopMode() { return window.innerWidth > 640; }
 
-  titlebar.addEventListener('pointerdown', (e) => {
-    if (e.target.closest('.win-btn') || !isDesktopMode() || maximized) return;
-    const rect = win.getBoundingClientRect();
-    const deskRect = desktop.getBoundingClientRect();
-    win.style.left = (rect.left - deskRect.left) + 'px';
-    win.style.top = (rect.top - deskRect.top) + 'px';
-    win.style.transform = 'none';
-    dragOffsetX = e.clientX - rect.left;
-    dragOffsetY = e.clientY - rect.top;
-    dragging = true;
-    desktop.classList.add('dragging');
-    titlebar.setPointerCapture(e.pointerId);
-  });
-  titlebar.addEventListener('pointermove', (e) => {
-    if (!dragging) return;
-    const deskRect = desktop.getBoundingClientRect();
-    let left = e.clientX - deskRect.left - dragOffsetX;
-    let top = e.clientY - deskRect.top - dragOffsetY;
-    left = Math.max(-win.offsetWidth + 80, Math.min(left, deskRect.width - 80));
-    top = Math.max(0, Math.min(top, deskRect.height - 30));
-    win.style.left = left + 'px';
-    win.style.top = top + 'px';
-  });
-  function stopDrag(e) {
-    if (dragging) { dragging = false; desktop.classList.remove('dragging'); }
-  }
-  titlebar.addEventListener('pointerup', stopDrag);
-  titlebar.addEventListener('pointercancel', stopDrag);
+  function initWindow(winEl, { titlebar, taskbarBtn, btnMinimize, btnMaximize, onClose }) {
+    let maximized = false;
+    let savedRect = null;
+    let dragging = false, dragOffsetX = 0, dragOffsetY = 0;
 
-  function minimizeWindow() {
-    win.style.display = 'none';
-    taskbarApp.classList.add('minimized');
-  }
-  function restoreWindow() {
-    win.style.display = '';
-    taskbarApp.classList.remove('minimized');
-  }
-  function toggleMinimize() {
-    if (win.style.display === 'none') restoreWindow();
-    else minimizeWindow();
-  }
-  function wiggleWindow() {
-    win.classList.remove('wiggle');
-    void win.offsetWidth;
-    win.classList.add('wiggle');
-  }
+    winEl.addEventListener('pointerdown', () => bringToFront(winEl));
 
-  document.getElementById('btnMinimize').addEventListener('click', minimizeWindow);
-  taskbarApp.addEventListener('click', toggleMinimize);
+    titlebar.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('.win-btn') || !isDesktopMode() || maximized) return;
+      bringToFront(winEl);
+      const rect = winEl.getBoundingClientRect();
+      const deskRect = desktop.getBoundingClientRect();
+      winEl.style.left = (rect.left - deskRect.left) + 'px';
+      winEl.style.top = (rect.top - deskRect.top) + 'px';
+      winEl.style.transform = 'none';
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
+      dragging = true;
+      desktop.classList.add('dragging');
+      titlebar.setPointerCapture(e.pointerId);
+    });
+    titlebar.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const deskRect = desktop.getBoundingClientRect();
+      let left = e.clientX - deskRect.left - dragOffsetX;
+      let top = e.clientY - deskRect.top - dragOffsetY;
+      left = Math.max(-winEl.offsetWidth + 80, Math.min(left, deskRect.width - 80));
+      top = Math.max(0, Math.min(top, deskRect.height - 30));
+      winEl.style.left = left + 'px';
+      winEl.style.top = top + 'px';
+    });
+    function stopDrag() { if (dragging) { dragging = false; desktop.classList.remove('dragging'); } }
+    titlebar.addEventListener('pointerup', stopDrag);
+    titlebar.addEventListener('pointercancel', stopDrag);
 
-  document.getElementById('btnMaximize').addEventListener('click', () => {
-    if (!maximized) {
-      savedRect = { left: win.style.left, top: win.style.top, transform: win.style.transform };
-      win.classList.add('maximized');
-      maximized = true;
-    } else {
-      win.classList.remove('maximized');
-      win.style.left = savedRect.left;
-      win.style.top = savedRect.top;
-      win.style.transform = savedRect.transform;
-      maximized = false;
+    function minimize() {
+      winEl.style.display = 'none';
+      taskbarBtn?.classList.add('minimized');
     }
+    function restore() {
+      winEl.style.display = '';
+      taskbarBtn?.classList.remove('minimized');
+      bringToFront(winEl);
+    }
+    function toggleMinimize() {
+      if (winEl.style.display === 'none') restore();
+      else minimize();
+    }
+    function wiggle() {
+      winEl.classList.remove('wiggle');
+      void winEl.offsetWidth;
+      winEl.classList.add('wiggle');
+    }
+    function open() {
+      winEl.style.display = '';
+      if (taskbarBtn) taskbarBtn.style.display = '';
+      taskbarBtn?.classList.remove('minimized');
+      bringToFront(winEl);
+    }
+    function close() {
+      winEl.style.display = 'none';
+      if (taskbarBtn) taskbarBtn.style.display = 'none';
+      onClose?.();
+    }
+
+    btnMinimize.addEventListener('click', minimize);
+    taskbarBtn?.addEventListener('click', toggleMinimize);
+    btnMaximize.addEventListener('click', () => {
+      if (!maximized) {
+        savedRect = { left: winEl.style.left, top: winEl.style.top, transform: winEl.style.transform };
+        winEl.classList.add('maximized');
+        maximized = true;
+      } else {
+        winEl.classList.remove('maximized');
+        winEl.style.left = savedRect.left;
+        winEl.style.top = savedRect.top;
+        winEl.style.transform = savedRect.transform;
+        maximized = false;
+      }
+    });
+
+    return { minimize, restore, toggleMinimize, wiggle, open, close };
+  }
+
+  const win = document.getElementById('windowShell');
+  const scheduleWin = initWindow(win, {
+    titlebar: document.getElementById('titlebar'),
+    taskbarBtn: document.getElementById('taskbarApp'),
+    btnMinimize: document.getElementById('btnMinimize'),
+    btnMaximize: document.getElementById('btnMaximize'),
   });
 
   // ── DIALOGS ──
@@ -1033,7 +1283,7 @@
   document.getElementById('btnClose').addEventListener('click', () => openDialog('closeDialog'));
   document.getElementById('menuClose').addEventListener('click', () => { closeAllMenus(); openDialog('closeDialog'); });
   document.getElementById('smClose').addEventListener('click', () => { closeStartMenu(); openDialog('closeDialog'); });
-  document.getElementById('closeYes').addEventListener('click', () => { closeDialog('closeDialog'); minimizeWindow(); });
+  document.getElementById('closeYes').addEventListener('click', () => { closeDialog('closeDialog'); scheduleWin.minimize(); });
   document.getElementById('closeNo').addEventListener('click', () => closeDialog('closeDialog'));
 
   document.getElementById('menuRefresh').addEventListener('click', () => { closeAllMenus(); location.reload(); });
@@ -1041,8 +1291,65 @@
 
   document.querySelectorAll('#koszDialog .dlgOk').forEach(b => b.addEventListener('click', () => closeDialog('koszDialog')));
 
+  // ── WATERMELON PLAYER ──
+  const watermelonWin = document.getElementById('watermelonWindow');
+  const watermelonVideo = document.getElementById('watermelonVideo');
+  const taskbarWatermelon = document.getElementById('taskbarWatermelon');
+  const watermelonCtrl = initWindow(watermelonWin, {
+    titlebar: document.getElementById('watermelonTitlebar'),
+    taskbarBtn: taskbarWatermelon,
+    btnMinimize: document.getElementById('wmBtnMinimize'),
+    btnMaximize: document.getElementById('wmBtnMaximize'),
+    onClose: () => watermelonVideo.pause(),
+  });
+  document.getElementById('wmBtnClose').addEventListener('click', () => watermelonCtrl.close());
+
+  function openWatermelon() {
+    const neverOpenedOrClosed = getComputedStyle(taskbarWatermelon).display === 'none';
+    if (neverOpenedOrClosed) watermelonCtrl.open();
+    else if (watermelonWin.style.display === 'none') watermelonCtrl.restore();
+    else watermelonCtrl.wiggle();
+  }
+
+  // ── CONTACT NOTEPAD ──
+  const contactWin = document.getElementById('contactWindow');
+  const taskbarContact = document.getElementById('taskbarContact');
+  const contactCtrl = initWindow(contactWin, {
+    titlebar: document.getElementById('contactTitlebar'),
+    taskbarBtn: taskbarContact,
+    btnMinimize: document.getElementById('contactBtnMinimize'),
+    btnMaximize: document.getElementById('contactBtnMaximize'),
+  });
+  document.getElementById('contactBtnClose').addEventListener('click', () => contactCtrl.close());
+  document.getElementById('contactMenuClose').addEventListener('click', () => { closeAllMenus(); contactCtrl.close(); });
+
+  function openContact() {
+    const neverOpenedOrClosed = getComputedStyle(taskbarContact).display === 'none';
+    if (neverOpenedOrClosed) contactCtrl.open();
+    else if (contactWin.style.display === 'none') contactCtrl.restore();
+    else contactCtrl.wiggle();
+  }
+
+  // ── COMMENTS WALL ──
+  const commentsWin = document.getElementById('commentsWindow');
+  const taskbarComments = document.getElementById('taskbarComments');
+  const commentsCtrl = initWindow(commentsWin, {
+    titlebar: document.getElementById('commentsTitlebar'),
+    taskbarBtn: taskbarComments,
+    btnMinimize: document.getElementById('commentsBtnMinimize'),
+    btnMaximize: document.getElementById('commentsBtnMaximize'),
+  });
+  document.getElementById('commentsBtnClose').addEventListener('click', () => commentsCtrl.close());
+  document.getElementById('commentsMenuClose').addEventListener('click', () => { closeAllMenus(); commentsCtrl.close(); });
+
+  function openComments() {
+    const neverOpenedOrClosed = getComputedStyle(taskbarComments).display === 'none';
+    if (neverOpenedOrClosed) commentsCtrl.open();
+    else if (commentsWin.style.display === 'none') commentsCtrl.restore();
+    else commentsCtrl.wiggle();
+  }
+
   // ── DESKTOP ICONS ──
-  let iconDblClickTimer = {};
   function handleIconClick(id, onDouble) {
     const el = document.getElementById(id);
     let lastClick = 0;
@@ -1055,10 +1362,13 @@
     });
   }
   handleIconClick('iconGrafik', () => {
-    if (win.style.display === 'none') restoreWindow();
-    else wiggleWindow();
+    if (win.style.display === 'none') scheduleWin.restore();
+    else scheduleWin.wiggle();
   });
   handleIconClick('iconKosz', () => openDialog('koszDialog'));
+  handleIconClick('iconWatermelon', openWatermelon);
+  handleIconClick('iconContact', openContact);
+  handleIconClick('iconComments', openComments);
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.desktop-icon')) {
@@ -1094,7 +1404,10 @@
     if (isOpen) closeStartMenu();
     else { startMenu.classList.add('open'); startBtn.classList.add('open'); }
   });
-  document.getElementById('smRestore').addEventListener('click', () => { closeStartMenu(); restoreWindow(); });
+  document.getElementById('smRestore').addEventListener('click', () => { closeStartMenu(); scheduleWin.restore(); });
+  document.getElementById('smWatermelon').addEventListener('click', () => { closeStartMenu(); openWatermelon(); });
+  document.getElementById('smContact').addEventListener('click', () => { closeStartMenu(); openContact(); });
+  document.getElementById('smComments').addEventListener('click', () => { closeStartMenu(); openComments(); });
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.start-menu') && !e.target.closest('.start-btn')) closeStartMenu();
   });
@@ -1123,6 +1436,189 @@
     const t = setTimeout(finish, 220 * lines.length + 550);
     document.getElementById('skipBoot').addEventListener('click', () => { clearTimeout(t); finish(); });
   })();
+</script>
+
+<!--
+  ── COMMENTS WALL / GUESTBOOK BACKEND ──
+  This uses Firebase Firestore to store comments so every visitor sees the
+  same wall. To connect it:
+    1. Go to https://console.firebase.google.com and create a free project.
+    2. In the project, go to Build → Firestore Database → Create database
+       (any region, start in "production mode").
+    3. In Firestore's "Rules" tab, paste the rules below and click Publish:
+
+         rules_version = '2';
+         service cloud.firestore {
+           match /databases/{database}/documents {
+             match /comments/{commentId} {
+               allow read: if true;
+               allow create: if request.resource.data.name is string
+                             && request.resource.data.name.size() > 0
+                             && request.resource.data.name.size() <= 40
+                             && request.resource.data.comment is string
+                             && request.resource.data.comment.size() > 0
+                             && request.resource.data.comment.size() <= 500
+                             && request.resource.data.createdAt == request.time;
+               allow update, delete: if false;
+             }
+           }
+         }
+
+    4. Go to Project settings (gear icon) → General → "Your apps" → add a
+       Web app (</> icon) → copy the firebaseConfig object it shows you.
+    5. Paste those values into the firebaseConfig object right below,
+       replacing the "PASTE_..." placeholders.
+  Until step 5 is done, the guestbook shows a "not connected yet" message
+  instead of crashing.
+-->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import {
+    getFirestore, collection, addDoc, serverTimestamp,
+    query, orderBy, limit, onSnapshot
+  } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCNY-sJqOJL6Y4z-0tfR4v2PdTAQfBhefE",
+    authDomain: "edwinfit-53113.firebaseapp.com",
+    projectId: "edwinfit-53113",
+    storageBucket: "edwinfit-53113.firebasestorage.app",
+    messagingSenderId: "649327935852",
+    appId: "1:649327935852:web:27117fb01ff440a0d2f349"
+  };
+
+  const isConfigured = !firebaseConfig.apiKey.startsWith('PASTE_');
+
+  const MSG = {
+    pl: {
+      validation: 'Wpisz imię i komentarz.',
+      sending: 'Wysyłanie...',
+      error: 'Nie udało się wysłać komentarza. Spróbuj ponownie.',
+      success: 'Komentarz dodany!',
+      notConfigured: 'Księga gości nie jest jeszcze skonfigurowana.',
+    },
+    en: {
+      validation: 'Please enter a name and a comment.',
+      sending: 'Sending...',
+      error: 'Could not post your comment. Try again.',
+      success: 'Comment posted!',
+      notConfigured: "The guestbook isn't connected yet.",
+    },
+  };
+  function t(key) {
+    const lang = document.documentElement.lang === 'en' ? 'en' : 'pl';
+    return MSG[lang][key];
+  }
+
+  const wall = document.getElementById('commentsWall');
+  const loadingEl = document.getElementById('commentsLoading');
+  const emptyEl = document.getElementById('commentsEmpty');
+  const errorLoadEl = document.getElementById('commentsErrorLoad');
+  const notConfiguredEl = document.getElementById('commentsNotConfigured');
+  const form = document.getElementById('commentForm');
+  const nameEl = document.getElementById('commentName');
+  const textEl = document.getElementById('commentText');
+  const charCountEl = document.getElementById('commentCharCount');
+  const postBtn = document.getElementById('commentPostBtn');
+  const formStatusEl = document.getElementById('commentFormStatus');
+  const countPanel = document.getElementById('commentsCountPanel');
+
+  function updateCharCount() {
+    charCountEl.textContent = `${textEl.value.length} / 500`;
+  }
+  textEl.addEventListener('input', updateCharCount);
+  updateCharCount();
+
+  function setFormStatus(msg) {
+    formStatusEl.textContent = msg || '';
+  }
+
+  function renderComments(docs) {
+    wall.querySelectorAll('.comment-card').forEach(el => el.remove());
+    loadingEl.style.display = 'none';
+    errorLoadEl.style.display = 'none';
+    if (docs.length === 0) {
+      emptyEl.style.display = '';
+      countPanel.textContent = '';
+      return;
+    }
+    emptyEl.style.display = 'none';
+    countPanel.textContent = String(docs.length);
+    const lang = document.documentElement.lang === 'en' ? 'en-GB' : 'pl-PL';
+    docs.forEach(data => {
+      const card = document.createElement('div');
+      card.className = 'comment-card';
+
+      const meta = document.createElement('div');
+      meta.className = 'comment-meta';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'comment-name';
+      nameSpan.textContent = data.name;
+
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 'comment-date';
+      dateSpan.textContent = data.createdAt
+        ? data.createdAt.toDate().toLocaleString(lang, { dateStyle: 'short', timeStyle: 'short' })
+        : '...';
+
+      meta.appendChild(nameSpan);
+      meta.appendChild(dateSpan);
+
+      const textDiv = document.createElement('div');
+      textDiv.className = 'comment-text';
+      textDiv.textContent = data.comment;
+
+      card.appendChild(meta);
+      card.appendChild(textDiv);
+      wall.appendChild(card);
+    });
+  }
+
+  if (!isConfigured) {
+    loadingEl.style.display = 'none';
+    notConfiguredEl.style.display = '';
+    postBtn.disabled = true;
+  } else {
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const commentsRef = collection(db, 'comments');
+    const commentsQuery = query(commentsRef, orderBy('createdAt', 'desc'), limit(200));
+
+    onSnapshot(commentsQuery, (snapshot) => {
+      renderComments(snapshot.docs.map(d => d.data()));
+    }, () => {
+      loadingEl.style.display = 'none';
+      errorLoadEl.style.display = '';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = nameEl.value.trim();
+      const comment = textEl.value.trim();
+      if (!name || !comment) {
+        setFormStatus(t('validation'));
+        return;
+      }
+      postBtn.disabled = true;
+      setFormStatus(t('sending'));
+      try {
+        await addDoc(commentsRef, {
+          name: name.slice(0, 40),
+          comment: comment.slice(0, 500),
+          createdAt: serverTimestamp(),
+        });
+        textEl.value = '';
+        updateCharCount();
+        setFormStatus(t('success'));
+        setTimeout(() => setFormStatus(''), 2000);
+      } catch (err) {
+        setFormStatus(t('error'));
+      } finally {
+        postBtn.disabled = false;
+      }
+    });
+  }
 </script>
 </body>
 </html>
