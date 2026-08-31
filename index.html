@@ -260,6 +260,67 @@
     font-size: 11px; color: #555; text-align: center; padding: 10px 4px;
   }
 
+  .window-shell.blog-window {
+    top: 40px; left: 50%;
+    transform: translate(calc(-50% - 180px), 0);
+    width: min(640px, calc(100% - 24px));
+  }
+  .blog-body {
+    background: #ffffff;
+    padding: 14px 16px;
+  }
+  .blog-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-height: 480px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .blog-post {
+    background: var(--sys-row-alt);
+    border-top:    1px solid var(--sys-highlight);
+    border-left:   1px solid var(--sys-highlight);
+    border-right:  1px solid var(--sys-shadow);
+    border-bottom: 1px solid var(--sys-shadow);
+    padding: 10px 12px 12px;
+  }
+  .blog-post-date {
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--sys-blue);
+    letter-spacing: 0.03em;
+    margin-bottom: 6px;
+  }
+  .blog-post-text {
+    font-family: 'Nunito', Tahoma, Verdana, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #000;
+    white-space: pre-wrap;
+    word-break: break-word;
+    margin-bottom: 8px;
+  }
+  .blog-post-media {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .blog-post-media img,
+  .blog-post-media video {
+    max-width: 100%;
+    max-height: 260px;
+    border: 1px solid var(--sys-shadow);
+    display: block;
+    background: #000;
+  }
+  .blog-empty {
+    font-size: 12px;
+    color: #555;
+    text-align: center;
+    padding: 20px 4px;
+  }
+
   /* ── TITLE BAR ── */
   .win-titlebar {
     background: linear-gradient(90deg, var(--sys-blue) 0%, var(--sys-blue2) 100%);
@@ -764,6 +825,8 @@
     .footer { padding: 4px 8px; }
     .taskbar-app-btn { display: none !important; }
     .comments-wall { max-height: calc(100vh - 380px); min-height: 140px; }
+    .blog-posts { max-height: calc(100vh - 260px); min-height: 140px; }
+    .blog-post-media img, .blog-post-media video { max-height: 200px; }
   }
 </style>
 </head>
@@ -796,6 +859,9 @@
     </button>
     <button class="desktop-icon" id="iconComments" type="button">
       <span class="emoji">💬</span><span class="label" data-i18n="icon_comments_label">Comments</span>
+    </button>
+    <button class="desktop-icon" id="iconBlog" type="button">
+      <span class="emoji">📓</span><span class="label" data-i18n="icon_blog_label">Blog</span>
     </button>
   </div>
 
@@ -953,6 +1019,11 @@
         <a href="https://www.facebook.com/edvin.voronecki/" target="_blank" rel="noopener">facebook.com/edvin.voronecki</a>
       </div>
       <div class="contact-row">
+        <span class="contact-icon">💼</span>
+        <span class="contact-label" data-i18n="contact_label_linkedin">LinkedIn</span>
+        <a href="https://www.linkedin.com/in/edvin-voronecki-782821228/" target="_blank" rel="noopener">linkedin.com/in/edvin-voronecki</a>
+      </div>
+      <div class="contact-row">
         <span class="contact-icon">🎮</span>
         <span class="contact-label" data-i18n="contact_label_steam">Steam</span>
         <a href="https://steamcommunity.com/id/edleftonread/" target="_blank" rel="noopener">steamcommunity.com/id/edleftonread</a>
@@ -1020,6 +1091,35 @@
       <div class="statusbar-panel" id="commentsCountPanel"></div>
     </div>
   </div>
+
+  <!-- BLOG -->
+  <div class="window-shell blog-window" id="blogWindow" style="display:none;">
+    <div class="win-titlebar" id="blogTitlebar">
+      <div class="win-titlebar-left">
+        <button class="win-back-btn" id="blogBackBtn" type="button" aria-label="Back">←</button>
+        <span class="win-titlebar-title">
+          <span class="win-icon">📓</span> <span data-i18n="blog_window_title">Blog</span>
+        </span>
+      </div>
+      <div class="win-btns">
+        <button class="win-btn" id="blogBtnMinimize">_</button>
+        <button class="win-btn" id="blogBtnMaximize">□</button>
+        <button class="win-btn" id="blogBtnClose">✕</button>
+      </div>
+    </div>
+    <div class="win-menubar" id="blogMenubar">
+      <div class="menu-item-wrap">
+        <button class="menu-item" data-menu="blogPlik" data-i18n="menu_plik">Plik</button>
+        <div class="menu-dropdown" data-menu-panel="blogPlik">
+          <button id="blogMenuClose">✕ <span data-i18n="menu_close_label">Zamknij</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="blog-body">
+      <div class="blog-posts" id="blogPostsList"></div>
+      <div class="blog-empty" id="blogEmpty" data-i18n="blog_empty" style="display:none;">Brak wpisów. Wróć później!</div>
+    </div>
+  </div>
 </div>
 
 <!-- TASKBAR -->
@@ -1030,6 +1130,7 @@
   <button class="taskbar-app-btn" id="taskbarWatermelon" type="button" style="display:none;">🍉 <span data-i18n="watermelon_window_title">Watermelon</span></button>
   <button class="taskbar-app-btn" id="taskbarContact" type="button" style="display:none;">📝 <span data-i18n="sm_contact">Kontakt</span></button>
   <button class="taskbar-app-btn" id="taskbarComments" type="button" style="display:none;">💬 <span data-i18n="icon_comments_label">Comments</span></button>
+  <button class="taskbar-app-btn" id="taskbarBlog" type="button" style="display:none;">📓 <span data-i18n="blog_window_title">Blog</span></button>
   <div class="tray">
     <span id="trayClock"></span>
   </div>
@@ -1042,6 +1143,7 @@
   <button id="smWatermelon">🍉 <span data-i18n="watermelon_window_title">Watermelon</span></button>
   <button id="smContact">📝 <span data-i18n="sm_contact">Kontakt</span></button>
   <button id="smComments">💬 <span data-i18n="icon_comments_label">Comments</span></button>
+  <button id="smBlog">📓 <span data-i18n="blog_window_title">Blog</span></button>
   <button id="smClose">⏻ <span data-i18n="sm_close">Zamknij</span></button>
 </div>
 
@@ -1094,6 +1196,12 @@
   ];
   const YEAR = 2026, MONTH = 8; // September
 
+  // Each post: { date: 'YYYY-MM-DD', text: '...', media: [{ type: 'image'|'video', src: 'blog/...' }] }.
+  // Newest is shown first regardless of array order. Post text is shown as written — it isn't
+  // translated (same as guestbook comments), only the window chrome around it is.
+  const blogPosts = [
+  ];
+
   const translations = {
     pl: {
       window_title: 'Grafik Edwina',
@@ -1115,8 +1223,11 @@
       sm_contact: 'Kontakt',
       contact_label_phone: 'Telefon', contact_label_email: 'Email',
       contact_label_instagram: 'Instagram', contact_label_facebook: 'Facebook',
+      contact_label_linkedin: 'LinkedIn',
       contact_label_steam: 'Steam', contact_label_discord: 'Discord', contact_label_spotify: 'Spotify',
       icon_comments_label: 'Komentarze',
+      icon_blog_label: 'Blog', blog_window_title: 'Blog',
+      blog_empty: 'Brak wpisów. Wróć później!',
       comments_window_title: 'Księga gości',
       comments_label_name: 'Imię', comments_label_comment: 'Komentarz', comments_post_btn: 'Wyślij',
       comments_loading: 'Ładowanie komentarzy...',
@@ -1155,8 +1266,11 @@
       sm_contact: 'Contact',
       contact_label_phone: 'Phone', contact_label_email: 'Email',
       contact_label_instagram: 'Instagram', contact_label_facebook: 'Facebook',
+      contact_label_linkedin: 'LinkedIn',
       contact_label_steam: 'Steam', contact_label_discord: 'Discord', contact_label_spotify: 'Spotify',
       icon_comments_label: 'Comments',
+      icon_blog_label: 'Blog', blog_window_title: 'Blog',
+      blog_empty: 'No posts yet. Check back later!',
       comments_window_title: 'Guestbook',
       comments_label_name: 'Name', comments_label_comment: 'Comment', comments_post_btn: 'Post',
       comments_loading: 'Loading comments...',
@@ -1224,6 +1338,36 @@
     );
 
     buildBookingButtons();
+    renderBlogPosts();
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function renderBlogPosts() {
+    const list = document.getElementById('blogPostsList');
+    const emptyEl = document.getElementById('blogEmpty');
+    const sorted = [...blogPosts].sort((a, b) => new Date(b.date) - new Date(a.date));
+    if (sorted.length === 0) {
+      list.innerHTML = '';
+      emptyEl.style.display = '';
+      return;
+    }
+    emptyEl.style.display = 'none';
+    const locale = currentLang === 'pl' ? 'pl-PL' : 'en-GB';
+    list.innerHTML = sorted.map(post => {
+      const dateLabel = new Date(post.date).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
+      const mediaHtml = (post.media || []).map(m => m.type === 'video'
+        ? `<video src="${m.src}" controls preload="metadata"></video>`
+        : `<img src="${m.src}" alt="" loading="lazy">`
+      ).join('');
+      return `<div class="blog-post">
+        <div class="blog-post-date">${dateLabel}</div>
+        ${post.text ? `<div class="blog-post-text">${escapeHtml(post.text)}</div>` : ''}
+        ${mediaHtml ? `<div class="blog-post-media">${mediaHtml}</div>` : ''}
+      </div>`;
+    }).join('');
   }
 
   function buildBookingButtons() {
@@ -1397,7 +1541,7 @@
   document.getElementById('wmBtnClose').addEventListener('click', () => watermelonCtrl.close());
 
   function openWatermelon() {
-    if (!isDesktopMode()) { showExclusive(watermelonCtrl, [scheduleWin, contactCtrl, commentsCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(watermelonCtrl, [scheduleWin, contactCtrl, commentsCtrl, blogCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarWatermelon).display === 'none';
     if (neverOpenedOrClosed) watermelonCtrl.open();
     else if (watermelonWin.style.display === 'none') watermelonCtrl.restore();
@@ -1417,7 +1561,7 @@
   document.getElementById('contactMenuClose').addEventListener('click', () => { closeAllMenus(); contactCtrl.close(); });
 
   function openContact() {
-    if (!isDesktopMode()) { showExclusive(contactCtrl, [scheduleWin, watermelonCtrl, commentsCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(contactCtrl, [scheduleWin, watermelonCtrl, commentsCtrl, blogCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarContact).display === 'none';
     if (neverOpenedOrClosed) contactCtrl.open();
     else if (contactWin.style.display === 'none') contactCtrl.restore();
@@ -1437,7 +1581,7 @@
   document.getElementById('commentsMenuClose').addEventListener('click', () => { closeAllMenus(); commentsCtrl.close(); });
 
   function openComments() {
-    if (!isDesktopMode()) { showExclusive(commentsCtrl, [scheduleWin, watermelonCtrl, contactCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(commentsCtrl, [scheduleWin, watermelonCtrl, contactCtrl, blogCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarComments).display === 'none';
     if (neverOpenedOrClosed) commentsCtrl.open();
     else if (commentsWin.style.display === 'none') commentsCtrl.restore();
@@ -1445,15 +1589,35 @@
   }
 
   function openSchedule() {
-    if (!isDesktopMode()) { showExclusive(scheduleWin, [watermelonCtrl, contactCtrl, commentsCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(scheduleWin, [watermelonCtrl, contactCtrl, commentsCtrl, blogCtrl]); return; }
     if (win.style.display === 'none') scheduleWin.restore();
     else scheduleWin.wiggle();
+  }
+
+  // ── BLOG ──
+  const blogWin = document.getElementById('blogWindow');
+  const taskbarBlog = document.getElementById('taskbarBlog');
+  const blogCtrl = initWindow(blogWin, {
+    titlebar: document.getElementById('blogTitlebar'),
+    taskbarBtn: taskbarBlog,
+    btnMinimize: document.getElementById('blogBtnMinimize'),
+    btnMaximize: document.getElementById('blogBtnMaximize'),
+  });
+  document.getElementById('blogBtnClose').addEventListener('click', () => blogCtrl.close());
+  document.getElementById('blogMenuClose').addEventListener('click', () => { closeAllMenus(); blogCtrl.close(); });
+
+  function openBlog() {
+    if (!isDesktopMode()) { showExclusive(blogCtrl, [scheduleWin, watermelonCtrl, contactCtrl, commentsCtrl]); return; }
+    const neverOpenedOrClosed = getComputedStyle(taskbarBlog).display === 'none';
+    if (neverOpenedOrClosed) blogCtrl.open();
+    else if (blogWin.style.display === 'none') blogCtrl.restore();
+    else blogCtrl.wiggle();
   }
 
   // ── MOBILE HOME SCREEN (single window at a time + back navigation) ──
   function updateMobileHome() {
     if (isDesktopMode()) { document.body.classList.remove('mobile-app-open'); return; }
-    const windows = [win, watermelonWin, contactWin, commentsWin];
+    const windows = [win, watermelonWin, contactWin, commentsWin, blogWin];
     const anyOpen = windows.some(w => w.style.display !== 'none');
     document.body.classList.toggle('mobile-app-open', anyOpen);
   }
@@ -1472,6 +1636,7 @@
     watermelonCtrl.minimize();
     contactCtrl.minimize();
     commentsCtrl.minimize();
+    blogCtrl.minimize();
     watermelonVideo.pause();
     window.scrollTo(0, 0);
   }
@@ -1479,6 +1644,7 @@
   document.getElementById('wmBackBtn').addEventListener('click', goHome);
   document.getElementById('contactBackBtn').addEventListener('click', goHome);
   document.getElementById('commentsBackBtn').addEventListener('click', goHome);
+  document.getElementById('blogBackBtn').addEventListener('click', goHome);
 
   // Keeps mobile down to one visible window even if the browser is resized
   // across the phone breakpoint mid-session (desktop allows several at once).
@@ -1489,6 +1655,7 @@
       { el: watermelonWin, ctrl: watermelonCtrl },
       { el: contactWin, ctrl: contactCtrl },
       { el: commentsWin, ctrl: commentsCtrl },
+      { el: blogWin, ctrl: blogCtrl },
     ];
     const openOnes = entries.filter(e => e.el.style.display !== 'none');
     if (openOnes.length > 1) {
@@ -1520,6 +1687,7 @@
   handleIconClick('iconWatermelon', openWatermelon);
   handleIconClick('iconContact', openContact);
   handleIconClick('iconComments', openComments);
+  handleIconClick('iconBlog', openBlog);
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.desktop-icon')) {
@@ -1559,6 +1727,7 @@
   document.getElementById('smWatermelon').addEventListener('click', () => { closeStartMenu(); openWatermelon(); });
   document.getElementById('smContact').addEventListener('click', () => { closeStartMenu(); openContact(); });
   document.getElementById('smComments').addEventListener('click', () => { closeStartMenu(); openComments(); });
+  document.getElementById('smBlog').addEventListener('click', () => { closeStartMenu(); openBlog(); });
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.start-menu') && !e.target.closest('.start-btn')) closeStartMenu();
   });
