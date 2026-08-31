@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title data-i18n="window_title">Grafik Edwina</title>
+<title data-i18n="browser_tab_title">Kącik Edwina</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%85%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -163,18 +163,37 @@
   .window-shell.contact-window {
     top: 70px; left: 50%;
     transform: translate(calc(-50% - 60px), 0);
-    width: min(480px, calc(100% - 24px));
+    width: min(600px, calc(100% - 24px));
   }
   .notepad-body {
     background: #ffffff;
-    padding: 14px 16px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 13px;
-    line-height: 1.9;
+    padding: 20px 24px;
+    font-family: 'Nunito', Tahoma, Verdana, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
     color: #000;
-    min-height: 220px;
-    white-space: pre-wrap;
+    min-height: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .contact-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
     word-break: break-word;
+  }
+  .contact-icon {
+    font-size: 20px;
+    width: 24px;
+    flex-shrink: 0;
+    text-align: center;
+  }
+  .contact-label {
+    font-weight: 700;
+    color: var(--sys-blue);
+    min-width: 92px;
   }
   .notepad-body a { color: #000080; }
   .notepad-body a:visited { color: #000080; }
@@ -743,7 +762,6 @@
     .tag { white-space: normal; font-size: 10px; padding: 3px 6px; line-height: 1.3; }
     .book-btn { font-size: 11px; padding: 5px 8px; }
     .footer { padding: 4px 8px; }
-    .tray span.tray-label { display: none; }
     .taskbar-app-btn { display: none !important; }
     .comments-wall { max-height: calc(100vh - 380px); min-height: 140px; }
   }
@@ -801,7 +819,7 @@
     </button>
   </div>
 
-  <div class="window-shell" id="windowShell">
+  <div class="window-shell" id="windowShell" style="display:none;">
 
     <!-- TITLE BAR -->
     <div class="win-titlebar" id="titlebar">
@@ -914,13 +932,41 @@
       </div>
     </div>
     <div class="notepad-body">
-<span data-i18n="contact_label_phone">Telefon</span>: <a href="tel:+37060877950">+370 60877950</a>
-<span data-i18n="contact_label_email">Email</span>: <a href="mailto:voroneckij.edvin@gmail.com">voroneckij.edvin@gmail.com</a>
-<span data-i18n="contact_label_instagram">Instagram</span>: <a href="https://www.instagram.com/ed_nobread/" target="_blank" rel="noopener">instagram.com/ed_nobread</a>
-<span data-i18n="contact_label_facebook">Facebook</span>: <a href="https://www.facebook.com/edvin.voronecki/" target="_blank" rel="noopener">facebook.com/edvin.voronecki</a>
-<span data-i18n="contact_label_steam">Steam</span>: <a href="https://steamcommunity.com/id/edleftonread/" target="_blank" rel="noopener">steamcommunity.com/id/edleftonread</a>
-<span data-i18n="contact_label_discord">Discord</span>: edleftonread
-<span data-i18n="contact_label_spotify">Spotify</span>: <a href="https://open.spotify.com/user/21gyia4ui25ildcu7r3rirvjq" target="_blank" rel="noopener">open.spotify.com/user/21gyia4ui25ildcu7r3rirvjq</a>
+      <div class="contact-row">
+        <span class="contact-icon">📞</span>
+        <span class="contact-label" data-i18n="contact_label_phone">Telefon</span>
+        <a href="tel:+37060877950">+370 60877950</a>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">✉️</span>
+        <span class="contact-label" data-i18n="contact_label_email">Email</span>
+        <a href="mailto:voroneckij.edvin@gmail.com">voroneckij.edvin@gmail.com</a>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">📷</span>
+        <span class="contact-label" data-i18n="contact_label_instagram">Instagram</span>
+        <a href="https://www.instagram.com/ed_nobread/" target="_blank" rel="noopener">instagram.com/ed_nobread</a>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">📘</span>
+        <span class="contact-label" data-i18n="contact_label_facebook">Facebook</span>
+        <a href="https://www.facebook.com/edvin.voronecki/" target="_blank" rel="noopener">facebook.com/edvin.voronecki</a>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">🎮</span>
+        <span class="contact-label" data-i18n="contact_label_steam">Steam</span>
+        <a href="https://steamcommunity.com/id/edleftonread/" target="_blank" rel="noopener">steamcommunity.com/id/edleftonread</a>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">👾</span>
+        <span class="contact-label" data-i18n="contact_label_discord">Discord</span>
+        <span>edleftonread</span>
+      </div>
+      <div class="contact-row">
+        <span class="contact-icon">🎵</span>
+        <span class="contact-label" data-i18n="contact_label_spotify">Spotify</span>
+        <a href="https://open.spotify.com/user/21gyia4ui25ildcu7r3rirvjq" target="_blank" rel="noopener">open.spotify.com/user/21gyia4ui25ildcu7r3rirvjq</a>
+      </div>
     </div>
   </div>
 
@@ -980,39 +1026,23 @@
 <div class="taskbar">
   <button class="start-btn" id="startBtn" type="button">🏁 <span data-i18n="start_label">Start</span></button>
   <div class="taskbar-sep"></div>
-  <button class="taskbar-app-btn" id="taskbarApp" type="button">📅 <span data-i18n="window_title">Grafik Edwina</span></button>
+  <button class="taskbar-app-btn" id="taskbarApp" type="button" style="display:none;">📅 <span data-i18n="window_title">Grafik Edwina</span></button>
   <button class="taskbar-app-btn" id="taskbarWatermelon" type="button" style="display:none;">🍉 <span data-i18n="watermelon_window_title">Watermelon</span></button>
   <button class="taskbar-app-btn" id="taskbarContact" type="button" style="display:none;">📝 <span data-i18n="sm_contact">Kontakt</span></button>
   <button class="taskbar-app-btn" id="taskbarComments" type="button" style="display:none;">💬 <span data-i18n="icon_comments_label">Comments</span></button>
   <div class="tray">
-    <span class="tray-label" data-i18n="tray_label">Dziś:</span>
     <span id="trayClock"></span>
   </div>
 </div>
 
 <!-- START MENU -->
 <div class="start-menu" id="startMenu">
-  <div class="start-menu-header">EDWIN-FIT 2026</div>
+  <div class="start-menu-header"></div>
   <button id="smRestore">📅 <span data-i18n="sm_restore">Grafik Edwina</span></button>
   <button id="smWatermelon">🍉 <span data-i18n="watermelon_window_title">Watermelon</span></button>
   <button id="smContact">📝 <span data-i18n="sm_contact">Kontakt</span></button>
   <button id="smComments">💬 <span data-i18n="icon_comments_label">Comments</span></button>
   <button id="smClose">⏻ <span data-i18n="sm_close">Zamknij</span></button>
-</div>
-
-<!-- CLOSE CONFIRM DIALOG -->
-<div class="dialog-overlay" id="closeDialog">
-  <div class="dialog">
-    <div class="dialog-titlebar"><span data-i18n="dlg_close_title">Zamknij program</span><span>✕</span></div>
-    <div class="dialog-body">
-      <span class="dialog-icon">⚠️</span>
-      <span data-i18n="dlg_close_text">Czy na pewno chcesz zamknąć Grafik Edwina?</span>
-    </div>
-    <div class="dialog-actions">
-      <button id="closeYes" data-i18n="btn_yes">Tak</button>
-      <button id="closeNo" data-i18n="btn_no">Nie</button>
-    </div>
-  </div>
 </div>
 
 <!-- KOSZ DIALOG -->
@@ -1067,13 +1097,14 @@
   const translations = {
     pl: {
       window_title: 'Grafik Edwina',
+      browser_tab_title: 'Kącik Edwina',
       month_title: 'Wrzesień 2026',
       th_date: 'Data', th_day: 'Dzień', th_status: 'Status',
       day_mon: 'Poniedziałek', day_tue: 'Wtorek', day_wed: 'Środa',
       day_thu: 'Czwartek', day_fri: 'Piątek', day_sat: 'Sobota', day_sun: 'Niedziela',
       status_off: 'WOLNY', status_busy: 'ZAJĘTY', status_night: 'Nocna', book_btn: 'Zarezerwuj',
       footer_title: 'Grafik Edwina — 2026',
-      start_label: 'Start', tray_label: 'Dziś:',
+      start_label: 'Start',
       sm_restore: 'Grafik Edwina', sm_close: 'Zamknij',
       menu_plik: 'Plik', menu_widok: 'Widok',
       menu_close_label: 'Zamknij', menu_refresh_label: 'Odśwież', menu_lang_label: 'Przełącz język',
@@ -1092,11 +1123,9 @@
       comments_empty: 'Brak komentarzy. Bądź pierwszy!',
       comments_error_load: 'Nie udało się wczytać komentarzy.',
       comments_not_configured: 'Księga gości nie jest jeszcze skonfigurowana.',
-      dlg_close_title: 'Zamknij program',
-      dlg_close_text: 'Czy na pewno chcesz zamknąć Grafik Edwina?',
       dlg_kosz_title: 'Kosz',
       dlg_kosz_text: 'Kosz jest pusty. Tak jak twoja osobowość.',
-      btn_yes: 'Tak', btn_no: 'Nie', btn_ok: 'OK',
+      btn_ok: 'OK',
       minimized_toast: 'Zminimalizowano. Kliknij pasek zadań, aby przywrócić.',
       monthGenitive: 'września',
       boot_lines: [
@@ -1108,13 +1137,14 @@
     },
     en: {
       window_title: 'Edwin’s Schedule',
+      browser_tab_title: 'Edwin’s corner',
       month_title: 'September 2026',
       th_date: 'Date', th_day: 'Day', th_status: 'Status',
       day_mon: 'Monday', day_tue: 'Tuesday', day_wed: 'Wednesday',
       day_thu: 'Thursday', day_fri: 'Friday', day_sat: 'Saturday', day_sun: 'Sunday',
       status_off: 'Day off', status_busy: 'Busy', status_night: 'Night shift', book_btn: 'Book',
       footer_title: 'Edwin’s Schedule — 2026',
-      start_label: 'Start', tray_label: 'Today:',
+      start_label: 'Start',
       sm_restore: 'Edwin’s Schedule', sm_close: 'Close',
       menu_plik: 'File', menu_widok: 'View',
       menu_close_label: 'Close', menu_refresh_label: 'Refresh', menu_lang_label: 'Switch language',
@@ -1133,11 +1163,9 @@
       comments_empty: 'No comments yet. Be the first!',
       comments_error_load: 'Could not load comments.',
       comments_not_configured: "The guestbook isn't connected yet.",
-      dlg_close_title: 'Close program',
-      dlg_close_text: 'Are you sure you want to close Edwin’s Schedule?',
       dlg_kosz_title: 'Recycle Bin',
       dlg_kosz_text: 'The Recycle Bin is empty. Just like your personality.',
-      btn_yes: 'Yes', btn_no: 'No', btn_ok: 'OK',
+      btn_ok: 'OK',
       minimized_toast: 'Minimized. Click the taskbar to restore.',
       monthGenitive: 'September',
       boot_lines: [
@@ -1346,11 +1374,9 @@
   function openDialog(id) { document.getElementById(id).classList.add('open'); }
   function closeDialog(id) { document.getElementById(id).classList.remove('open'); }
 
-  document.getElementById('btnClose').addEventListener('click', () => openDialog('closeDialog'));
-  document.getElementById('menuClose').addEventListener('click', () => { closeAllMenus(); openDialog('closeDialog'); });
-  document.getElementById('smClose').addEventListener('click', () => { closeStartMenu(); openDialog('closeDialog'); });
-  document.getElementById('closeYes').addEventListener('click', () => { closeDialog('closeDialog'); scheduleWin.minimize(); });
-  document.getElementById('closeNo').addEventListener('click', () => closeDialog('closeDialog'));
+  document.getElementById('btnClose').addEventListener('click', () => scheduleWin.minimize());
+  document.getElementById('menuClose').addEventListener('click', () => { closeAllMenus(); scheduleWin.minimize(); });
+  document.getElementById('smClose').addEventListener('click', () => { closeStartMenu(); scheduleWin.minimize(); });
 
   document.getElementById('menuRefresh').addEventListener('click', () => { closeAllMenus(); location.reload(); });
   document.getElementById('menuLang').addEventListener('click', () => { closeAllMenus(); setLanguage(currentLang === 'pl' ? 'en' : 'pl'); });
