@@ -321,6 +321,135 @@
     padding: 20px 4px;
   }
 
+  .window-shell.photos-window {
+    top: 100px; left: 50%;
+    transform: translate(calc(-50% + 230px), 0);
+    width: min(680px, calc(100% - 24px));
+  }
+  .photos-toolbar {
+    background: var(--sys-gray);
+    border-bottom: 1px solid var(--sys-shadow);
+    padding: 5px 8px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .photos-up-btn {
+    display: flex; align-items: center; gap: 4px;
+    background: var(--sys-gray);
+    border-top:    1px solid var(--sys-highlight);
+    border-left:   1px solid var(--sys-highlight);
+    border-right:  1px solid var(--sys-darkest);
+    border-bottom: 1px solid var(--sys-darkest);
+    padding: 3px 8px;
+    font-size: 11px;
+    cursor: default;
+  }
+  .photos-up-btn:active {
+    border-color: var(--sys-darkest) var(--sys-highlight) var(--sys-highlight) var(--sys-darkest);
+  }
+  .photos-path { font-size: 11px; color: #333; }
+  .photos-body {
+    background: #ffffff;
+    min-height: 220px;
+    max-height: 460px;
+    overflow-y: auto;
+    position: relative;
+  }
+  .photos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: 4px;
+    padding: 14px;
+  }
+  .photos-item {
+    width: 96px;
+    background: none;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 5px;
+    padding: 8px 4px;
+    border: 1px dotted transparent;
+    cursor: default;
+    user-select: none;
+  }
+  .photos-item.selected { background: #316ac5; }
+  .photos-item.selected .label { color: #fff; }
+  .photos-item .thumb {
+    width: 64px; height: 64px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 44px;
+    filter: drop-shadow(1px 2px 1px rgba(0,0,0,0.25));
+  }
+  .photos-item .thumb-frame {
+    width: 72px; height: 72px;
+    border: 1px solid var(--sys-shadow);
+    background: #e8e8e8;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .photos-item .thumb-frame img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .photos-item .label {
+    font-size: 11px;
+    text-align: center;
+    max-width: 92px;
+    word-break: break-word;
+    color: #000;
+  }
+  .photos-empty {
+    font-size: 12px;
+    color: #555;
+    text-align: center;
+    padding: 30px 4px;
+  }
+
+  /* ── PHOTO VIEWER (full-screen lightbox) ── */
+  .photo-viewer-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 300;
+    align-items: center; justify-content: center;
+  }
+  .photo-viewer-overlay.open { display: flex; }
+  .photo-viewer-img {
+    max-width: min(92vw, 1100px);
+    max-height: 88vh;
+    display: block;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.6);
+  }
+  .photo-viewer-close {
+    position: absolute; top: 14px; right: 16px;
+    width: 34px; height: 30px;
+    background: var(--sys-gray);
+    border-top:    1px solid var(--sys-highlight);
+    border-left:   1px solid var(--sys-highlight);
+    border-right:  1px solid var(--sys-darkest);
+    border-bottom: 1px solid var(--sys-darkest);
+    font-size: 14px; font-weight: bold;
+    cursor: default;
+  }
+  .photo-viewer-close:active {
+    border-color: var(--sys-darkest) var(--sys-highlight) var(--sys-highlight) var(--sys-darkest);
+  }
+  .photo-nav-btn {
+    position: absolute; top: 50%; transform: translateY(-50%);
+    width: 52px; height: 64px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.4);
+    border-radius: 4px;
+    color: #fff; font-size: 34px; font-weight: bold;
+    cursor: default;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .photo-nav-btn:active { background: rgba(255,255,255,0.32); }
+  .photo-nav-prev { left: 14px; }
+  .photo-nav-next { right: 14px; }
+
   /* ── TITLE BAR ── */
   .win-titlebar {
     background: linear-gradient(90deg, var(--sys-blue) 0%, var(--sys-blue2) 100%);
@@ -827,6 +956,9 @@
     .comments-wall { max-height: calc(100vh - 380px); min-height: 140px; }
     .blog-posts { max-height: calc(100vh - 260px); min-height: 140px; }
     .blog-post-media img, .blog-post-media video { max-height: 200px; }
+    .photos-body { max-height: calc(100vh - 220px); min-height: 140px; }
+    .photo-viewer-img { max-width: 96vw; max-height: 80vh; }
+    .photo-nav-btn { width: 44px; height: 56px; font-size: 28px; }
   }
 </style>
 </head>
@@ -862,6 +994,9 @@
     </button>
     <button class="desktop-icon" id="iconBlog" type="button">
       <span class="emoji">📓</span><span class="label" data-i18n="icon_blog_label">Blog</span>
+    </button>
+    <button class="desktop-icon" id="iconPhotos" type="button">
+      <span class="emoji">📁</span><span class="label" data-i18n="icon_photos_label">Zdjęcia</span>
     </button>
   </div>
 
@@ -1120,6 +1255,39 @@
       <div class="blog-empty" id="blogEmpty" data-i18n="blog_empty" style="display:none;">Brak wpisów. Wróć później!</div>
     </div>
   </div>
+
+  <!-- PHOTOS -->
+  <div class="window-shell photos-window" id="photosWindow" style="display:none;">
+    <div class="win-titlebar" id="photosTitlebar">
+      <div class="win-titlebar-left">
+        <button class="win-back-btn" id="photosBackBtn" type="button" aria-label="Back">←</button>
+        <span class="win-titlebar-title">
+          <span class="win-icon">📁</span> <span data-i18n="photos_window_title">Zdjęcia</span>
+        </span>
+      </div>
+      <div class="win-btns">
+        <button class="win-btn" id="photosBtnMinimize">_</button>
+        <button class="win-btn" id="photosBtnMaximize">□</button>
+        <button class="win-btn" id="photosBtnClose">✕</button>
+      </div>
+    </div>
+    <div class="win-menubar" id="photosMenubar">
+      <div class="menu-item-wrap">
+        <button class="menu-item" data-menu="photosPlik" data-i18n="menu_plik">Plik</button>
+        <div class="menu-dropdown" data-menu-panel="photosPlik">
+          <button id="photosMenuClose">✕ <span data-i18n="menu_close_label">Zamknij</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="photos-toolbar">
+      <button class="photos-up-btn" id="photosUpBtn" type="button" style="visibility:hidden;">⬆ <span data-i18n="photos_up_btn">W górę</span></button>
+      <span class="photos-path" id="photosPath"></span>
+    </div>
+    <div class="photos-body">
+      <div class="photos-grid" id="photosGrid"></div>
+      <div class="photos-empty" id="photosEmpty" data-i18n="photos_empty" style="display:none;">Ten folder jest pusty.</div>
+    </div>
+  </div>
 </div>
 
 <!-- TASKBAR -->
@@ -1131,6 +1299,7 @@
   <button class="taskbar-app-btn" id="taskbarContact" type="button" style="display:none;">📝 <span data-i18n="sm_contact">Kontakt</span></button>
   <button class="taskbar-app-btn" id="taskbarComments" type="button" style="display:none;">💬 <span data-i18n="icon_comments_label">Comments</span></button>
   <button class="taskbar-app-btn" id="taskbarBlog" type="button" style="display:none;">📓 <span data-i18n="blog_window_title">Blog</span></button>
+  <button class="taskbar-app-btn" id="taskbarPhotos" type="button" style="display:none;">📁 <span data-i18n="icon_photos_label">Zdjęcia</span></button>
   <div class="tray">
     <span id="trayClock"></span>
   </div>
@@ -1144,6 +1313,7 @@
   <button id="smContact">📝 <span data-i18n="sm_contact">Kontakt</span></button>
   <button id="smComments">💬 <span data-i18n="icon_comments_label">Comments</span></button>
   <button id="smBlog">📓 <span data-i18n="blog_window_title">Blog</span></button>
+  <button id="smPhotos">📁 <span data-i18n="icon_photos_label">Zdjęcia</span></button>
   <button id="smClose">⏻ <span data-i18n="sm_close">Zamknij</span></button>
 </div>
 
@@ -1159,6 +1329,14 @@
       <button class="dlgOk" data-i18n="btn_ok">OK</button>
     </div>
   </div>
+</div>
+
+<!-- PHOTO VIEWER (lightbox) -->
+<div class="photo-viewer-overlay" id="photoViewer">
+  <button class="photo-viewer-close" id="photoViewerClose" type="button" aria-label="Close">✕</button>
+  <button class="photo-nav-btn photo-nav-prev" id="photoPrevBtn" type="button" aria-label="Previous">‹</button>
+  <img class="photo-viewer-img" id="photoViewerImg" src="" alt="">
+  <button class="photo-nav-btn photo-nav-next" id="photoNextBtn" type="button" aria-label="Next">›</button>
 </div>
 
 <script>
@@ -1202,6 +1380,22 @@
   const blogPosts = [
   ];
 
+  // Each folder: { name: '...', folder: 'photos/...', photos: ['file1.jpg', ...] }.
+  // Folder names are shown as written (not translated), same as blog post text —
+  // they're Edwin's own content, not site chrome. To add a folder or photos,
+  // drop the files under photos/ and add/extend an entry here.
+  const photoFolders = [
+    {
+      name: 'Milka <3',
+      folder: 'photos/milka',
+      photos: [
+        'IMG_0555.JPG', 'IMG_1604.JPG', 'IMG_2971.jpg', 'IMG_2972.JPG',
+        'IMG_3043.JPG', 'IMG_3101.JPG', 'IMG_3181.JPG',
+        'IMG_3195.JPG', 'IMG_3281.JPG', 'IMG_3395.JPG',
+      ],
+    },
+  ];
+
   const translations = {
     pl: {
       window_title: 'Grafik Edwina',
@@ -1228,6 +1422,8 @@
       icon_comments_label: 'Komentarze',
       icon_blog_label: 'Blog', blog_window_title: 'Blog',
       blog_empty: 'Brak wpisów. Wróć później!',
+      icon_photos_label: 'Zdjęcia', photos_window_title: 'Zdjęcia',
+      photos_up_btn: 'W górę', photos_empty: 'Ten folder jest pusty.',
       comments_window_title: 'Księga gości',
       comments_label_name: 'Imię', comments_label_comment: 'Komentarz', comments_post_btn: 'Wyślij',
       comments_loading: 'Ładowanie komentarzy...',
@@ -1271,6 +1467,8 @@
       icon_comments_label: 'Comments',
       icon_blog_label: 'Blog', blog_window_title: 'Blog',
       blog_empty: 'No posts yet. Check back later!',
+      icon_photos_label: 'Photos', photos_window_title: 'Photos',
+      photos_up_btn: 'Up', photos_empty: 'This folder is empty.',
       comments_window_title: 'Guestbook',
       comments_label_name: 'Name', comments_label_comment: 'Comment', comments_post_btn: 'Post',
       comments_loading: 'Loading comments...',
@@ -1339,6 +1537,7 @@
 
     buildBookingButtons();
     renderBlogPosts();
+    renderPhotosGrid();
   }
 
   function escapeHtml(str) {
@@ -1369,6 +1568,112 @@
       </div>`;
     }).join('');
   }
+
+  // ── PHOTOS (folder grid + full-screen viewer) ──
+  let photosCurrentFolder = null; // index into photoFolders, or null = folder list
+  let photosViewerIndex = null;
+
+  function photosRootLabel() { return translations[currentLang].photos_window_title; }
+
+  function renderPhotosGrid() {
+    const grid = document.getElementById('photosGrid');
+    const emptyEl = document.getElementById('photosEmpty');
+    const upBtn = document.getElementById('photosUpBtn');
+    const pathEl = document.getElementById('photosPath');
+    if (!grid) return;
+
+    if (photosCurrentFolder === null) {
+      upBtn.style.visibility = 'hidden';
+      pathEl.textContent = photosRootLabel();
+      if (photoFolders.length === 0) {
+        grid.innerHTML = '';
+        emptyEl.style.display = '';
+      } else {
+        emptyEl.style.display = 'none';
+        grid.innerHTML = photoFolders.map((f, i) => `
+          <button class="photos-item" type="button" data-kind="folder" data-index="${i}">
+            <span class="thumb">📁</span>
+            <span class="label">${escapeHtml(f.name)}</span>
+          </button>`).join('');
+      }
+    } else {
+      const folder = photoFolders[photosCurrentFolder];
+      upBtn.style.visibility = 'visible';
+      pathEl.textContent = `${photosRootLabel()} › ${folder.name}`;
+      if (folder.photos.length === 0) {
+        grid.innerHTML = '';
+        emptyEl.style.display = '';
+      } else {
+        emptyEl.style.display = 'none';
+        grid.innerHTML = folder.photos.map((file, i) => `
+          <button class="photos-item" type="button" data-kind="photo" data-index="${i}">
+            <span class="thumb-frame"><img src="${folder.folder}/${file}" alt="" loading="lazy"></span>
+          </button>`).join('');
+      }
+    }
+    wirePhotosItemClicks();
+  }
+
+  function wirePhotosItemClicks() {
+    document.querySelectorAll('#photosGrid .photos-item').forEach(el => {
+      let lastClick = 0;
+      el.addEventListener('click', () => {
+        document.querySelectorAll('#photosGrid .photos-item').forEach(i => i.classList.remove('selected'));
+        el.classList.add('selected');
+        const kind = el.getAttribute('data-kind');
+        const idx = Number(el.getAttribute('data-index'));
+        const activate = () => kind === 'folder' ? openPhotosFolder(idx) : openPhotoViewer(idx);
+        if (!isDesktopMode()) { activate(); return; }
+        const now2 = Date.now();
+        if (now2 - lastClick < 400) activate();
+        lastClick = now2;
+      });
+    });
+  }
+
+  function openPhotosFolder(idx) {
+    photosCurrentFolder = idx;
+    renderPhotosGrid();
+  }
+  function photosGoUp() {
+    photosCurrentFolder = null;
+    renderPhotosGrid();
+  }
+
+  function openPhotoViewer(idx) {
+    photosViewerIndex = idx;
+    showPhotoAtIndex();
+    document.getElementById('photoViewer').classList.add('open');
+  }
+  function showPhotoAtIndex() {
+    const folder = photoFolders[photosCurrentFolder];
+    document.getElementById('photoViewerImg').src = `${folder.folder}/${folder.photos[photosViewerIndex]}`;
+  }
+  function closePhotoViewer() {
+    document.getElementById('photoViewer').classList.remove('open');
+    document.getElementById('photoViewerImg').src = '';
+  }
+  function photoViewerNext() {
+    const folder = photoFolders[photosCurrentFolder];
+    photosViewerIndex = (photosViewerIndex + 1) % folder.photos.length;
+    showPhotoAtIndex();
+  }
+  function photoViewerPrev() {
+    const folder = photoFolders[photosCurrentFolder];
+    photosViewerIndex = (photosViewerIndex - 1 + folder.photos.length) % folder.photos.length;
+    showPhotoAtIndex();
+  }
+
+  document.getElementById('photosUpBtn').addEventListener('click', photosGoUp);
+  document.getElementById('photoViewerClose').addEventListener('click', closePhotoViewer);
+  document.getElementById('photoNextBtn').addEventListener('click', photoViewerNext);
+  document.getElementById('photoPrevBtn').addEventListener('click', photoViewerPrev);
+  document.addEventListener('keydown', (e) => {
+    if (!document.getElementById('photoViewer').classList.contains('open')) return;
+    if (e.key === 'ArrowRight') photoViewerNext();
+    else if (e.key === 'ArrowLeft') photoViewerPrev();
+    else if (e.key === 'Escape') closePhotoViewer();
+  });
 
   function buildBookingButtons() {
     const tpl = emailTemplates[currentLang];
@@ -1541,7 +1846,7 @@
   document.getElementById('wmBtnClose').addEventListener('click', () => watermelonCtrl.close());
 
   function openWatermelon() {
-    if (!isDesktopMode()) { showExclusive(watermelonCtrl, [scheduleWin, contactCtrl, commentsCtrl, blogCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(watermelonCtrl, [scheduleWin, contactCtrl, commentsCtrl, blogCtrl, photosCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarWatermelon).display === 'none';
     if (neverOpenedOrClosed) watermelonCtrl.open();
     else if (watermelonWin.style.display === 'none') watermelonCtrl.restore();
@@ -1561,7 +1866,7 @@
   document.getElementById('contactMenuClose').addEventListener('click', () => { closeAllMenus(); contactCtrl.close(); });
 
   function openContact() {
-    if (!isDesktopMode()) { showExclusive(contactCtrl, [scheduleWin, watermelonCtrl, commentsCtrl, blogCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(contactCtrl, [scheduleWin, watermelonCtrl, commentsCtrl, blogCtrl, photosCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarContact).display === 'none';
     if (neverOpenedOrClosed) contactCtrl.open();
     else if (contactWin.style.display === 'none') contactCtrl.restore();
@@ -1581,7 +1886,7 @@
   document.getElementById('commentsMenuClose').addEventListener('click', () => { closeAllMenus(); commentsCtrl.close(); });
 
   function openComments() {
-    if (!isDesktopMode()) { showExclusive(commentsCtrl, [scheduleWin, watermelonCtrl, contactCtrl, blogCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(commentsCtrl, [scheduleWin, watermelonCtrl, contactCtrl, blogCtrl, photosCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarComments).display === 'none';
     if (neverOpenedOrClosed) commentsCtrl.open();
     else if (commentsWin.style.display === 'none') commentsCtrl.restore();
@@ -1589,7 +1894,7 @@
   }
 
   function openSchedule() {
-    if (!isDesktopMode()) { showExclusive(scheduleWin, [watermelonCtrl, contactCtrl, commentsCtrl, blogCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(scheduleWin, [watermelonCtrl, contactCtrl, commentsCtrl, blogCtrl, photosCtrl]); return; }
     if (win.style.display === 'none') scheduleWin.restore();
     else scheduleWin.wiggle();
   }
@@ -1607,17 +1912,38 @@
   document.getElementById('blogMenuClose').addEventListener('click', () => { closeAllMenus(); blogCtrl.close(); });
 
   function openBlog() {
-    if (!isDesktopMode()) { showExclusive(blogCtrl, [scheduleWin, watermelonCtrl, contactCtrl, commentsCtrl]); return; }
+    if (!isDesktopMode()) { showExclusive(blogCtrl, [scheduleWin, watermelonCtrl, contactCtrl, commentsCtrl, photosCtrl]); return; }
     const neverOpenedOrClosed = getComputedStyle(taskbarBlog).display === 'none';
     if (neverOpenedOrClosed) blogCtrl.open();
     else if (blogWin.style.display === 'none') blogCtrl.restore();
     else blogCtrl.wiggle();
   }
 
+  // ── PHOTOS APP (window shell around the folder grid / viewer above) ──
+  const photosWin = document.getElementById('photosWindow');
+  const taskbarPhotos = document.getElementById('taskbarPhotos');
+  const photosCtrl = initWindow(photosWin, {
+    titlebar: document.getElementById('photosTitlebar'),
+    taskbarBtn: taskbarPhotos,
+    btnMinimize: document.getElementById('photosBtnMinimize'),
+    btnMaximize: document.getElementById('photosBtnMaximize'),
+    onClose: () => { closePhotoViewer(); photosCurrentFolder = null; renderPhotosGrid(); },
+  });
+  document.getElementById('photosBtnClose').addEventListener('click', () => photosCtrl.close());
+  document.getElementById('photosMenuClose').addEventListener('click', () => { closeAllMenus(); photosCtrl.close(); });
+
+  function openPhotos() {
+    if (!isDesktopMode()) { showExclusive(photosCtrl, [scheduleWin, watermelonCtrl, contactCtrl, commentsCtrl, blogCtrl]); return; }
+    const neverOpenedOrClosed = getComputedStyle(taskbarPhotos).display === 'none';
+    if (neverOpenedOrClosed) photosCtrl.open();
+    else if (photosWin.style.display === 'none') photosCtrl.restore();
+    else photosCtrl.wiggle();
+  }
+
   // ── MOBILE HOME SCREEN (single window at a time + back navigation) ──
   function updateMobileHome() {
     if (isDesktopMode()) { document.body.classList.remove('mobile-app-open'); return; }
-    const windows = [win, watermelonWin, contactWin, commentsWin, blogWin];
+    const windows = [win, watermelonWin, contactWin, commentsWin, blogWin, photosWin];
     const anyOpen = windows.some(w => w.style.display !== 'none');
     document.body.classList.toggle('mobile-app-open', anyOpen);
   }
@@ -1637,6 +1963,10 @@
     contactCtrl.minimize();
     commentsCtrl.minimize();
     blogCtrl.minimize();
+    photosCtrl.minimize();
+    closePhotoViewer();
+    photosCurrentFolder = null;
+    renderPhotosGrid();
     watermelonVideo.pause();
     window.scrollTo(0, 0);
   }
@@ -1645,6 +1975,7 @@
   document.getElementById('contactBackBtn').addEventListener('click', goHome);
   document.getElementById('commentsBackBtn').addEventListener('click', goHome);
   document.getElementById('blogBackBtn').addEventListener('click', goHome);
+  document.getElementById('photosBackBtn').addEventListener('click', goHome);
 
   // Keeps mobile down to one visible window even if the browser is resized
   // across the phone breakpoint mid-session (desktop allows several at once).
@@ -1656,6 +1987,7 @@
       { el: contactWin, ctrl: contactCtrl },
       { el: commentsWin, ctrl: commentsCtrl },
       { el: blogWin, ctrl: blogCtrl },
+      { el: photosWin, ctrl: photosCtrl },
     ];
     const openOnes = entries.filter(e => e.el.style.display !== 'none');
     if (openOnes.length > 1) {
@@ -1688,6 +2020,7 @@
   handleIconClick('iconContact', openContact);
   handleIconClick('iconComments', openComments);
   handleIconClick('iconBlog', openBlog);
+  handleIconClick('iconPhotos', openPhotos);
 
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.desktop-icon')) {
@@ -1728,6 +2061,7 @@
   document.getElementById('smContact').addEventListener('click', () => { closeStartMenu(); openContact(); });
   document.getElementById('smComments').addEventListener('click', () => { closeStartMenu(); openComments(); });
   document.getElementById('smBlog').addEventListener('click', () => { closeStartMenu(); openBlog(); });
+  document.getElementById('smPhotos').addEventListener('click', () => { closeStartMenu(); openPhotos(); });
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.start-menu') && !e.target.closest('.start-btn')) closeStartMenu();
   });
