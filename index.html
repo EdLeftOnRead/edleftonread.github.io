@@ -686,13 +686,7 @@
   .schedule-table tbody td:first-child { padding-left: 14px; }
   .schedule-table tbody td:last-child  { text-align: right; padding-right: 14px; }
 
-  .date-cell { font-weight: bold; width: 120px; }
-
-  .schedule-table tbody td:nth-child(2) {
-    width: 140px;
-    color: #404060;
-    font-size: 13px;
-  }
+  .date-cell { font-weight: bold; width: 160px; }
 
   /* TODAY row */
   .schedule-table tr.today td { background: var(--sys-today) !important; }
@@ -945,7 +939,6 @@
     .desktop-lang { top: auto; bottom: calc(48px + env(safe-area-inset-bottom, 0px)); right: 10px; }
     .main { padding: 8px 6px; }
     .tab-content-box { padding: 8px 6px; }
-    .schedule-table tbody td:nth-child(2) { display: none; }
     .schedule-table tr.today td.date-cell::before { display: none; }
     .date-cell { width: auto; font-size: 12px; }
     .schedule-table tbody td { padding: 7px 6px; }
@@ -1072,7 +1065,6 @@
           <thead>
             <tr>
               <th data-i18n="th_date">Data</th>
-              <th data-i18n="th_day">Dzień</th>
               <th data-i18n="th_status">Status</th>
               <th></th>
             </tr>
@@ -1401,7 +1393,7 @@
       window_title: 'Grafik Edwina',
       browser_tab_title: 'Kącik Edwina',
       month_title: 'Wrzesień 2026',
-      th_date: 'Data', th_day: 'Dzień', th_status: 'Status',
+      th_date: 'Data', th_status: 'Status',
       day_mon: 'Poniedziałek', day_tue: 'Wtorek', day_wed: 'Środa',
       day_thu: 'Czwartek', day_fri: 'Piątek', day_sat: 'Sobota', day_sun: 'Niedziela',
       status_off: 'WOLNY', status_busy: 'ZAJĘTY', status_night: 'Nocna', book_btn: 'Zarezerwuj',
@@ -1446,7 +1438,7 @@
       window_title: 'Edwin’s Schedule',
       browser_tab_title: 'Edwin’s corner',
       month_title: 'September 2026',
-      th_date: 'Date', th_day: 'Day', th_status: 'Status',
+      th_date: 'Date', th_status: 'Status',
       day_mon: 'Monday', day_tue: 'Tuesday', day_wed: 'Wednesday',
       day_thu: 'Thursday', day_fri: 'Friday', day_sat: 'Saturday', day_sun: 'Sunday',
       status_off: 'Day off', status_busy: 'Busy', status_night: 'Night shift', book_btn: 'Book',
@@ -1508,7 +1500,6 @@
       const timeHtml = entry.time ? ` ${entry.time}` : '';
       return `<tr data-date="${dateStr}" data-day="${entry.day}" data-status="${entry.status}">
         <td class="date-cell"></td>
-        <td><span data-i18n="${dayKeys[new Date(YEAR, MONTH, entry.day).getDay()]}"></span></td>
         <td><span class="tag ${tagClass}"><span data-i18n="${statusKey}"></span>${timeHtml}</span></td>
         <td></td>
       </tr>`;
@@ -1528,7 +1519,8 @@
 
     document.querySelectorAll('.date-cell').forEach(cell => {
       const day = cell.closest('tr').getAttribute('data-day');
-      cell.textContent = lang === 'en' ? `${day} September` : `${day} września`;
+      const dayName = dict[dayKeys[new Date(YEAR, MONTH, Number(day)).getDay()]];
+      cell.textContent = `${day} ${dayName}`;
     });
 
     document.querySelectorAll('.lang-flag').forEach(b =>
@@ -1680,7 +1672,7 @@
     const lbl = translations[currentLang].book_btn;
     const midnight = new Date(); midnight.setHours(0, 0, 0, 0);
     document.querySelectorAll('.schedule-table tbody tr').forEach(row => {
-      const ac = row.children[3];
+      const ac = row.children[2];
       const isOff = row.getAttribute('data-status') === 'off';
       const [y, m, d] = row.getAttribute('data-date').split('-').map(Number);
       if (isOff && new Date(y, m - 1, d) > midnight) {
