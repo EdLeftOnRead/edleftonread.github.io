@@ -644,6 +644,49 @@
     color: var(--sys-text);
   }
 
+  .view-toggle-btn {
+    margin-left: auto;
+    align-self: flex-end;
+    margin-bottom: 4px;
+    background: var(--sys-gray);
+    border-top:    2px solid var(--sys-highlight);
+    border-left:   2px solid var(--sys-highlight);
+    border-right:  2px solid var(--sys-shadow);
+    border-bottom: 2px solid var(--sys-shadow);
+    padding: 3px 12px;
+    font-family: inherit;
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--sys-text);
+    cursor: pointer;
+  }
+  .view-toggle-btn:active {
+    border-top-color: var(--sys-shadow); border-left-color: var(--sys-shadow);
+    border-right-color: var(--sys-highlight); border-bottom-color: var(--sys-highlight);
+  }
+
+  /* ── CALENDAR GRID VIEW ── */
+  .calendar-grid { display: none; }
+  .main.grid-view .calendar-grid { display: block; }
+  .main.grid-view .schedule-table { display: none; }
+  .cal-weekdays, .cal-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-weekdays { margin-bottom: 4px; }
+  .cal-weekday {
+    background: var(--sys-blue); color: #fff; font-size: 12px; font-weight: bold;
+    text-align: center; padding: 6px 2px; text-transform: uppercase; letter-spacing: 0.03em;
+  }
+  .cal-cell {
+    min-height: 74px; padding: 4px 5px;
+    border: 1px solid #c8d0e0; background: #fff;
+    display: flex; flex-direction: column; gap: 3px;
+    font-size: 11px; color: var(--sys-text);
+  }
+  .cal-cell.empty { background: transparent; border-color: transparent; }
+  .cal-cell.today { background: var(--sys-today); outline: 2px solid var(--col-busy); outline-offset: -2px; }
+  .cal-daynum { font-weight: bold; font-size: 13px; }
+  .cal-cell .tag { font-size: 10px; padding: 2px 4px; white-space: normal; line-height: 1.25; text-align: center; }
+  .cal-cell .tag .cal-time { display: block; font-weight: normal; letter-spacing: 0; }
+
   /* ── TAB CONTENT BOX ── */
   .tab-content-box {
     background: #ffffff;
@@ -943,6 +986,14 @@
     .date-cell { width: auto; font-size: 12px; }
     .schedule-table tbody td { padding: 7px 6px; }
     .tag { white-space: normal; font-size: 10px; padding: 3px 6px; line-height: 1.3; }
+    .tab-btn { padding: 4px 10px 5px; }
+    .view-toggle-btn { padding: 3px 8px; }
+    .cal-days, .cal-weekdays { gap: 2px; }
+    .cal-weekday { font-size: 10px; padding: 4px 0; letter-spacing: 0; }
+    .cal-cell { min-height: 56px; padding: 2px 3px; }
+    .cal-cell .tag { font-size: 8px; padding: 1px 2px; }
+    .cal-cell .tag .cal-status { display: none; }
+    .cal-cell .tag .cal-time { font-size: 8px; }
     .book-btn { font-size: 11px; padding: 5px 8px; }
     .footer { padding: 4px 8px; }
     .taskbar-app-btn { display: none !important; }
@@ -959,7 +1010,7 @@
 
 <!-- BOOT SCREEN -->
 <div class="boot-screen" id="bootScreen">
-  <div class="boot-line" id="bl0">EDWIN-FIT BIOS v2.6 — WRZESIEŃ EDITION</div>
+  <div class="boot-line" id="bl0">EDWIN-FIT BIOS v2.6 — PAŹDZIERNIK EDITION</div>
   <div class="boot-line" id="bl1">Sprawdzanie pamięci... 640 KB OK</div>
   <div class="boot-line" id="bl2">Wykrywanie grafiku nocnych zmian... znaleziono</div>
   <div class="boot-line" id="bl3">Ładowanie GRAFIK.EXE...</div>
@@ -1057,7 +1108,8 @@
     <!-- CONTENT -->
     <div class="main">
       <div class="tab-bar">
-        <button class="tab-btn"><span data-i18n="month_title">Wrzesień 2026</span></button>
+        <button class="tab-btn"><span data-i18n="month_title">Październik 2026</span></button>
+        <button class="view-toggle-btn" id="viewToggleBtn" type="button"><span id="viewToggleLabel" data-i18n="view_grid_btn">Kalendarz</span></button>
       </div>
 
       <div class="tab-content-box">
@@ -1071,6 +1123,15 @@
           </thead>
           <tbody id="scheduleBody"></tbody>
         </table>
+        <div class="calendar-grid" id="calendarGrid">
+          <div class="cal-weekdays">
+            <div class="cal-weekday" data-i18n="wd_mon"></div><div class="cal-weekday" data-i18n="wd_tue"></div>
+            <div class="cal-weekday" data-i18n="wd_wed"></div><div class="cal-weekday" data-i18n="wd_thu"></div>
+            <div class="cal-weekday" data-i18n="wd_fri"></div><div class="cal-weekday" data-i18n="wd_sat"></div>
+            <div class="cal-weekday" data-i18n="wd_sun"></div>
+          </div>
+          <div class="cal-days" id="calDays"></div>
+        </div>
       </div>
     </div>
 
@@ -1333,38 +1394,39 @@
 
 <script>
   const scheduleData = [
-    { day: 1,  status: 'off' },
-    { day: 2,  status: 'night', time: '22:00–07:30' },
-    { day: 3,  status: 'night', time: '22:00–07:30' },
-    { day: 4,  status: 'off' },
-    { day: 5,  status: 'off' },
-    { day: 6,  status: 'night', time: '22:00–07:30' },
-    { day: 7,  status: 'off' },
-    { day: 8,  status: 'off' },
-    { day: 9,  status: 'night', time: '22:00–07:30' },
-    { day: 10, status: 'night', time: '22:00–07:30' },
-    { day: 11, status: 'busy' },
-    { day: 12, status: 'busy' },
-    { day: 13, status: 'night', time: '22:00–07:30' },
-    { day: 14, status: 'night', time: '22:00–07:30' },
-    { day: 15, status: 'night', time: '22:00–07:30' },
+    { day: 1 , status: 'off' },
+    { day: 2 , status: 'night', time: '22:00–09:00' },
+    { day: 3 , status: 'night', time: '22:00–09:00' },
+    { day: 4 , status: 'off' },
+    { day: 5 , status: 'off' },
+    { day: 6 , status: 'night', time: '22:00–07:30' },
+    { day: 7 , status: 'night', time: '22:00–07:30' },
+    { day: 8 , status: 'off' },
+    { day: 9 , status: 'off' },
+    { day: 10, status: 'off' },
+    { day: 11, status: 'off' },
+    { day: 12, status: 'shift', time: '12:00–20:00' },
+    { day: 13, status: 'shift', time: '12:00–20:00' },
+    { day: 14, status: 'shift', time: '12:00–20:00' },
+    { day: 15, status: 'off' },
     { day: 16, status: 'off' },
-    { day: 17, status: 'off' },
-    { day: 18, status: 'night', time: '22:00–09:00' },
-    { day: 19, status: 'night', time: '22:00–09:00' },
-    { day: 20, status: 'off' },
-    { day: 21, status: 'off' },
+    { day: 17, status: 'shift', time: '14:00–22:00' },
+    { day: 18, status: 'shift', time: '12:00–22:00' },
+    { day: 19, status: 'off' },
+    { day: 20, status: 'shift', time: '12:00–20:00' },
+    { day: 21, status: 'shift', time: '12:00–20:00' },
     { day: 22, status: 'off' },
-    { day: 23, status: 'night', time: '22:00–07:30' },
-    { day: 24, status: 'night', time: '22:00–07:30' },
+    { day: 23, status: 'off' },
+    { day: 24, status: 'shift', time: '14:00–22:00' },
     { day: 25, status: 'off' },
     { day: 26, status: 'off' },
-    { day: 27, status: 'night', time: '22:00–07:30' },
-    { day: 28, status: 'night', time: '22:00–07:30' },
-    { day: 29, status: 'night', time: '22:00–07:30' },
-    { day: 30, status: 'off' },
+    { day: 27, status: 'off' },
+    { day: 28, status: 'shift', time: '12:00–20:00' },
+    { day: 29, status: 'shift', time: '12:00–20:00' },
+    { day: 30, status: 'shift', time: '12:00–20:00' },
+    { day: 31, status: 'off' },
   ];
-  const YEAR = 2026, MONTH = 8; // September
+  const YEAR = 2026, MONTH = 9; // October
 
   // Each post: { date: 'YYYY-MM-DD', text: '...', media: [{ type: 'image'|'video', src: 'blog/...' }] }.
   // Newest is shown first regardless of array order. Post text is shown as written — it isn't
@@ -1392,11 +1454,13 @@
     pl: {
       window_title: 'Grafik Edwina',
       browser_tab_title: 'Kącik Edwina',
-      month_title: 'Wrzesień 2026',
+      month_title: 'Październik 2026',
       th_date: 'Data', th_status: 'Status',
       day_mon: 'Poniedziałek', day_tue: 'Wtorek', day_wed: 'Środa',
       day_thu: 'Czwartek', day_fri: 'Piątek', day_sat: 'Sobota', day_sun: 'Niedziela',
-      status_off: 'WOLNY', status_busy: 'ZAJĘTY', status_night: 'Nocna', book_btn: 'Zarezerwuj',
+      view_grid_btn: 'Kalendarz', view_list_btn: 'Lista',
+      wd_mon: 'Pon', wd_tue: 'Wt', wd_wed: 'Śr', wd_thu: 'Czw', wd_fri: 'Pt', wd_sat: 'Sob', wd_sun: 'Nd',
+      status_off: 'WOLNY', status_busy: 'ZAJĘTY', status_night: 'Nocna', status_shift: 'Zmiana', book_btn: 'Zarezerwuj',
       footer_title: 'Grafik Edwina — 2026',
       start_label: 'Start',
       sm_restore: 'Grafik Edwina', sm_close: 'Zamknij',
@@ -1426,9 +1490,9 @@
       dlg_kosz_text: 'Kosz jest pusty. Tak jak twoja osobowość.',
       btn_ok: 'OK',
       minimized_toast: 'Zminimalizowano. Kliknij pasek zadań, aby przywrócić.',
-      monthGenitive: 'września',
+      monthGenitive: 'października',
       boot_lines: [
-        'EDWIN-FIT BIOS v2.6 — WRZESIEŃ EDITION',
+        'EDWIN-FIT BIOS v2.6 — PAŹDZIERNIK EDITION',
         'Sprawdzanie pamięci... 640 KB OK',
         'Wykrywanie grafiku nocnych zmian... znaleziono',
         'Ładowanie GRAFIK.EXE...',
@@ -1437,11 +1501,13 @@
     en: {
       window_title: 'Edwin’s Schedule',
       browser_tab_title: 'Edwin’s corner',
-      month_title: 'September 2026',
+      month_title: 'October 2026',
       th_date: 'Date', th_status: 'Status',
       day_mon: 'Monday', day_tue: 'Tuesday', day_wed: 'Wednesday',
       day_thu: 'Thursday', day_fri: 'Friday', day_sat: 'Saturday', day_sun: 'Sunday',
-      status_off: 'Day off', status_busy: 'Busy', status_night: 'Night shift', book_btn: 'Book',
+      view_grid_btn: 'Calendar', view_list_btn: 'List',
+      wd_mon: 'Mon', wd_tue: 'Tue', wd_wed: 'Wed', wd_thu: 'Thu', wd_fri: 'Fri', wd_sat: 'Sat', wd_sun: 'Sun',
+      status_off: 'Day off', status_busy: 'Busy', status_night: 'Night shift', status_shift: 'Shift', book_btn: 'Book',
       footer_title: 'Edwin’s Schedule — 2026',
       start_label: 'Start',
       sm_restore: 'Edwin’s Schedule', sm_close: 'Close',
@@ -1471,9 +1537,9 @@
       dlg_kosz_text: 'The Recycle Bin is empty. Just like your personality.',
       btn_ok: 'OK',
       minimized_toast: 'Minimized. Click the taskbar to restore.',
-      monthGenitive: 'September',
+      monthGenitive: 'October',
       boot_lines: [
-        'EDWIN-FIT BIOS v2.6 — SEPTEMBER EDITION',
+        'EDWIN-FIT BIOS v2.6 — OCTOBER EDITION',
         'Checking memory... 640 KB OK',
         'Detecting night shift schedule... found',
         'Loading SCHEDULE.EXE...',
@@ -1495,8 +1561,8 @@
     const tbody = document.getElementById('scheduleBody');
     tbody.innerHTML = scheduleData.map(entry => {
       const dateStr = `${YEAR}-${String(MONTH+1).padStart(2,'0')}-${String(entry.day).padStart(2,'0')}`;
-      const tagClass = entry.status === 'off' ? 'tag-off' : entry.status === 'night' ? 'tag-work' : 'tag-busy';
-      const statusKey = entry.status === 'off' ? 'status_off' : entry.status === 'night' ? 'status_night' : 'status_busy';
+      const tagClass = entry.status === 'off' ? 'tag-off' : (entry.status === 'night' || entry.status === 'shift') ? 'tag-work' : 'tag-busy';
+      const statusKey = entry.status === 'off' ? 'status_off' : entry.status === 'night' ? 'status_night' : entry.status === 'shift' ? 'status_shift' : 'status_busy';
       const timeHtml = entry.time ? ` ${entry.time}` : '';
       return `<tr data-date="${dateStr}" data-day="${entry.day}" data-status="${entry.status}">
         <td class="date-cell"></td>
@@ -1684,12 +1750,39 @@
     });
   }
 
+  function buildCalendarGrid() {
+    const lead = (new Date(YEAR, MONTH, 1).getDay() + 6) % 7; // Monday-first
+    const keyFor = { off: 'status_off', night: 'status_night', shift: 'status_shift', busy: 'status_busy' };
+    const clsFor = { off: 'tag-off', night: 'tag-work', shift: 'tag-work', busy: 'tag-busy' };
+    const dateFor = day => `${YEAR}-${String(MONTH+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    let html = '<div class="cal-cell empty"></div>'.repeat(lead);
+    html += scheduleData.map(e => `<div class="cal-cell" data-date="${dateFor(e.day)}">
+      <span class="cal-daynum">${e.day}</span>
+      <span class="tag ${clsFor[e.status]}"><span class="cal-status" data-i18n="${keyFor[e.status]}"></span>${e.time ? `<span class="cal-time">${e.time}</span>` : ''}</span>
+    </div>`).join('');
+    document.getElementById('calDays').innerHTML = html;
+  }
+  buildCalendarGrid();
+
+  const mainEl = document.querySelector('.main');
+  function updateViewToggle() {
+    const isGrid = mainEl.classList.contains('grid-view');
+    const label = document.getElementById('viewToggleLabel');
+    label.setAttribute('data-i18n', isGrid ? 'view_list_btn' : 'view_grid_btn');
+    label.textContent = translations[currentLang][isGrid ? 'view_list_btn' : 'view_grid_btn'];
+  }
+  document.getElementById('viewToggleBtn').addEventListener('click', () => {
+    mainEl.classList.toggle('grid-view');
+    updateViewToggle();
+  });
+
   buildSchedule();
 
   // Mark today's row
   const now = new Date();
   const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
   document.querySelector(`tr[data-date="${todayStr}"]`)?.classList.add('today');
+  document.querySelector(`.cal-cell[data-date="${todayStr}"]`)?.classList.add('today');
 
   setLanguage(currentLang);
 
